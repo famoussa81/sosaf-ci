@@ -766,6 +766,25 @@ section{
 }
 
 /* ─── Contact ────────────────────────────────────── */
+.whatsapp-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:var(--space-3);
+  background:#25D366;
+  color:#ffffff;
+  padding:16px 32px;
+  border-radius:var(--radius-pill);
+  font-weight:600;
+  font-size:16px;
+  text-decoration:none;
+  transition:transform var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast);
+}
+.whatsapp-btn:hover{
+  transform:scale(1.04);
+  box-shadow:0 8px 24px rgba(37,211,102,0.3);
+}
+.whatsapp-btn:active{transform:scale(0.97)}
+.whatsapp-btn svg{flex-shrink:0}
 .contact-wrapper{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -1245,6 +1264,181 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
 }
 /* faq responsive — see unified responsive block */
 
+/* ─── Process Timeline ────────────────────────────── */
+.process-timeline{
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  gap:0;
+  margin-top:var(--space-12);
+  position:relative;
+}
+.process-step{
+  flex:1;
+  max-width:260px;
+  text-align:center;
+  position:relative;
+  padding:0 var(--space-3);
+}
+.process-step-number{
+  margin-bottom:var(--space-3);
+}
+.process-step-number .num-label{
+  font-family:var(--font-mono);
+  font-size:var(--text-sm);
+  font-weight:600;
+  letter-spacing:2px;
+  color:var(--accent);
+}
+.process-step-icon{
+  width:64px;
+  height:64px;
+  border-radius:50%;
+  background:rgba(0,237,100,0.08);
+  border:1px solid rgba(0,237,100,0.2);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto var(--space-4);
+  color:var(--accent);
+  transition:all var(--motion-base) var(--ease-out);
+}
+.process-step:hover .process-step-icon{
+  background:rgba(0,237,100,0.15);
+  border-color:var(--accent);
+  transform:scale(1.08);
+}
+.process-step-title{
+  font-family:var(--font-display);
+  font-size:var(--text-lg);
+  margin-bottom:var(--space-2);
+  color:var(--fg);
+}
+.process-step-desc{
+  font-size:var(--text-sm);
+  color:var(--muted);
+  line-height:1.6;
+}
+.process-connector{
+  width:40px;
+  flex-shrink:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--border),var(--accent),var(--border));
+  margin-top:56px;
+  opacity:0.5;
+}
+
+/* ─── WhatsApp Floating Button ────────────────────── */
+.whatsapp-float{
+  position:fixed;
+  bottom:24px;
+  right:24px;
+  z-index:900;
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  background:#25D366;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 4px 16px rgba(37,211,102,0.4), 0 2px 6px rgba(0,0,0,0.2);
+  transition:transform var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast);
+}
+.whatsapp-float:hover{
+  transform:scale(1.1);
+  box-shadow:0 6px 24px rgba(37,211,102,0.5), 0 3px 8px rgba(0,0,0,0.25);
+}
+.whatsapp-float:active{
+  transform:scale(0.95);
+}
+.whatsapp-float-pulse{
+  position:absolute;
+  inset:-4px;
+  border-radius:50%;
+  border:2px solid #25D366;
+  animation:whatsappPulse 2s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes whatsappPulse{
+  0%,100%{transform:scale(1);opacity:0.6}
+  50%{transform:scale(1.15);opacity:0}
+}
+
+/* ─── WhatsApp CTA (Contact section) ─────────────── */
+.whatsapp-cta{
+  display:inline-flex;
+  align-items:center;
+  gap:var(--space-3);
+  background:#25D366;
+  color:#fff;
+  padding:16px 32px;
+  border-radius:var(--radius-pill);
+  font-weight:600;
+  font-size:var(--text-base);
+  margin-top:var(--space-6);
+  transition:transform var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast);
+  box-shadow:0 4px 16px rgba(37,211,102,0.3);
+}
+.whatsapp-cta:hover{
+  transform:scale(1.04);
+  box-shadow:0 6px 24px rgba(37,211,102,0.4);
+  color:#fff;
+}
+.whatsapp-cta:active{transform:scale(0.97)}
+.whatsapp-cta-sub{
+  font-size:var(--text-sm);
+  color:var(--accent-hover);
+  margin-top:var(--space-2);
+  font-weight:500;
+}
+
+/* ─── Footer nav ──────────────────────────────────── */
+.footer-content{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:var(--space-4);
+}
+.footer-nav{
+  position:static;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:var(--space-4);
+  background:none;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  border:none;
+  border-bottom:none;
+  box-shadow:none;
+  padding:0;
+  height:auto;
+  width:auto;
+  top:auto;left:auto;right:auto;
+  z-index:auto;
+  transform:none;
+  opacity:1;
+  pointer-events:auto;
+}
+.footer-nav a{
+  font-size:var(--text-sm);
+  color:var(--muted);
+  transition:color var(--motion-fast);
+  white-space:nowrap;
+}
+.footer-nav a:hover{color:var(--accent)}
+.footer-nav .footer-legal{
+  color:var(--meta);
+  border-left:1px solid var(--border);
+  padding-left:var(--space-4);
+}
+.footer-copy{
+  font-size:var(--text-sm);
+  color:var(--meta);
+  text-align:center;
+}
+
 /* ═══════════════════════════════════════════════════════════════
    MOBILE-FIRST RESPONSIVE — 90% des utilisateurs sur mobile
    Breakpoints: 360px → 390px → 414px → 640px → 768px → 920px
@@ -1297,6 +1491,20 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   .lightbox-nav{width:44px;height:44px;font-size:20px}
   .lightbox-img-wrap{width:92vw;height:70vh}
   .lightbox-img{border-radius:var(--radius-md)}
+
+  /* Process timeline tablet */
+  .process-timeline{
+    flex-direction:column;
+    align-items:center;
+    gap:var(--space-4);
+  }
+  .process-step{max-width:400px;padding:var(--space-4)}
+  .process-connector{
+    width:2px;
+    height:24px;
+    margin:0;
+    background:linear-gradient(180deg,var(--border),var(--accent),var(--border));
+  }
 }
 
 /* ─── Mobile standard ≤640px ───────────────────────── */
@@ -1481,6 +1689,26 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   /* Footer */
   footer{padding:var(--space-6) 0}
   .footer-logo-img{height:36px}
+  .footer-nav{gap:var(--space-3);flex-wrap:wrap}
+  .footer-nav .footer-legal{border-left:none;padding-left:0}
+
+  /* WhatsApp float mobile */
+  .whatsapp-float{width:60px;height:60px;bottom:20px;right:16px}
+  .whatsapp-float svg{width:32px;height:32px}
+
+  /* WhatsApp CTA mobile */
+  .whatsapp-cta{
+    width:100%;
+    justify-content:center;
+    padding:18px 28px;
+    font-size:16px;
+  }
+
+  /* Process mobile */
+  .process-step-icon{width:52px;height:52px}
+  .process-step-icon svg{width:26px;height:26px}
+  .process-step-title{font-size:var(--text-base)}
+  .process-step-desc{font-size:13px}
 
   /* Lightbox mobile */
   .lightbox{
@@ -1759,6 +1987,7 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
       <a href="#presentation">Présentation</a>
       <a href="#produits">Produits</a>
       <a href="#certifications">Certifications</a>
+      <a href="#process">Process</a>
       <a href="#faq">FAQ</a>
       <a href="#contact">Contact</a>
       <a href="#contact" class="nav-cta">Devis →</a>
@@ -2062,128 +2291,59 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   </div>
 </section>
 
+
+
+
+
+
+
 <!-- ============================================================
-     SUPPLY CAPACITY
+     PROCESS DE COMMANDE
      ============================================================ -->
-<section class="section-dark section-card" id="capacite" data-od-id="supply-capacity">
+<section class="section-dark section-card" id="process" data-od-id="order-process">
   <div class="container">
     <div style="text-align:center">
-      <span class="eyebrow reveal">Approvisionnement</span>
-      <h2 class="display-sub reveal reveal-delay-1">Capacité d'approvisionnement</h2>
-      <p class="lead reveal reveal-delay-2" style="margin:var(--space-4) auto 0;max-width:600px">
-        Un réseau solide de producteurs et coopératives pour une fourniture
-        continue et fiable, adaptée à vos volumes.
+      <span class="eyebrow reveal">Process</span>
+      <h2 class="display-sub reveal reveal-delay-1">Comment commander</h2>
+      <p class="lead reveal reveal-delay-2" style="margin:var(--space-4) auto 0;max-width:620px;color:var(--fg-2)">
+        De la demande de devis à la livraison, un processus clair et transparent en 4 étapes.
       </p>
     </div>
-    <div class="capacity-grid">
-      <div class="capacity-card reveal">
-        <span class="icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 12 6a7 7 0 0 1 1 13.9"/><path d="M12 13v7"/><path d="M9 20h6"/></svg></span>
-        <h4>Réseau producteurs</h4>
-        <p>Partenariat avec plus de 200 producteurs et coopératives sélectionnés dans les principales régions agricoles de Côte d'Ivoire.</p>
-      </div>
-      <div class="capacity-card reveal reveal-delay-1">
-        <span class="icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
-        <h4>Commandes flexibles</h4>
-        <p>Possibilité de commandes par conteneur, palettes ou volume négocié selon vos besoins — pas de minimum imposé.</p>
-      </div>
-      <div class="capacity-card reveal reveal-delay-2">
-        <span class="icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span>
-        <h4>Fourniture continue</h4>
-        <p>Approvisionnement régulier tout au long des saisons de récolte grâce à notre réseau étendu et notre planification logistique.</p>
-      </div>
-      <div class="capacity-card reveal reveal-delay-3">
-        <span class="icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></svg></span>
-        <h4>Disponibilité saisonnière</h4>
-        <p>Calendrier de production maîtrisé pour chaque fruit, avec des fenêtres d'approvisionnement claires et fiables.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     PACKAGING & LOGISTICS
-     ============================================================ -->
-<section class="section-light section-card" id="logistique" data-od-id="packaging-logistics">
-  <div class="container">
-    <div style="text-align:center;margin-bottom:var(--space-8)">
-      <span class="eyebrow reveal">Logistique</span>
-      <h2 class="display-sub reveal reveal-delay-1">Conditionnement et logistique</h2>
-    </div>
-    <div class="logistics-wrapper">
-      <div>
-        <div class="logistics-block reveal">
-          <h3>Conditionnement</h3>
-          <p class="lead" style="margin-bottom:var(--space-4)">
-            Emballage adapté à chaque produit : carton, caisse ou autre selon
-            le type de fruit et la destination. Conditionnement professionnel
-            pour préserver la fraîcheur jusqu'à l'arrivée.
-          </p>
+    <div class="process-timeline reveal reveal-delay-2">
+      <div class="process-step">
+        <div class="process-step-number"><span class="num-label">01</span></div>
+        <div class="process-step-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         </div>
-        <div class="logistics-block reveal reveal-delay-1">
-          <h3>Transport</h3>
-          <ul>
-            <li>Transport maritime — conteneurs réfrigérés pour les expéditions en grand volume</li>
-            <li>Transport aérien — pour les commandes urgentes et les marchés premium</li>
-            <li>Expédition internationale vers tous les marchés (Europe, Moyen-Orient, Asie, Amériques)</li>
-          </ul>
+        <h4 class="process-step-title">Contactez-nous</h4>
+        <p class="process-step-desc">Par email ou WhatsApp, décrivez vos besoins : produits, volumes, destination et délais souhaités.</p>
+      </div>
+      <div class="process-connector"></div>
+      <div class="process-step">
+        <div class="process-step-number"><span class="num-label">02</span></div>
+        <div class="process-step-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         </div>
+        <h4 class="process-step-title">Devis sous 24h</h4>
+        <p class="process-step-desc">Recevez une proposition détaillée avec les prix, conditions logistiques et planning d'expédition.</p>
       </div>
-      <div>
-        <div class="logistics-block reveal reveal-delay-2">
-          <h3>Documents export disponibles</h3>
-          <ul class="doc-list">
-            <li>Facture commerciale</li>
-            <li>Packing list</li>
-            <li>Certificat phytosanitaire</li>
-            <li>Certificat d'origine</li>
-            <li>Documents de transport</li>
-            <li>Certificats qualité selon disponibilité</li>
-          </ul>
+      <div class="process-connector"></div>
+      <div class="process-step">
+        <div class="process-step-number"><span class="num-label">03</span></div>
+        <div class="process-step-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
         </div>
+        <h4 class="process-step-title">Validation & préparation</h4>
+        <p class="process-step-desc">Confirmation de la commande, paiement selon les termes convenus, sélection et conditionnement des produits.</p>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     WHY WORK WITH US
-     ============================================================ -->
-<section class="section-dark section-card" id="pourquoi-nous" data-od-id="why-us">
-  <div class="container">
-    <div style="text-align:center">
-      <span class="eyebrow reveal">Pourquoi nous choisir</span>
-      <h2 class="display-sub reveal reveal-delay-1">Travailler avec SOSAF-CI</h2>
-    </div>
-    <div class="why-grid">
-      <div class="why-card reveal">
-        <span class="icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 12 6a7 7 0 0 1 1 13.9"/><path d="M12 13v7"/><path d="M9 20h6"/><circle cx="18" cy="8" r="3"/></svg></span>
-        <h4>Produits frais et sélectionnés</h4>
-        <p>Chaque fruit est rigoureusement sélectionné pour garantir une qualité optimale à l'arrivée.</p>
-      </div>
-      <div class="why-card reveal reveal-delay-1">
-        <span class="icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
-        <h4>Réseau fiable</h4>
-        <p>Producteurs et coopératives partenaires soigneusement choisis pour leur sérieux et leur savoir-faire.</p>
-      </div>
-      <div class="why-card reveal reveal-delay-2">
-        <span class="icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span>
-        <h4>Fourniture régulière</h4>
-        <p>Engagement sur la continuité d'approvisionnement, même pour des volumes importants.</p>
-      </div>
-      <div class="why-card reveal reveal-delay-1">
-        <span class="icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 12 6a7 7 0 0 1 1 13.9"/><path d="M12 13v7"/><path d="M9 20h6"/></svg></span>
-        <h4>Certification GlobalG.A.P.</h4>
-        <p>Produits certifiés disponibles (mangue, noix de coco) — gage de qualité et de conformité.</p>
-      </div>
-      <div class="why-card reveal reveal-delay-2">
-        <span class="icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
-        <h4>Suivi professionnel</h4>
-        <p>Accompagnement personnalisé, suivi des commandes et transparence totale sur les documents.</p>
-      </div>
-      <div class="why-card reveal reveal-delay-3">
-        <span class="icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
-        <h4>Partenariat long terme</h4>
-        <p>Nous construisons des relations durables avec nos clients pour une croissance mutuelle.</p>
+      <div class="process-connector"></div>
+      <div class="process-step">
+        <div class="process-step-number"><span class="num-label">04</span></div>
+        <div class="process-step-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        </div>
+        <h4 class="process-step-title">Expédition</h4>
+        <p class="process-step-desc">Transport maritime ou aérien avec tous les documents export : facture, packing list, certificats phytosanitaire et d'origine.</p>
       </div>
     </div>
   </div>
@@ -2244,7 +2404,25 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
           <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
         <div class="faq-answer">
-          <p>Nous proposons deux modes de transport : <strong>maritime</strong> (pour les volumes importants, délais standards) et <strong>aérien</strong> (pour les commandes urgentes ou les petits volumes). Le choix du mode de transport dépend de votre destination, du volume commandé et de l'urgence. Notre équipe vous conseille la solution la plus adaptée à votre besoin.</p>
+          <p>Nous proposons deux modes de transport : <strong>maritime</strong> (conteneurs réfrigérés pour les volumes importants, délai 10–20 jours selon destination) et <strong>aérien</strong> (pour les commandes urgentes ou les petits volumes, délai 2–5 jours). Le choix du mode de transport dépend de votre destination, du volume commandé et de l'urgence. Nous expédions vers l'Europe, le Moyen-Orient, l'Asie et les Amériques.</p>
+        </div>
+      </div>
+      <div class="faq-item reveal reveal-delay-2">
+        <button class="faq-question" aria-expanded="false">
+          <span>Comment sont conditionnés les produits ?</span>
+          <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer">
+          <p>Chaque produit est conditionné de manière professionnelle, adaptée à sa nature et à la destination : <strong>cartons ventilés</strong> pour les mangues avec filets de protection, <strong>sacs ou caisses</strong> pour les noix de coco, <strong>cartons alvéolés</strong> pour les avocats, <strong>cartons doublés</strong> pour les bananes et ananas. Tout le conditionnement est conçu pour préserver la fraîcheur et respecter les normes d'import de votre pays.</p>
+        </div>
+      </div>
+      <div class="faq-item reveal reveal-delay-3">
+        <button class="faq-question" aria-expanded="false">
+          <span>Quels marchés desservez-vous ?</span>
+          <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer">
+          <p>SOSAF-CI exporte vers tous les marchés internationaux : <strong>Europe</strong> (France, Pays-Bas, Belgique, Allemagne, Espagne…), <strong>Moyen-Orient</strong> (EAU, Arabie Saoudite, Qatar…), <strong>Asie</strong> et <strong>Amériques</strong>. Nous adaptons notre logistique et nos documents aux exigences spécifiques de chaque marché de destination.</p>
         </div>
       </div>
       <div class="faq-item reveal reveal-delay-2">
@@ -2283,6 +2461,14 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
           notre équipe est à votre disposition.
         </p>
 
+        <div class="reveal reveal-delay-2" style="margin-top:var(--space-8)">
+          <a href="https://wa.me/2250710006500?text=Bonjour%20SOSAF-CI%2C%20je%20souhaite%20des%20informations%20sur%20vos%20produits." class="whatsapp-btn" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Écrire sur WhatsApp
+          </a>
+          <p style="font-size:var(--text-sm);color:var(--muted);margin-top:var(--space-2)">Réponse immédiate sur WhatsApp</p>
+        </div>
+
         <div class="contact-block reveal reveal-delay-2" style="margin-top:var(--space-8)">
           <h4>Directeur</h4>
           <p><strong>Mohamed Sanogo</strong></p>
@@ -2304,6 +2490,13 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
           <p>Lot N446B, Îlot N20</p>
           <p>23 BP 1099 Abidjan 23, Côte d'Ivoire</p>
         </div>
+
+        <!-- WhatsApp CTA prominent -->
+        <a href="https://wa.me/2250710006500" target="_blank" rel="noopener noreferrer" class="whatsapp-cta reveal reveal-delay-3">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          <span>Discuter sur WhatsApp</span>
+        </a>
+        <p class="whatsapp-cta-sub reveal reveal-delay-3">Réponse immédiate sur WhatsApp</p>
       </div>
 
       <div class="contact-card reveal reveal-delay-2">
@@ -2334,10 +2527,22 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
      ============================================================ -->
 <footer>
   <div class="container">
-    <div class="footer-logo">
-      <img src="logo.svg" alt="SOSAF-CI" class="footer-logo-img">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <img src="logo.svg" alt="SOSAF-CI" class="footer-logo-img">
+      </div>
+      <nav class="footer-nav" aria-label="Navigation pied de page">
+        <a href="#accueil">Accueil</a>
+        <a href="#presentation">Présentation</a>
+        <a href="#produits">Produits</a>
+        <a href="#certifications">Certifications</a>
+        <a href="#process">Process</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+        <a href="#" class="footer-legal">Mentions légales</a>
+      </nav>
+      <p class="footer-copy">© 2026 SOSAF-CI — Tous droits réservés. Fourniture continue de fruits tropicaux de qualité depuis la Côte d'Ivoire.</p>
     </div>
-    <p>© 2025 SOSAF-CI — Tous droits réservés. Fourniture continue de fruits tropicaux de qualité depuis la Côte d'Ivoire.</p>
   </div>
 </footer>
 
@@ -2879,5 +3084,11 @@ document.addEventListener('touchend', (e) => {
     </div>
   </div>
 </div>
+<!-- ─── WhatsApp Floating Button ───────────── -->
+<a href="https://wa.me/2250710006500" target="_blank" rel="noopener noreferrer" class="whatsapp-float" aria-label="Contactez-nous sur WhatsApp" title="Discuter sur WhatsApp">
+  <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  <span class="whatsapp-float-pulse"></span>
+</a>
+
 </body>
 </html>
