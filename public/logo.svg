@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="320" height="80">
+  <!-- Simple leaf mark — bright MongoDB green -->
+  <path d="M12 60 C12 30 30 12 55 12 C40 28 32 45 35 60 Z" fill="#00ed64"/>
+  <path d="M12 60 C12 30 30 12 55 12" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- SOSAF text — white for dark backgrounds -->
+  <text x="72" y="52" font-family="'Georgia', 'Times New Roman', serif" font-size="38"
+        font-weight="700" fill="#ffffff" letter-spacing="2">SOSAF</text>
+
+  <!-- Separator dot — bright orange -->
+  <circle cx="232" cy="44" r="4" fill="#FF8C00"/>
+
+  <!-- CI text — MongoDB green -->
+  <text x="244" y="52" font-family="'Georgia', 'Times New Roman', serif" font-size="38"
+        font-weight="700" fill="#00ed64" letter-spacing="1">CI</text>
+</svg>

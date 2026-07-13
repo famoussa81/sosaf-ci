@@ -1,0 +1,16 @@
+{
+  "name": "sosaf-ci",
+  "version": "1.0.0",
+  "description": "SOSAF-CI — Site vitrine export fruits tropicaux",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "resend": "4.1.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

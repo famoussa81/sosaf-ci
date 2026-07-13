@@ -1,0 +1,2847 @@
+<!doctype html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SOSAF-CI — Catalogue Produits Export | Côte d'Ivoire</title>
+<meta name="description" content="SOSAF-CI — Fourniture continue de fruits tropicaux de qualité depuis la Côte d'Ivoire. Mangue, avocat, banane, ananas, noix de coco.">
+<meta name="theme-color" content="#001e2b">
+<meta name="author" content="SOSAF-CI">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://sosafsarl.com">
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="icon" type="image/png" href="logo.png">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="SOSAF-CI — Fruits Tropicaux Export | Côte d'Ivoire">
+<meta property="og:description" content="Fourniture continue de fruits tropicaux de qualité : mangue, avocat, banane, ananas, noix de coco. Export depuis Abidjan, Côte d'Ivoire.">
+<meta property="og:image" content="https://sosafsarl.com/logo.png">
+<meta property="og:url" content="https://sosafsarl.com">
+<meta property="og:locale" content="fr_CI">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SOSAF-CI — Fruits Tropicaux Export">
+<meta name="twitter:description" content="Fourniture continue de fruits tropicaux de qualité depuis la Côte d'Ivoire.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS — MongoDB-inspired (adapted for fruit export catalog)
+   ============================================================ */
+:root {
+  --bg: #001e2b;
+  --surface: #1c2d38;
+  --fg: #ffffff;
+  --fg-2: #e8edeb;
+  --muted: #b8c4c2;
+  --meta: #5c6c75;
+  --border: #3d4f58;
+  --accent: #00ed64;
+  --accent-on: #001e2b;
+  --accent-hover: #00684a;
+  --success: #16a34a;
+  --warn: #eab308;
+  --danger: #dc2626;
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', Times, ui-serif, serif;
+  --font-body: 'Inter', -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'Source Code Pro', ui-monospace, 'SF Mono', Menlo, Monaco, Consolas, monospace;
+  --text-xs: 11px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 20px;
+  --text-xl: 24px;
+  --text-2xl: 36px;
+  --text-3xl: 52px;
+  --text-4xl: 72px;
+  --leading-body: 1.6;
+  --leading-tight: 1.15;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-pill: 9999px;
+  --elev-raised: 0 26px 44px rgba(0,30,43,0.12), 0 7px 13px rgba(0,0,0,0.13);
+  --focus-ring: 0 0 0 3px color-mix(in oklab, var(--accent), transparent 70%);
+  --motion-fast: 150ms;
+  --motion-base: 300ms;
+  --motion-slow: 600ms;
+  --ease-standard: cubic-bezier(0.2,0,0,1);
+  --ease-out: cubic-bezier(0.16,1,0.3,1);
+  --container-max: 1200px;
+  --container-gutter: 24px;
+  --nav-height: 72px;
+}
+
+/* ─── Reset & Base ────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:var(--nav-height)}
+body{
+  font-family:var(--font-body);
+  font-size:var(--text-base);
+  line-height:var(--leading-body);
+  color:var(--fg);
+  background:var(--bg);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+
+/* ─── Typography ──────────────────────────────────── */
+h1,h2,h3,h4{font-weight:400;line-height:var(--leading-tight)}
+.display-hero{
+  font-family:var(--font-display);
+  font-size:var(--text-4xl);
+  line-height:1.08;
+  letter-spacing:-0.02em;
+}
+@media(max-width:768px){.display-hero{font-size:clamp(2.5rem,10vw,3.5rem)}}
+.display-sub{
+  font-family:var(--font-display);
+  font-size:var(--text-3xl);
+  line-height:1.1;
+}
+@media(max-width:768px){.display-sub{font-size:clamp(1.75rem,7vw,2.5rem)}}
+.section-title{
+  font-family:var(--font-display);
+  font-size:var(--text-2xl);
+  margin-bottom:var(--space-3);
+}
+@media(max-width:768px){.section-title{font-size:clamp(1.5rem,5vw,2rem)}}
+.eyebrow{
+  font-family:var(--font-mono);
+  font-size:var(--text-sm);
+  text-transform:uppercase;
+  letter-spacing:2px;
+  font-weight:500;
+  color:var(--accent);
+  margin-bottom:var(--space-2);
+}
+.lead{
+  font-size:var(--text-lg);
+  line-height:1.7;
+  color:#1a1a1a;
+  max-width:680px;
+}
+.body-sm{
+  font-size:var(--text-sm);
+  color:var(--muted);
+}
+@media(max-width:768px){
+  .lead{font-size:var(--text-base)}
+}
+
+/* ─── Container ───────────────────────────────────── */
+.container{
+  width:100%;
+  max-width:var(--container-max);
+  margin:0 auto;
+  padding:0 var(--container-gutter);
+}
+nav{
+  position:fixed;
+  top:0;left:0;right:0;
+  z-index:100;
+  height:var(--nav-height,72px);
+  background:rgba(0,30,43,0.55);
+  backdrop-filter:blur(32px) saturate(1.4);
+  -webkit-backdrop-filter:blur(32px) saturate(1.4);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  box-shadow:0 1px 0 rgba(0,237,100,0.04);
+  transition:background var(--motion-base), height var(--motion-base) var(--ease-standard);
+  will-change:backdrop-filter;
+}
+nav::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg,rgba(0,237,100,0.02) 0%,transparent 100%);
+  pointer-events:none;
+}
+nav .container{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:100%;
+}
+.nav-brand{
+  display:flex;
+  align-items:center;
+}
+.nav-logo{
+  height:42px;
+  width:auto;
+  display:block;
+  filter:drop-shadow(0 0 12px rgba(0,237,100,0.15));
+  transition:filter var(--motion-base) var(--ease-standard);
+}
+.nav-logo:hover{filter:drop-shadow(0 0 20px rgba(0,237,100,0.3))}
+@media(max-width:480px){.nav-logo{height:34px}}
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap:var(--space-6);
+}
+.nav-links a{
+  font-size:14px;
+  font-weight:500;
+  color:var(--muted);
+  transition:color var(--motion-fast);
+  position:relative;
+  white-space:nowrap;
+}
+.nav-links a::after{
+  content:'';
+  position:absolute;
+  bottom:-4px;left:0;
+  width:0;height:2px;
+  background:var(--accent);
+  transition:width var(--motion-base) var(--ease-standard);
+}
+.nav-links a:hover{color:var(--fg)}
+.nav-links a:hover::after{width:100%}
+.nav-toggle{
+  display:none;
+  flex-direction:column;
+  gap:5px;
+  background:none;border:none;cursor:pointer;
+  padding:var(--space-2);
+  z-index:101;
+}
+.nav-toggle span{
+  display:block;
+  width:24px;height:2px;
+  background:var(--fg);
+  border-radius:2px;
+  transition:transform var(--motion-base) var(--ease-standard),opacity var(--motion-fast) var(--ease-standard);
+}
+/* Active nav link */
+.nav-links a.active{color:var(--fg)}
+.nav-links a.active::after{width:100%}
+/* Hamburger → X animation */
+.nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle.open span:nth-child(2){opacity:0}
+.nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+/* nav mobile — see unified responsive block below */
+@media(max-width:920px){
+  .nav-toggle{display:flex}
+}
+.nav-cta{
+  display:inline-flex;
+  align-items:center;
+  gap:var(--space-2);
+  background:var(--accent);
+  color:var(--accent-on) !important;
+  padding:10px 24px;
+  border-radius:var(--radius-pill);
+  font-weight:600 !important;
+  font-size:14px !important;
+  transition:transform var(--motion-fast) var(--ease-out);
+}
+.nav-cta:hover{transform:scale(1.05)}
+.nav-cta:active{transform:scale(0.95)}
+.nav-cta::after{display:none !important}
+
+/* ─── Section shared ──────────────────────────────── */
+section{
+  padding:var(--space-20) 0;
+}
+.section-dark{background:var(--bg);color:var(--fg)}
+.section-light{background:#ffffff;color:#000000}
+.section-light .lead{color:#1a1a1a}
+.section-light h1,
+.section-light h2,
+.section-light h3,
+.section-light h4{color:#1a1a1a}
+.section-light .eyebrow{color:var(--accent-hover)}
+.section-light .muted-text{color:#333}
+/* ─── Rounded card sections ── */
+.section-card{
+  margin:var(--space-8) var(--space-6);
+  border-radius:32px;
+  position:relative;
+}
+.section-card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:3px;
+  border-radius:32px 32px 0 0;
+  background:linear-gradient(90deg,var(--accent-hover),var(--accent),var(--accent-hover));
+  opacity:0.5;
+  pointer-events:none;
+}
+.section-card.section-light{
+  box-shadow:0 2px 24px rgba(0,30,43,0.06), 0 1px 4px rgba(0,0,0,0.04);
+}
+.section-card.section-dark{
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.04), 0 8px 32px rgba(0,0,0,0.2);
+}
+/* section-card responsive — see unified responsive block */
+
+/* ─── Hero ────────────────────────────────────────── */
+.hero{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  position:relative;
+  overflow:hidden;
+  padding-top:var(--nav-height);
+}
+.hero::before{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(135deg, #001e2b 0%, #0a3a3a 50%, #001e2b 100%);
+  background-size:200% 200%;
+  animation:heroGradient 12s ease-in-out infinite alternate;
+  z-index:0;
+}
+@keyframes heroGradient{
+  0%{background-position:0% 0%}
+  50%{background-position:100% 100%}
+  100%{background-position:0% 0%}
+}
+.hero-pattern{
+  position:absolute;inset:0;z-index:1;
+  opacity:0.06;
+  background-image:radial-gradient(circle at 25% 25%, var(--accent) 1px, transparent 1px),
+                   radial-gradient(circle at 75% 75%, var(--accent) 1px, transparent 1px);
+  background-size:60px 60px;
+}
+.hero .container{
+  position:relative;z-index:2;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:var(--space-12);
+  align-items:center;
+}
+.hero-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:var(--space-2);
+  font-family:var(--font-mono);
+  font-size:var(--text-xs);
+  text-transform:uppercase;
+  letter-spacing:2.5px;
+  font-weight:600;
+  color:var(--accent);
+  border:1px solid rgba(0,237,100,0.25);
+  padding:6px 14px;
+  border-radius:var(--radius-pill);
+  margin-bottom:var(--space-6);
+}
+.hero h1{margin-bottom:var(--space-6)}
+.hero h1 .accent-text{
+  color:var(--accent);
+  font-style:italic;
+}
+.hero p.lead{margin-bottom:var(--space-8)}
+.hero-actions{
+  display:flex;
+  gap:var(--space-4);
+  flex-wrap:wrap;
+}
+.btn-primary{
+  display:inline-flex;
+  align-items:center;
+  gap:var(--space-2);
+  background:var(--accent);
+  color:var(--accent-on);
+  padding:14px 32px;
+  border-radius:var(--radius-pill);
+  font-weight:600;
+  font-size:15px;
+  border:none;
+  cursor:pointer;
+  transition:transform var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast);
+}
+.btn-primary:hover{transform:scale(1.04);box-shadow:0 8px 24px rgba(0,237,100,0.25)}
+.btn-secondary{
+  display:inline-flex;
+  align-items:center;
+  gap:var(--space-2);
+  background:transparent;
+  color:var(--fg);
+  padding:14px 32px;
+  border-radius:var(--radius-pill);
+  font-weight:500;
+  font-size:15px;
+  border:1px solid var(--border);
+  cursor:pointer;
+  transition:all var(--motion-fast) var(--ease-standard);
+}
+.btn-secondary:hover{background:var(--surface);border-color:var(--muted)}
+.hero-image{
+  position:relative;
+  border-radius:24px;
+  overflow:hidden;
+  aspect-ratio:4/3;
+  box-shadow:var(--elev-raised);
+}
+.hero-image img{
+  width:100%;height:100%;
+  object-fit:cover;
+  transition:transform var(--motion-slow) var(--ease-out);
+}
+.hero-image:hover img{transform:scale(1.04)}
+.hero-image::after{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(to top, rgba(0,30,43,0.6) 0%, transparent 50%);
+}
+.hero-image-caption{
+  position:absolute;
+  bottom:var(--space-6);left:var(--space-6);
+  z-index:2;
+  font-size:var(--text-sm);
+  color:var(--fg-2);
+  font-weight:500;
+}
+
+/* ─── Parallax subtil sur les images ──────────────── */
+.parallax-wrap{
+  overflow:hidden;
+  position:relative;
+}
+.parallax-img{
+  will-change:transform;
+  transition:transform 0.15s ease-out;
+}
+
+/* ─── Hero Staggered Entrance ─────────────────────── */
+@keyframes heroFadeInUp {
+  0%{opacity:0;transform:translateY(50px)}
+  100%{opacity:1;transform:translateY(0)}
+}
+.hero-e{opacity:0}
+.hero-e-1{animation:heroFadeInUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.1s forwards}
+.hero-e-2{animation:heroFadeInUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.25s forwards}
+.hero-e-3{animation:heroFadeInUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.4s forwards}
+.hero-e-4{animation:heroFadeInUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.55s forwards}
+.hero-e-5{animation:heroFadeInUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.75s forwards}
+
+/* hero mobile — see unified responsive block */
+
+/* ─── Company Presentation ────────────────────────── */
+.pres-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:var(--space-12);
+  align-items:center;
+}
+.pres-content h2{margin-bottom:var(--space-4)}
+.pres-stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:var(--space-6);
+  margin-top:var(--space-8);
+}
+.pres-stat{
+  text-align:center;
+  padding:var(--space-5);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  background:var(--surface);
+}
+.pres-stat .stat-icon{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:var(--space-2);
+}
+.pres-stat .stat-icon svg{
+  width:36px;
+  height:36px;
+  color:var(--accent);
+}
+.pres-stat .num{
+  font-family:var(--font-mono);
+  font-size:var(--text-2xl);
+  font-weight:600;
+  color:var(--accent);
+  display:block;
+}
+.pres-stat .label{
+  font-size:var(--text-sm);
+  color:var(--muted);
+  margin-top:var(--space-1);
+}
+.pres-image{
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  aspect-ratio:4/3;
+  box-shadow:var(--elev-raised);
+}
+.pres-image img{width:100%;height:100%;object-fit:cover}
+/* pres responsive — see unified responsive block */
+
+/* ─── Product Cards ───────────────────────────────── */
+.products-intro{
+  text-align:center;
+  margin-bottom:var(--space-12);
+}
+.products-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+  gap:var(--space-6);
+}
+.product-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  transition:transform var(--motion-base) var(--ease-out), box-shadow var(--motion-base);
+}
+.product-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 20px 40px rgba(0,30,43,0.2);
+}
+.product-card-image{
+  aspect-ratio:16/10;
+  overflow:hidden;
+  position:relative;
+}
+.product-card-image img{
+  width:100%;height:100%;
+  object-fit:cover;
+  transition:transform var(--motion-slow) var(--ease-out);
+}
+.product-card:hover .product-card-image img{transform:scale(1.06)}
+.product-card-body{padding:var(--space-6)}
+.product-card-body h3{
+  font-family:var(--font-display);
+  font-size:var(--text-xl);
+  margin-bottom:var(--space-2);
+}
+.product-meta{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:var(--space-3);
+  margin-top:var(--space-4);
+}
+.product-meta-item{
+  font-size:var(--text-sm);
+}
+.product-meta-item strong{
+  font-family:var(--font-mono);
+  font-size:var(--text-xs);
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  color:var(--accent);
+  font-weight:600;
+  display:block;
+  margin-bottom:2px;
+}
+.product-meta-item span{color:var(--fg-2)}
+.cert-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  font-weight:600;
+  background:rgba(0,237,100,0.1);
+  color:var(--accent);
+  padding:4px 10px;
+  border-radius:var(--radius-sm);
+  margin-top:var(--space-3);
+}
+/* products responsive — see unified responsive block */
+
+/* ─── Certifications ──────────────────────────────── */
+.cert-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:var(--space-12);
+  align-items:center;
+}
+.cert-content h2{margin-bottom:var(--space-4)}
+.cert-list{
+  display:flex;
+  flex-direction:column;
+  gap:var(--space-4);
+  margin-top:var(--space-6);
+}
+.cert-list li{
+  display:flex;
+  align-items:flex-start;
+  gap:var(--space-3);
+  font-size:var(--text-base);
+  color:#1a1a1a;
+}
+.cert-list li::before{
+  content:'✓';
+  color:var(--accent);
+  font-weight:700;
+  font-size:18px;
+  flex-shrink:0;
+  margin-top:1px;
+}
+.cert-visual{
+  position:relative;
+}
+.cert-badge-large{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:var(--space-8);
+  text-align:center;
+  color:var(--fg);
+}
+.cert-badge-large .cert-icon{
+  width:80px;height:80px;
+  margin:0 auto var(--space-4);
+  border-radius:50%;
+  background:rgba(0,237,100,0.08);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:36px;
+}
+.cert-badge-large h3{
+  font-family:var(--font-display);
+  font-size:var(--text-xl);
+  margin-bottom:var(--space-2);
+  color:var(--fg);
+}
+.cert-badge-large p{font-size:var(--text-sm);color:var(--muted)}
+/* cert responsive — see unified responsive block */
+
+/* ─── Supply Capacity ─────────────────────────────── */
+.capacity-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:var(--space-6);
+  margin-top:var(--space-8);
+}
+.capacity-card{
+  text-align:center;
+  padding:var(--space-8) var(--space-6);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  background:var(--surface);
+  transition:transform var(--motion-base) var(--ease-out);
+}
+.capacity-card:hover{transform:translateY(-4px)}
+.capacity-card .icon{
+  display:block;
+  margin-bottom:var(--space-4);
+}
+.capacity-card .icon svg{
+  display:block;
+  margin:0 auto;
+  color:var(--accent);
+}
+.capacity-card h4{
+  font-family:var(--font-display);
+  font-size:var(--text-lg);
+  margin-bottom:var(--space-2);
+}
+.capacity-card p{font-size:var(--text-sm);color:var(--muted)}
+
+/* ─── Logistics ───────────────────────────────────── */
+.logistics-wrapper{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:var(--space-12);
+  align-items:start;
+}
+.logistics-block{margin-bottom:var(--space-6)}
+.logistics-block h3{
+  font-family:var(--font-display);
+  font-size:var(--text-xl);
+  margin-bottom:var(--space-3);
+}
+.logistics-block ul li{
+  display:flex;
+  align-items:center;
+  gap:var(--space-2);
+  padding:var(--space-2) 0;
+  font-size:var(--text-base);
+  color:#1a1a1a;
+}
+.logistics-block ul li::before{
+  content:'▸';
+  color:var(--accent);
+  font-weight:700;
+}
+.doc-list{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:var(--space-3);
+}
+.doc-list li{
+  font-size:var(--text-sm);
+  padding:var(--space-3);
+  border:1px solid var(--border);
+  border-radius:var(--radius-md);
+  color:#1a1a1a;
+}
+/* logistics responsive — see unified responsive block */
+
+/* ─── Why Us ──────────────────────────────────────── */
+.why-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:var(--space-6);
+  margin-top:var(--space-8);
+}
+.why-card{
+  padding:var(--space-6);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  background:var(--surface);
+  transition:all var(--motion-base) var(--ease-out);
+}
+.why-card:hover{
+  border-color:var(--accent);
+  transform:translateY(-4px);
+  box-shadow:0 0 0 1px var(--accent);
+}
+.why-card .icon{margin-bottom:var(--space-3);display:block}
+.why-card .icon svg{display:block;color:var(--accent)}
+.why-card h4{
+  font-family:var(--font-mono);
+  font-size:var(--text-sm);
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  font-weight:600;
+  color:var(--accent);
+  margin-bottom:var(--space-5);
+}
+.why-card p{font-size:var(--text-sm);color:var(--muted)}
+
+/* ─── Button states (focus, active) ──────────────── */
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.contact-cta:focus-visible,
+.nav-toggle:focus-visible,
+.faq-question:focus-visible,
+.nav-cta:focus-visible,
+.gallery-overlay-btn:focus-visible,
+.lightbox-nav:focus-visible,
+.lightbox-close:focus-visible {
+  outline: 2px solid var(--accent) !important;
+  outline-offset: 3px;
+}
+.btn-primary:active,
+.btn-secondary:active,
+.contact-cta:active,
+.nav-cta:active {
+  transform: scale(0.97);
+}
+.btn-primary:active {
+  box-shadow: 0 4px 12px rgba(0,237,100,0.15);
+}
+.btn-secondary:active {
+  background: var(--surface);
+}
+.btn-primary:hover,
+.btn-secondary:hover,
+.contact-cta:hover,
+.nav-cta:hover {
+  will-change: transform;
+}
+.gallery-overlay-btn:active {
+  transform: translateY(0) scale(0.97);
+}
+.lightbox-nav:active {
+  transform: translateY(-50%) scale(0.95);
+}
+.lightbox-close:active {
+  transform: scale(0.92);
+}
+
+/* ─── Contact ────────────────────────────────────── */
+.contact-wrapper{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:var(--space-12);
+  align-items:start;
+}
+.contact-info h2{margin-bottom:var(--space-6)}
+.contact-block{
+  margin-bottom:var(--space-5);
+}
+.contact-block h4{
+  font-family:var(--font-mono);
+  font-size:var(--text-xs);
+  text-transform:uppercase;
+  letter-spacing:2px;
+  font-weight:600;
+  color:var(--accent);
+  margin-bottom:var(--space-1);
+}
+.contact-block p{
+  font-size:var(--text-base);
+  color:#1a1a1a;
+}
+.contact-block a{
+  font-size:var(--text-base);
+  color:var(--accent-hover);
+  text-decoration:underline;
+  text-underline-offset:2px;
+}
+.contact-block a:hover{color:var(--accent)}
+.contact-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:var(--space-8);
+  color:var(--fg);
+}
+.contact-card h3,
+.contact-card label{color:var(--fg)}
+.contact-card input,
+.contact-card textarea{color:var(--fg-2)}
+.contact-card input::placeholder,
+.contact-card textarea::placeholder{color:var(--muted)}
+.contact-card .rccm{
+  font-family:var(--font-mono);
+  font-size:var(--text-sm);
+  color:var(--muted);
+  margin-top:var(--space-4);
+  padding-top:var(--space-4);
+  border-top:1px solid var(--border);
+}
+.contact-cta{
+  display:inline-flex;
+  align-items:center;
+  gap:var(--space-2);
+  background:var(--accent);
+  color:var(--accent-on);
+  padding:16px 36px;
+  border-radius:var(--radius-pill);
+  font-weight:600;
+  font-size:16px;
+  border:none;
+  cursor:pointer;
+  margin-top:var(--space-6);
+  transition:transform var(--motion-fast) var(--ease-out);
+}
+.contact-cta:hover{transform:scale(1.04)}
+/* contact responsive — see unified responsive block */
+
+/* ─── Footer ──────────────────────────────────────── */
+footer{
+  padding:var(--space-8) 0;
+  border-top:1px solid var(--border);
+  text-align:center;
+}
+footer p{font-size:var(--text-sm);color:var(--meta)}
+.footer-logo{
+  margin-bottom:var(--space-3);
+}
+.footer-logo-img{
+  height:48px;
+  width:auto;
+  opacity:0.6;
+  transition:opacity var(--motion-base) var(--ease-standard);
+}
+.footer-logo-img:hover{opacity:0.9}
+
+/* ─── Animations ──────────────────────────────────── */
+/* ─── Scroll Reveal — Cascade premium ────────────── */
+.reveal,.reveal-left,.reveal-right,.reveal-zoom{
+  opacity:0;
+  will-change:opacity,transform;
+}
+.reveal{
+  transform:translateY(50px);
+  transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+/* Cascading delays — chaque élément de la grille apparaît l'un après l'autre */
+.reveal-delay-1{transition-delay:0.08s}
+.reveal-delay-2{transition-delay:0.16s}
+.reveal-delay-3{transition-delay:0.26s}
+.reveal-delay-4{transition-delay:0.36s}
+.reveal-delay-5{transition-delay:0.46s}
+.reveal-delay-6{transition-delay:0.56s}
+
+/* Variante latérale pour les images et photos produits */
+.reveal-left{
+  transform:translateX(-60px);
+  transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal-left.visible{
+  opacity:1;
+  transform:translateX(0);
+}
+.reveal-right{
+  transform:translateX(60px);
+  transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal-right.visible{
+  opacity:1;
+  transform:translateX(0);
+}
+
+/* Zoom subtil pour les images */
+.reveal-zoom{
+  transform:scale(0.85);
+  transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal-zoom.visible{
+  opacity:1;
+  transform:scale(1);
+}
+
+/* ─── Counter Animation ──────────────────────────── */
+.num{
+  display:inline-flex;
+  align-items:baseline;
+  gap:1px;
+}
+.num .num-digit{
+  display:inline-block;
+  transition:transform 0.3s var(--ease-out);
+}
+.num .num-suffix{
+  font-size:0.6em;
+  vertical-align:super;
+  line-height:1;
+}
+
+/* ─── Nav shrink on scroll ────────────────────────── */
+nav.scrolled{
+  --nav-height:56px;
+}
+nav.scrolled .nav-logo{
+  height:32px;
+}
+
+/* ─── Reduced motion — animations plus douces mais PAS désactivées ── */
+/* ─── Lightbox Gallery ──────────────────────────── */
+.lightbox{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  background:rgba(0,30,43,0.94);
+  backdrop-filter:blur(16px) saturate(1.3);
+  display:grid;
+  place-items:center;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.35s ease;
+}
+.lightbox.open{opacity:1;pointer-events:auto}
+.lightbox-close{
+  position:absolute;
+  top:24px;right:24px;
+  width:44px;height:44px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.08);
+  color:var(--fg);
+  font-size:22px;
+  cursor:pointer;
+  display:grid;place-items:center;
+  transition:background 0.2s;
+  z-index:10;
+}
+.lightbox-close:hover{background:rgba(255,255,255,0.14)}
+.lightbox-body{
+  position:relative;
+  max-width:90vw;
+  max-height:88vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.lightbox-img-wrap{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.lightbox-img{
+  max-width:min(85vw,1200px);
+  max-height:72vh;
+  border-radius:var(--radius-lg);
+  box-shadow:0 24px 80px rgba(0,0,0,0.5);
+  object-fit:contain;
+  transition:opacity 0.3s ease;
+}
+.lightbox-nav{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  width:48px;height:48px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,0.08);
+  background:rgba(0,30,43,0.5);
+  backdrop-filter:blur(8px);
+  color:var(--fg);
+  font-size:24px;
+  cursor:pointer;
+  display:grid;place-items:center;
+  transition:background 0.2s,transform 0.2s;
+  z-index:5;
+}
+.lightbox-nav:hover{background:rgba(0,237,100,0.2);transform:translateY(-50%) scale(1.06)}
+.lightbox-prev{left:-60px}
+.lightbox-next{right:-60px}
+.lightbox-footer{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  width:100%;
+  margin-top:var(--space-4);
+  padding:0 4px;
+}
+.lightbox-counter{
+  font-family:var(--font-mono);
+  font-size:13px;
+  letter-spacing:1.5px;
+  color:var(--accent);
+  font-weight:500;
+}
+.lightbox-title{
+  font-family:var(--font-body);
+  font-size:var(--text-sm);
+  color:var(--fg-2);
+  font-weight:400;
+}
+/* ─── Gallery "Voir plus" overlay ──────────────── */
+.gallery-overlay{
+  position:absolute;inset:0;
+  display:grid;place-items:center;
+  background:rgba(0,30,43,0);
+  transition:background 0.35s var(--ease-standard);
+  z-index:2;
+}
+.gallery-overlay-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 18px;
+  border-radius:var(--radius-pill);
+  background:rgba(0,30,43,0.7);
+  backdrop-filter:blur(12px) saturate(1.3);
+  border:1px solid rgba(255,255,255,0.1);
+  color:var(--fg);
+  font-family:var(--font-body);
+  font-size:13px;
+  font-weight:500;
+  letter-spacing:0.5px;
+  text-transform:uppercase;
+  cursor:pointer;
+  opacity:0;
+  transform:translateY(10px);
+  transition:opacity 0.35s var(--ease-standard),transform 0.35s var(--ease-standard),background 0.2s,border-color 0.2s;
+  pointer-events:none;
+}
+.gallery-overlay-btn svg{width:16px;height:16px;color:var(--accent);flex-shrink:0}
+.gallery-overlay-btn .photo-count{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:20px;height:20px;
+  padding:0 6px;
+  border-radius:var(--radius-pill);
+  background:var(--accent);
+  color:var(--accent-on);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0;
+  text-transform:none;
+}
+.gallery-overlay-btn:hover{background:rgba(0,237,100,0.2);border-color:rgba(0,237,100,0.3);color:var(--accent)}
+.product-card-image{cursor:pointer;overflow:hidden}
+.product-card-image:hover .gallery-overlay{background:rgba(0,30,43,0.45)}
+.product-card-image:hover .gallery-overlay-btn{opacity:1;transform:translateY(0);pointer-events:auto}
+/* gallery/lightbox mobile — see unified responsive block */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-pattern,.hero-gradient{animation:none !important}
+  .hero-e{animation-duration:0.01ms !important;animation-fill-mode:forwards !important}
+  .reveal,.reveal-left,.reveal-right,.reveal-zoom{transition-duration:0.3s !important}
+}
+
+/* ─── Progress bar ─────────────────────────────────── */
+#progress-bar{
+  position:fixed;
+  top:0;left:0;
+  height:3px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-hover));
+  width:0%;
+  z-index:999;
+  transition:width 100ms linear;
+  box-shadow:0 0 12px rgba(0,237,100,0.3);
+}
+
+/* ─── Toast notification ──────────────────────────── */
+.toast{
+  position:fixed;
+  bottom:32px;right:32px;
+  z-index:9999;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:var(--space-5) var(--space-6);
+  box-shadow:var(--elev-raised), 0 0 0 1px rgba(0,237,100,0.08);
+  display:flex;
+  align-items:center;
+  gap:var(--space-3);
+  max-width:420px;
+  transform:translateY(calc(100% + 60px));
+  opacity:0;
+  transition:transform var(--motion-base) var(--ease-out), opacity var(--motion-base) var(--ease-out);
+  pointer-events:none;
+}
+.toast.show{
+  transform:translateY(0);
+  opacity:1;
+  pointer-events:auto;
+}
+.toast-icon{
+  flex-shrink:0;
+  width:28px;height:28px;
+  border-radius:50%;
+  background:rgba(0,237,100,0.12);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--accent);
+}
+.toast-content{
+  flex:1;
+}
+.toast-content p{
+  font-size:var(--text-sm);
+  font-weight:600;
+  margin-bottom:2px;
+  color:var(--fg);
+}
+.toast-content span{
+  font-size:var(--text-xs);
+  color:var(--muted);
+}
+.toast-close{
+  background:none;border:none;
+  color:var(--meta);
+  cursor:pointer;
+  padding:4px;
+  font-size:16px;
+  line-height:1;
+  transition:color var(--motion-fast);
+}
+.toast-close:hover{color:var(--fg)}
+
+/* ─── Scrollbar ───────────────────────────────────── */
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--meta)}
+
+/* ─── Section anchor offset ───────────────────────── */
+section[id] .container{scroll-margin-top:var(--nav-height)}
+
+/* ─── FAQ Accordion ────────────────────────────────── */
+.faq-grid{
+  display:flex;
+  flex-direction:column;
+  gap:0;
+  max-width:800px;
+  margin:0 auto;
+}
+.faq-item{
+  border-bottom:1px solid var(--border);
+  transition:border-color var(--motion-base) var(--ease-standard);
+}
+.faq-item:first-child{border-top:1px solid var(--border)}
+.faq-item:hover{border-color:var(--accent)}
+.faq-question{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  width:100%;
+  padding:var(--space-5) 0;
+  background:none;
+  border:none;
+  color:var(--fg);
+  font-family:var(--font-body);
+  font-size:var(--text-lg);
+  font-weight:500;
+  letter-spacing:-0.01em;
+  text-align:left;
+  cursor:pointer;
+  transition:color var(--motion-base) var(--ease-standard);
+}
+.faq-question:hover{color:var(--accent)}
+.faq-question:active{color:var(--accent);transform:translateY(1px)}
+.faq-question:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:4px;
+  border-radius:var(--radius-sm);
+}
+.faq-icon{
+  flex-shrink:0;
+  color:var(--accent);
+  transition:transform var(--motion-base) var(--ease-standard);
+}
+.faq-question[aria-expanded="true"] .faq-icon{
+  transform:rotate(180deg);
+}
+.faq-answer{
+  display:grid;
+  grid-template-rows:0fr;
+  transition:grid-template-rows var(--motion-slow) var(--ease-standard);
+}
+.faq-answer > *{
+  overflow:hidden;
+}
+.faq-question[aria-expanded="true"] + .faq-answer{
+  grid-template-rows:1fr;
+}
+.faq-answer p{
+  margin:0 0 var(--space-4);
+  color:var(--fg-2);
+  font-family:var(--font-body);
+  font-size:var(--text-base);
+  line-height:var(--leading-body);
+  font-weight:300;
+}
+.faq-answer strong{
+  color:var(--accent);
+  font-weight:500;
+}
+/* faq responsive — see unified responsive block */
+
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE-FIRST RESPONSIVE — 90% des utilisateurs sur mobile
+   Breakpoints: 360px → 390px → 414px → 640px → 768px → 920px
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Performance mobile globale ───────────────────── */
+@media(max-width:920px){
+  *{-webkit-tap-highlight-color:transparent}
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  body{overscroll-behavior-y:contain}
+  button,a{touch-action:manipulation}
+  .reveal,.reveal-left,.reveal-right,.reveal-zoom{
+    transform:translateY(20px);
+    transition-duration:0.5s;
+  }
+}
+
+/* ─── Tablet ≤768px ────────────────────────────────── */
+@media(max-width:768px){
+  :root{
+    --container-gutter:16px;
+    --nav-height:64px;
+    --space-20:48px;
+  }
+  section{padding:48px 0}
+  .container{padding:0 16px}
+  nav{height:64px}
+  .nav-logo{height:36px}
+
+  /* Hero tablet */
+  .hero{min-height:auto;padding:calc(var(--nav-height) + 32px) 0 32px}
+  .hero .container{grid-template-columns:1fr;text-align:center;gap:var(--space-8)}
+  .hero-badge{margin-left:auto;margin-right:auto}
+  .hero-actions{justify-content:center}
+  .hero-image{max-width:480px;margin:0 auto;order:1}
+
+  /* Grilles 1 col sur tablet */
+  .pres-grid{grid-template-columns:1fr;gap:var(--space-8)}
+  .cert-grid{grid-template-columns:1fr;gap:var(--space-8)}
+  .logistics-wrapper{grid-template-columns:1fr;gap:var(--space-6)}
+  .contact-wrapper{grid-template-columns:1fr;gap:var(--space-8)}
+  .doc-list{grid-template-columns:1fr}
+
+  /* Section cards */
+  .section-card{border-radius:24px;margin:var(--space-4) var(--space-2)}
+
+  /* Lightbox tablet */
+  .lightbox-prev{left:12px}
+  .lightbox-next{right:12px}
+  .lightbox-nav{width:44px;height:44px;font-size:20px}
+  .lightbox-img{max-width:92vw;max-height:70vh;border-radius:var(--radius-md)}
+}
+
+/* ─── Mobile standard ≤640px ───────────────────────── */
+@media(max-width:640px){
+  :root{
+    --nav-height:60px;
+    --container-gutter:14px;
+  }
+  section{padding:40px 0}
+  .container{padding:0 14px}
+  nav{height:60px}
+
+  /* Hero mobile */
+  .hero{
+    min-height:auto;
+    padding:calc(var(--nav-height) + 24px) 0 24px;
+  }
+  .hero .container{gap:var(--space-5);text-align:left}
+  .hero-badge{
+    font-size:10px;
+    padding:5px 12px;
+    margin-left:0;margin-right:auto;
+  }
+  .hero h1{font-size:clamp(1.8rem,8vw,2.8rem)}
+  .hero-actions{
+    flex-direction:column;
+    align-items:stretch;
+    gap:var(--space-3);
+  }
+  .hero-actions .btn-primary,
+  .hero-actions .btn-secondary{
+    justify-content:center;
+    width:100%;
+    text-align:center;
+    padding:16px 24px;
+    font-size:16px;
+    min-height:52px;
+  }
+  .hero-image{
+    max-width:100%;
+    border-radius:16px;
+    aspect-ratio:16/10;
+    margin:0;
+  }
+  .hero-image img{border-radius:16px}
+  .hero-image-caption{font-size:11px;padding:8px 12px}
+
+  /* Section cards mobile */
+  .section-card{
+    border-radius:20px;
+    margin:var(--space-3) var(--space-2);
+  }
+  .section-card::before{border-radius:20px 20px 0 0}
+
+  /* Présentation */
+  .pres-grid{gap:var(--space-5)}
+  .pres-stats{
+    grid-template-columns:repeat(3,1fr);
+    gap:var(--space-2);
+  }
+  .pres-stat{
+    padding:var(--space-3);
+    border-radius:var(--radius-md);
+  }
+  .pres-stat .num{font-size:var(--text-xl)}
+  .pres-stat .label{font-size:10px}
+  .pres-stat .stat-icon svg{width:24px;height:24px}
+  .pres-image{aspect-ratio:16/9;border-radius:var(--radius-md)}
+
+  /* Produits */
+  .products-grid{
+    grid-template-columns:1fr;
+    gap:var(--space-4);
+  }
+  .products-intro{margin-bottom:var(--space-6)}
+  .product-card{border-radius:var(--radius-md)}
+  .product-card-image{aspect-ratio:16/9}
+  .product-card-body{padding:var(--space-4)}
+  .product-card-body h3{font-size:var(--text-lg)}
+  .product-meta{
+    grid-template-columns:1fr 1fr;
+    gap:var(--space-2);
+  }
+  /* Gallery overlay toujours visible sur mobile */
+  .gallery-overlay{
+    background:linear-gradient(to top,rgba(0,30,43,0.75) 0%,rgba(0,30,43,0) 50%);
+  }
+  .gallery-overlay-btn{
+    opacity:1;
+    pointer-events:auto;
+    transform:translateY(0);
+    position:absolute;
+    bottom:12px;
+    left:50%;
+    transform:translateX(-50%);
+    padding:12px 20px;
+    font-size:14px;
+    min-height:44px;
+  }
+
+  /* Certifications */
+  .cert-grid{gap:var(--space-5)}
+  .cert-badge-large{padding:var(--space-5)}
+  .cert-badge-large .cert-icon{width:56px;height:56px;font-size:28px}
+  .cert-list{gap:var(--space-3);margin-top:var(--space-4)}
+  .cert-list li{font-size:var(--text-sm)}
+
+  /* Capacité */
+  .capacity-grid{
+    grid-template-columns:1fr;
+    gap:var(--space-3);
+    margin-top:var(--space-5);
+  }
+  .capacity-card{
+    padding:var(--space-5) var(--space-4);
+    display:flex;
+    align-items:center;
+    gap:var(--space-4);
+    text-align:left;
+  }
+  .capacity-card .icon{margin-bottom:0;flex-shrink:0}
+  .capacity-card .icon svg{width:32px;height:32px}
+  .capacity-card h4{font-size:var(--text-base);margin-bottom:var(--space-1)}
+  .capacity-card p{font-size:var(--text-sm)}
+
+  /* Why us */
+  .why-grid{
+    grid-template-columns:1fr;
+    gap:var(--space-3);
+    margin-top:var(--space-5);
+  }
+  .why-card{
+    padding:var(--space-4);
+    display:flex;
+    align-items:flex-start;
+    gap:var(--space-3);
+  }
+  .why-card .icon{margin-bottom:0;flex-shrink:0}
+  .why-card .icon svg{width:28px;height:28px}
+  .why-card h4{margin-bottom:var(--space-1)}
+  .why-card p{font-size:var(--text-sm)}
+
+  /* Logistique */
+  .logistics-wrapper{gap:var(--space-5)}
+  .logistics-block h3{font-size:var(--text-lg)}
+  .logistics-block ul li{font-size:var(--text-sm);padding:var(--space-2) 0}
+  .doc-list{gap:var(--space-2)}
+  .doc-list li{padding:var(--space-3);font-size:var(--text-sm)}
+
+  /* Contact */
+  .contact-wrapper{gap:var(--space-6)}
+  .contact-card{padding:var(--space-5)}
+  .contact-card input,
+  .contact-card textarea{
+    font-size:16px!important; /* Prevent iOS zoom */
+    padding:14px 12px;
+    border-radius:var(--radius-md);
+    min-height:48px;
+  }
+  .contact-card textarea{min-height:120px}
+  .contact-cta{
+    width:100%;
+    justify-content:center;
+    padding:18px 32px;
+    font-size:16px;
+    min-height:56px;
+    position:sticky;
+    bottom:16px;
+    z-index:10;
+    box-shadow:0 -4px 20px rgba(0,30,43,0.3);
+  }
+
+  /* FAQ */
+  .faq-grid{max-width:100%}
+  .faq-question{
+    font-size:var(--text-base);
+    padding:var(--space-4) 0;
+    min-height:48px;
+  }
+  .faq-answer p{font-size:var(--text-sm)}
+
+  /* Footer */
+  footer{padding:var(--space-6) 0}
+  .footer-logo-img{height:36px}
+
+  /* Lightbox mobile */
+  .lightbox{
+    backdrop-filter:blur(8px);
+  }
+  .lightbox-body{
+    max-width:100vw;
+    max-height:100vh;
+    padding:var(--space-3);
+  }
+  .lightbox-img{
+    max-width:calc(100vw - 24px);
+    max-height:60vh;
+    border-radius:var(--radius-md);
+  }
+  .lightbox-close{
+    top:12px;right:12px;
+    width:48px;height:48px;
+    font-size:24px;
+  }
+  .lightbox-nav{
+    width:44px;height:44px;
+    font-size:22px;
+  }
+  .lightbox-prev{left:8px}
+  .lightbox-next{right:8px}
+  .lightbox-footer{
+    flex-direction:column;
+    align-items:center;
+    gap:var(--space-2);
+    margin-top:var(--space-3);
+  }
+  .lightbox-counter{font-size:12px}
+  .lightbox-title{font-size:13px;text-align:center}
+
+  /* Scroll reveal allégé sur mobile */
+  .reveal,.reveal-left,.reveal-right,.reveal-zoom{
+    transform:translateY(16px);
+  }
+  .reveal-left{transform:translateX(-20px)}
+  .reveal-right{transform:translateX(20px)}
+  .reveal-zoom{transform:scale(0.95)}
+
+  /* Toast mobile */
+  .toast{
+    bottom:16px;right:16px;left:16px;
+    max-width:none;
+    border-radius:var(--radius-md);
+  }
+
+  /* Progress bar mobile */
+  #progress-bar{height:2px}
+
+  /* Scroll section anchor */
+  section[id] .container{scroll-margin-top:60px}
+}
+
+/* ─── Mobile moyen ≤414px (iPhone SE → iPhone 12) ──── */
+@media(max-width:414px){
+  :root{--nav-height:56px}
+  .container{padding:0 12px}
+  section{padding:32px 0}
+  nav{height:56px}
+  .nav-logo{height:32px}
+
+  /* Hero tiny */
+  .hero{padding:calc(var(--nav-height) + 20px) 0 20px}
+  .display-hero{font-size:clamp(1.6rem,9vw,2.1rem)!important;letter-spacing:-0.01em}
+  .display-sub{font-size:clamp(1.3rem,6vw,1.6rem)!important}
+  .section-title{font-size:clamp(1.2rem,5.5vw,1.45rem)!important}
+  .lead{font-size:15px!important;line-height:1.6!important}
+  .hero p.lead{font-size:14px!important}
+
+  /* Section card */
+  .section-card{
+    margin:var(--space-2) var(--space-1);
+    border-radius:16px;
+  }
+  .section-card::before{border-radius:16px 16px 0 0}
+
+  /* Présentation stats */
+  .pres-stats{
+    grid-template-columns:repeat(3,1fr);
+    gap:var(--space-1);
+  }
+  .pres-stat{padding:var(--space-2)}
+  .pres-stat .num{font-size:var(--text-lg)}
+  .pres-stat .label{font-size:9px}
+  .pres-stat .stat-icon svg{width:20px;height:20px}
+
+  /* Product cards */
+  .product-card-body{padding:var(--space-3)}
+  .product-card-body h3{font-size:var(--text-base);font-weight:500}
+  .product-meta{gap:var(--space-2)}
+  .product-meta-item span{font-size:13px}
+  .product-meta-item strong{font-size:10px;letter-spacing:1px}
+  .cert-badge{font-size:10px;padding:3px 8px}
+
+  /* Why us / capacity — compact */
+  .capacity-card{padding:var(--space-4) var(--space-3);gap:var(--space-3)}
+  .capacity-card .icon svg{width:28px;height:28px}
+  .capacity-card h4{font-size:15px}
+  .capacity-card p{font-size:13px}
+  .why-card{padding:var(--space-3);gap:var(--space-3)}
+  .why-card .icon svg{width:24px;height:24px}
+  .why-card h4{font-size:12px}
+  .why-card p{font-size:13px}
+
+  /* Cert */
+  .cert-list li{font-size:13px;gap:var(--space-2)}
+  .cert-badge-large .cert-icon{width:48px;height:48px;font-size:24px}
+  .cert-badge-large h3{font-size:var(--text-lg)}
+  .cert-badge-large p{font-size:12px}
+
+  /* Logistique */
+  .logistics-block h3{font-size:var(--text-base)}
+  .logistics-block ul li{font-size:13px;padding:6px 0}
+  .doc-list li{padding:var(--space-2);font-size:12px}
+
+  /* Contact */
+  .contact-block p{font-size:var(--text-sm)}
+  .contact-block a{font-size:var(--text-sm)}
+  .contact-block h4{font-size:10px}
+
+  /* FAQ */
+  .faq-question{font-size:15px;min-height:44px}
+  .faq-answer p{font-size:13px}
+
+  /* Nav mobile menu */
+  .nav-links{
+    gap:var(--space-4);
+    padding:var(--space-6) var(--space-4);
+  }
+  .nav-links a{font-size:16px;min-height:44px;display:flex;align-items:center}
+
+  /* Lightbox small */
+  .lightbox-img{max-height:55vh;max-width:calc(100vw - 16px)}
+  .lightbox-close{top:8px;right:8px;width:44px;height:44px}
+  .lightbox-nav{width:40px;height:40px;font-size:18px}
+  .lightbox-prev{left:4px}
+  .lightbox-next{right:4px}
+}
+
+/* ─── Petits téléphones ≤390px (iPhone SE, Galaxy S) ── */
+@media(max-width:390px){
+  .container{padding:0 10px}
+  .display-hero{font-size:clamp(1.5rem,8.5vw,1.9rem)!important}
+  .display-sub{font-size:clamp(1.2rem,5.5vw,1.4rem)!important}
+  .hero p.lead{font-size:13px!important}
+  .hero-badge{font-size:9px;padding:4px 10px;letter-spacing:2px}
+  .hero-actions .btn-primary,
+  .hero-actions .btn-secondary{
+    padding:14px 20px;
+    font-size:15px;
+    min-height:48px;
+  }
+  .pres-stats{grid-template-columns:repeat(3,1fr);gap:2px}
+  .pres-stat{padding:8px 4px}
+  .pres-stat .num{font-size:18px}
+  .pres-stat .label{font-size:8px;line-height:1.2}
+  .product-card-image{aspect-ratio:16/10}
+  .section-card{margin:var(--space-2) var(--space-1);border-radius:14px}
+  .section-card::before{border-radius:14px 14px 0 0}
+  .contact-cta{
+    padding:16px 24px;
+    font-size:15px;
+    min-height:52px;
+  }
+}
+
+/* ─── Très petits ≤360px (iPhone SE 1st gen, vieux Android) ── */
+@media(max-width:360px){
+  .container{padding:0 8px}
+  section{padding:24px 0}
+  .display-hero{font-size:1.4rem!important}
+  .display-sub{font-size:1.15rem!important}
+  .section-title{font-size:1.1rem!important}
+  .lead{font-size:13px!important}
+  .hero-actions .btn-primary,
+  .hero-actions .btn-secondary{
+    padding:12px 16px;
+    font-size:14px;
+    min-height:44px;
+  }
+  .pres-stat .num{font-size:16px}
+  .pres-stat .label{font-size:8px}
+  .product-card-body{padding:10px}
+  .product-meta{grid-template-columns:1fr}
+  .capacity-card{gap:var(--space-2)}
+  .capacity-card .icon svg{width:24px;height:24px}
+  .why-card .icon svg{width:20px;height:20px}
+  .faq-question{font-size:14px}
+  .contact-card{padding:var(--space-3)}
+  .nav-links a{font-size:15px}
+}
+
+/* ─── Navigation mobile plein écran améliorée ──────── */
+@media(max-width:920px){
+  .nav-links{
+    position:fixed;
+    top:0;left:0;right:0;bottom:0;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    background:rgba(0,30,43,0.97);
+    backdrop-filter:blur(40px) saturate(1.6);
+    -webkit-backdrop-filter:blur(40px) saturate(1.6);
+    padding:var(--space-12) var(--space-8);
+    gap:var(--space-5);
+    transform:translateY(-100%);
+    opacity:0;
+    pointer-events:none;
+    transition:transform 0.4s var(--ease-out), opacity 0.3s;
+    z-index:99;
+  }
+  .nav-links.open{
+    transform:translateY(0);
+    opacity:1;
+    pointer-events:auto;
+  }
+  .nav-links a{
+    font-size:20px;
+    font-weight:500;
+    padding:var(--space-3) var(--space-6);
+    min-height:48px;
+    display:flex;
+    align-items:center;
+    border-radius:var(--radius-md);
+    transition:background 0.2s, color 0.2s;
+    width:100%;
+    max-width:280px;
+    justify-content:center;
+  }
+  .nav-links a:hover,
+  .nav-links a:active{
+    background:rgba(0,237,100,0.08);
+    color:var(--accent);
+  }
+  .nav-links .nav-cta{
+    margin-top:var(--space-4);
+    padding:16px 40px;
+    font-size:16px!important;
+    min-height:52px;
+  }
+  .nav-toggle{
+    display:flex;
+    min-width:44px;
+    min-height:44px;
+    align-items:center;
+    justify-content:center;
+    z-index:101;
+  }
+}
+</style>
+</head>
+<body>
+<!-- Progress bar — indique la progression dans la page -->
+<div id="progress-bar" role="progressbar" aria-label="Progression dans la page"></div>
+
+<!-- ============================================================
+     NAVIGATION
+     ============================================================ -->
+<nav>
+  <div class="container">
+    <a href="#" class="nav-brand">
+      <img src="logo.svg" alt="SOSAF-CI" class="nav-logo">
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links">
+      <a href="#accueil">Accueil</a>
+      <a href="#presentation">Présentation</a>
+      <a href="#produits">Produits</a>
+      <a href="#certifications">Certifications</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact">Contact</a>
+      <a href="#contact" class="nav-cta">Devis →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================================
+     HERO / COVER
+     ============================================================ -->
+<section class="hero" id="accueil" data-od-id="hero-cover">
+  <div class="hero-pattern"></div>
+  <div class="container">
+    <div>
+      <div class="hero-badge hero-e hero-e-1">Catalogue Export 2025</div>
+      <h1 class="display-hero hero-e hero-e-2">
+        Fourniture continue de<br>
+        <span class="accent-text">fruits tropicaux</span><br>
+        de qualité
+      </h1>
+      <p class="lead hero-e hero-e-3" style="color:var(--fg-2)">
+        SOSAF-CI, votre partenaire export basé à Abidjan, Côte d'Ivoire.
+        Mangue, avocat, banane, ananas, noix de coco — du producteur
+        au marché international, avec rigueur et traçabilité.
+      </p>
+      <div class="hero-actions hero-e hero-e-4">
+        <a href="#produits" class="btn-primary">Découvrir nos produits →</a>
+        <a href="#contact" class="btn-secondary">Nous contacter</a>
+      </div>
+    </div>
+    <div class="hero-image hero-e hero-e-5 parallax-wrap">
+      <img src="https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=800&q=80&fit=crop" alt="Panier de fruits tropicaux frais" loading="eager" class="parallax-img">
+      <div class="hero-image-caption">Mangue · Avocat · Banane · Ananas · Noix de coco</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     COMPANY PRESENTATION
+     ============================================================ -->
+<section class="section-light section-card" id="presentation" data-od-id="company-presentation">
+  <div class="container">
+    <div class="pres-grid">
+      <div class="pres-content">
+        <span class="eyebrow reveal">Qui sommes-nous</span>
+        <h2 class="display-sub reveal reveal-delay-1">SOSAF-CI — L'excellence du fruit ivoirien</h2>
+        <p class="lead reveal reveal-delay-2">
+          SOSAF-CI est une entreprise d'import-export basée à Abidjan, Côte d'Ivoire,
+          spécialisée dans l'exportation de produits agricoles tropicaux vers le marché
+          international. Forts de notre réseau de producteurs, coopératives et stations
+          de conditionnement partenaires, nous assurons une fourniture régulière de
+          fruits de qualité, conformes aux exigences du marché mondial.
+        </p>
+        <div class="pres-stats reveal reveal-delay-3">
+          <div class="pres-stat">
+            <div class="stat-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+            </div>
+            <span class="num">100%</span>
+            <span class="label">Qualité garantie</span>
+          </div>
+          <div class="pres-stat">
+            <div class="stat-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <span class="num">200+</span>
+            <span class="label">Producteurs partenaires</span>
+          </div>
+          <div class="pres-stat">
+            <div class="stat-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M2 12h20"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+            </div>
+            <span class="num">15+</span>
+            <span class="label">Pays exportateurs</span>
+          </div>
+        </div>
+      </div>
+      <div class="pres-image reveal-left reveal-delay-2 parallax-wrap">
+        <img src="https://plus.unsplash.com/premium_photo-1661911767915-d85524fc1991?w=800&q=80&fit=crop" alt="Agriculture en Afrique — plantations et producteurs" loading="lazy" class="parallax-img" style="display:block;width:100%;height:100%;object-fit:cover">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PRODUCTS
+     ============================================================ -->
+<section class="section-dark section-card" id="produits" data-od-id="products-section">
+  <div class="container">
+    <div class="products-intro">
+      <span class="eyebrow reveal">Notre gamme</span>
+      <h2 class="display-sub reveal reveal-delay-1">Produits exportés</h2>
+      <p class="lead reveal reveal-delay-2" style="margin:var(--space-4) auto 0;max-width:600px">
+        Cinq fruits d'exception, cultivés sous le soleil de Côte d'Ivoire,
+        sélectionnés avec soin pour les marchés les plus exigeants.
+      </p>
+    </div>
+
+    <div class="products-grid">
+      <!-- MANGUE -->
+      <article class="product-card reveal" data-od-id="product-mango" data-gallery="mango" onclick="openGallery('mango')">
+        <div class="product-card-image">
+          <img src="mrilirwx-WhatsApp-Image-2026-07-13-at-00.14.23.jpeg" alt="Mangues Kent SOSAF-CI — calibre export avec filets de protection" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-overlay-btn" onclick="event.stopPropagation();openGallery('mango')" aria-label="Voir plus de photos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Galerie <span class="photo-count">8</span></button></div>
+        </div>
+        <div class="product-card-body">
+          <h3>Mangue</h3>
+          <p class="body-sm">Origine Côte d'Ivoire · Variétés Kent et Amélie</p>
+          <div class="product-meta">
+            <div class="product-meta-item">
+              <strong>Variétés</strong>
+              <span>Kent, Amélie</span>
+            </div>
+            <div class="product-meta-item">
+              <strong>Saison</strong>
+              <span>Mars – Juillet</span>
+            </div>
+            <div class="product-meta-item">
+              <strong>Calibre</strong>
+              <span>6–12 (selon variété)</span>
+            </div>
+            <div class="product-meta-item">
+              <strong>Conditionnement</strong>
+              <span>Avion : carton 6 kg<br>Maritime : carton 4 kg</span>
+            </div>
+          </div>
+          <span class="cert-badge">✓ GlobalG.A.P.</span>
+        </div>
+      </article>
+
+      <!-- NOIX DE COCO -->
+      <article class="product-card reveal reveal-delay-1" data-od-id="product-coconut" data-gallery="coconut" onclick="openGallery('coconut')">
+        <div class="product-card-image">
+          <img src="mrim4nu6-WhatsApp-Image-2026-07-13-at-00.14.44-_3_.jpeg" alt="Entrepôt logistique SOSAF-CI — palettes de noix de coco prêtes à l'expédition" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-overlay-btn" onclick="event.stopPropagation();openGallery('coconut')" aria-label="Voir plus de photos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Galerie <span class="photo-count">3</span></button></div>
+        </div>
+        <div class="product-card-body">
+          <h3>Noix de Coco</h3>
+          <p class="body-sm">Origine Côte d'Ivoire · Variété Grand Africa Ouest</p>
+          <div class="product-meta">
+            <div class="product-meta-item">
+              <strong>Variété</strong>
+              <span>Grand Africa Ouest</span>
+            </div>
+            <div class="product-meta-item">
+              <strong>Origine</strong>
+              <span>Côte d'Ivoire</span>
+            </div>
+            <div class="product-meta-item">
+              <strong>Type</strong>
+              <span>Fraîche, Sèche</span>
+            </div>
+            <div class="product-meta-item">
+              <strong>Conditionnement</strong>
+              <span>Sac de 21 kg</span>
+            </div>
+          </div>
+          <span class="cert-badge">✓ GlobalG.A.P.</span>
+        </div>
+      </article>
+
+      <!-- AVOCAT -->
+      <article class="product-card reveal reveal-delay-2" data-od-id="product-avocado" data-gallery="avocado" onclick="openGallery('avocado')">
+        <div class="product-card-image">
+          <img src="mrim90p1-WhatsApp-Image-2026-07-13-at-00.14.44-_6_.jpeg" alt="Avocats calibrés en carton — conditionnement export SOSAF-CI" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-overlay-btn" onclick="event.stopPropagation();openGallery('avocado')" aria-label="Voir plus de photos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Galerie <span class="photo-count">4</span></button></div>
+        </div>
+        <div class="product-card-body">
+          <h3>Avocat</h3>
+          <p class="body-sm">Origine Côte d'Ivoire · Variétés Hass et Fuerte</p>
+          <div class="product-meta">
+            <div class="product-meta-item">
+              <strong>Variétés</strong>
+              <span>Hass, Fuerte</span>
+            </div>
+            <div class="product-meta-item">
+              <strong>Calibre</strong>
+              <span>16–22</span>
+            </div>
+            <div class="product-meta-item">
+              <strong>Conditionnement</strong>
+              <span>Avion : carton 6 kg<br>Maritime : carton 4 kg</span>
+            </div>
+            <div class="product-meta-item">
+              <strong>Disponibilité</strong>
+              <span>Selon saison</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- BANANE -->
+      <article class="product-card reveal reveal-delay-3" data-od-id="product-banana" data-gallery="banana" onclick="openGallery('banana')">
+        <div class="product-card-image">
+          <img src="mrimelw6-WhatsApp-Image-2026-07-13-at-00.14.44.jpeg" alt="Bananes Cavendish — cartons d'export en station d'emballage SOSAF-CI" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-overlay-btn" onclick="event.stopPropagation();openGallery('banana')" aria-label="Voir plus de photos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Galerie <span class="photo-count">8</span></button></div>
+        </div>
+        <div class="product-card-body">
+          <h3>Banane</h3>
+          <p class="body-sm">Origine Côte d'Ivoire · Variété Cavendish</p>
+          <div class="product-meta">
+            <div class="product-meta-item">
+              <strong>Variété</strong>
+              <span>Cavendish</span>
+            </div>
+            <div class="product-meta-item">
+              <strong>Origine</strong>
+              <span>Côte d'Ivoire</span>
+            </div>
+            <div class="product-meta-item">
+              <strong>Quantité</strong>
+              <span>Selon disponibilité</span>
+            </div>
+            <div class="product-meta-item">
+              <strong>Conditionnement</strong>
+              <span>Carton kraft 18,5 kg</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ANANAS -->
+      <article class="product-card reveal" data-od-id="product-pineapple" data-gallery="pineapple" onclick="openGallery('pineapple')">
+        <div class="product-card-image">
+          <img src="mrim0tak-WhatsApp-Image-2026-07-13-at-00.14.43.jpeg" alt="Ananas conditionnés en carton export — SOSAF-CI Côte d'Ivoire" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-overlay-btn" onclick="event.stopPropagation();openGallery('pineapple')" aria-label="Voir plus de photos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Galerie <span class="photo-count">9</span></button></div>
+        </div>
+        <div class="product-card-body">
+          <h3>Ananas</h3>
+          <p class="body-sm">Origine Côte d'Ivoire · Variétés MD2, Pain de Sucre, Cayenne Lisse</p>
+          <div class="product-meta">
+            <div class="product-meta-item">
+              <strong>Variétés</strong>
+              <span>MD2, Pain de Sucre, Cayenne Lisse</span>
+            </div>
+            <div class="product-meta-item">
+              <strong>Calibre</strong>
+              <span>6–12</span>
+            </div>
+            <div class="product-meta-item">
+              <strong>Saison</strong>
+              <span>Toute l'année</span>
+            </div>
+            <div class="product-meta-item">
+              <strong>Conditionnement</strong>
+              <span>Carton de 12 kg</span>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CERTIFICATIONS & QUALITY
+     ============================================================ -->
+<section class="section-light section-card" id="certifications" data-od-id="certifications-section">
+  <div class="container">
+    <div class="cert-grid">
+      <div class="cert-content">
+        <span class="eyebrow reveal">Qualité</span>
+        <h2 class="display-sub reveal reveal-delay-1">Certifications et contrôle qualité</h2>
+        <p class="lead reveal reveal-delay-2">
+          SOSAF-CI travaille en collaboration avec des coopératives agricoles et des stations
+          de conditionnement partenaires disposant de certifications reconnues,
+          notamment <strong>GlobalG.A.P.</strong> pour certains produits comme la mangue et la noix de coco.
+        </p>
+        <p class="lead reveal reveal-delay-2" style="margin-top:var(--space-4)">
+          Grâce à ce réseau de partenaires certifiés, nous sommes en mesure de proposer
+          des produits conformes aux exigences du marché international, avec un meilleur suivi
+          de la qualité, de la traçabilité et du conditionnement avant exportation.
+        </p>
+        <ul class="cert-list reveal reveal-delay-3">
+          <li>Contrôle qualité avant chaque expédition</li>
+          <li>Respect des normes et standards export internationaux</li>
+          <li>Traçabilité complète des produits, du champ au conteneur</li>
+          <li>Fourniture des documents nécessaires selon la commande</li>
+        </ul>
+      </div>
+      <div class="cert-visual reveal-zoom reveal-delay-2">
+        <div class="cert-badge-large">
+          <div class="cert-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 12 6a7 7 0 0 1 1 13.9"/><path d="M12 13v7"/><path d="M9 20h6"/><path d="M21 9c0 2-2 4-4 4"/></svg></div>
+          <h3>GlobalG.A.P.</h3>
+          <p>Certification reconnue pour la mangue et la noix de coco — garantie de bonnes pratiques agricoles, qualité et traçabilité.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SUPPLY CAPACITY
+     ============================================================ -->
+<section class="section-dark section-card" id="capacite" data-od-id="supply-capacity">
+  <div class="container">
+    <div style="text-align:center">
+      <span class="eyebrow reveal">Approvisionnement</span>
+      <h2 class="display-sub reveal reveal-delay-1">Capacité d'approvisionnement</h2>
+      <p class="lead reveal reveal-delay-2" style="margin:var(--space-4) auto 0;max-width:600px">
+        Un réseau solide de producteurs et coopératives pour une fourniture
+        continue et fiable, adaptée à vos volumes.
+      </p>
+    </div>
+    <div class="capacity-grid">
+      <div class="capacity-card reveal">
+        <span class="icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 12 6a7 7 0 0 1 1 13.9"/><path d="M12 13v7"/><path d="M9 20h6"/></svg></span>
+        <h4>Réseau producteurs</h4>
+        <p>Partenariat avec plus de 200 producteurs et coopératives sélectionnés dans les principales régions agricoles de Côte d'Ivoire.</p>
+      </div>
+      <div class="capacity-card reveal reveal-delay-1">
+        <span class="icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
+        <h4>Commandes flexibles</h4>
+        <p>Possibilité de commandes par conteneur, palettes ou volume négocié selon vos besoins — pas de minimum imposé.</p>
+      </div>
+      <div class="capacity-card reveal reveal-delay-2">
+        <span class="icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span>
+        <h4>Fourniture continue</h4>
+        <p>Approvisionnement régulier tout au long des saisons de récolte grâce à notre réseau étendu et notre planification logistique.</p>
+      </div>
+      <div class="capacity-card reveal reveal-delay-3">
+        <span class="icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></svg></span>
+        <h4>Disponibilité saisonnière</h4>
+        <p>Calendrier de production maîtrisé pour chaque fruit, avec des fenêtres d'approvisionnement claires et fiables.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PACKAGING & LOGISTICS
+     ============================================================ -->
+<section class="section-light section-card" id="logistique" data-od-id="packaging-logistics">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:var(--space-8)">
+      <span class="eyebrow reveal">Logistique</span>
+      <h2 class="display-sub reveal reveal-delay-1">Conditionnement et logistique</h2>
+    </div>
+    <div class="logistics-wrapper">
+      <div>
+        <div class="logistics-block reveal">
+          <h3>Conditionnement</h3>
+          <p class="lead" style="margin-bottom:var(--space-4)">
+            Emballage adapté à chaque produit : carton, caisse ou autre selon
+            le type de fruit et la destination. Conditionnement professionnel
+            pour préserver la fraîcheur jusqu'à l'arrivée.
+          </p>
+        </div>
+        <div class="logistics-block reveal reveal-delay-1">
+          <h3>Transport</h3>
+          <ul>
+            <li>Transport maritime — conteneurs réfrigérés pour les expéditions en grand volume</li>
+            <li>Transport aérien — pour les commandes urgentes et les marchés premium</li>
+            <li>Expédition internationale vers tous les marchés (Europe, Moyen-Orient, Asie, Amériques)</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="logistics-block reveal reveal-delay-2">
+          <h3>Documents export disponibles</h3>
+          <ul class="doc-list">
+            <li>Facture commerciale</li>
+            <li>Packing list</li>
+            <li>Certificat phytosanitaire</li>
+            <li>Certificat d'origine</li>
+            <li>Documents de transport</li>
+            <li>Certificats qualité selon disponibilité</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     WHY WORK WITH US
+     ============================================================ -->
+<section class="section-dark section-card" id="pourquoi-nous" data-od-id="why-us">
+  <div class="container">
+    <div style="text-align:center">
+      <span class="eyebrow reveal">Pourquoi nous choisir</span>
+      <h2 class="display-sub reveal reveal-delay-1">Travailler avec SOSAF-CI</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal">
+        <span class="icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 12 6a7 7 0 0 1 1 13.9"/><path d="M12 13v7"/><path d="M9 20h6"/><circle cx="18" cy="8" r="3"/></svg></span>
+        <h4>Produits frais et sélectionnés</h4>
+        <p>Chaque fruit est rigoureusement sélectionné pour garantir une qualité optimale à l'arrivée.</p>
+      </div>
+      <div class="why-card reveal reveal-delay-1">
+        <span class="icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+        <h4>Réseau fiable</h4>
+        <p>Producteurs et coopératives partenaires soigneusement choisis pour leur sérieux et leur savoir-faire.</p>
+      </div>
+      <div class="why-card reveal reveal-delay-2">
+        <span class="icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span>
+        <h4>Fourniture régulière</h4>
+        <p>Engagement sur la continuité d'approvisionnement, même pour des volumes importants.</p>
+      </div>
+      <div class="why-card reveal reveal-delay-1">
+        <span class="icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 12 6a7 7 0 0 1 1 13.9"/><path d="M12 13v7"/><path d="M9 20h6"/></svg></span>
+        <h4>Certification GlobalG.A.P.</h4>
+        <p>Produits certifiés disponibles (mangue, noix de coco) — gage de qualité et de conformité.</p>
+      </div>
+      <div class="why-card reveal reveal-delay-2">
+        <span class="icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+        <h4>Suivi professionnel</h4>
+        <p>Accompagnement personnalisé, suivi des commandes et transparence totale sur les documents.</p>
+      </div>
+      <div class="why-card reveal reveal-delay-3">
+        <span class="icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
+        <h4>Partenariat long terme</h4>
+        <p>Nous construisons des relations durables avec nos clients pour une croissance mutuelle.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FAQ
+     ============================================================ -->
+<section class="section-dark section-card" id="faq" data-od-id="faq-section">
+  <div class="container" style="padding-block:var(--section-y-desktop) 48px">
+    <div style="text-align:center">
+      <span class="eyebrow reveal">Questions fréquentes</span>
+      <h2 class="display-sub reveal reveal-delay-1">Tout savoir sur SOSAF-CI</h2>
+      <p class="lead" style="max-width:620px;margin:var(--space-3) auto var(--space-6);color:var(--fg-2)">
+        Retrouvez les réponses aux questions les plus courantes sur nos produits, notre processus d'export et nos services.
+      </p>
+    </div>
+    <div class="faq-grid">
+      <div class="faq-item reveal">
+        <button class="faq-question" aria-expanded="false">
+          <span>Quels produits exportez-vous ?</span>
+          <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer">
+          <p>SOSAF-CI exporte une large gamme de fruits tropicaux depuis la Côte d'Ivoire : <strong>mangue</strong> (Kent, Amélie), <strong>noix de coco</strong> (fraîche et sèche), <strong>avocat</strong> (Hass), <strong>banane</strong> (Cavendish) et <strong>ananas</strong> (MD2, Cayenne Lisse). Nous pouvons également fournir d'autres produits agricoles selon la disponibilité saisonnière.</p>
+        </div>
+      </div>
+      <div class="faq-item reveal reveal-delay-1">
+        <button class="faq-question" aria-expanded="false">
+          <span>Quelles certifications qualité possédez-vous ?</span>
+          <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer">
+          <p>Nous travaillons en collaboration avec des coopératives agricoles et stations de conditionnement partenaires disposant de la <strong>certification GlobalG.A.P.</strong>, notamment pour la mangue et la noix de coco. Ce réseau de partenaires certifiés nous permet de proposer des produits conformes aux exigences du marché international, avec un suivi rigoureux de la qualité, de la traçabilité et du conditionnement.</p>
+        </div>
+      </div>
+      <div class="faq-item reveal reveal-delay-1">
+        <button class="faq-question" aria-expanded="false">
+          <span>Quels sont les volumes minimum de commande ?</span>
+          <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer">
+          <p>Nous sommes flexibles et pouvons répondre aussi bien aux commandes <strong>par conteneur complet</strong> qu'aux commandes <strong>par palette ou volume négocié</strong>. Notre réseau de producteurs et coopératives nous permet d'assurer une fourniture continue et de nous adapter à vos besoins spécifiques. Contactez-nous pour discuter des quantités qui vous intéressent.</p>
+        </div>
+      </div>
+      <div class="faq-item reveal reveal-delay-2">
+        <button class="faq-question" aria-expanded="false">
+          <span>Quels documents fournissez-vous pour l'export ?</span>
+          <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer">
+          <p>Nous fournissons tous les documents nécessaires à l'exportation : <strong>facture commerciale</strong>, <strong>packing list</strong>, <strong>certificat phytosanitaire</strong>, <strong>certificat d'origine</strong>, documents de transport, et certificats qualité selon disponibilité. Nous assurons une transparence totale sur l'ensemble des documents accompagnant votre commande.</p>
+        </div>
+      </div>
+      <div class="faq-item reveal reveal-delay-2">
+        <button class="faq-question" aria-expanded="false">
+          <span>Quels sont les délais et modes d'expédition ?</span>
+          <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer">
+          <p>Nous proposons deux modes de transport : <strong>maritime</strong> (pour les volumes importants, délais standards) et <strong>aérien</strong> (pour les commandes urgentes ou les petits volumes). Le choix du mode de transport dépend de votre destination, du volume commandé et de l'urgence. Notre équipe vous conseille la solution la plus adaptée à votre besoin.</p>
+        </div>
+      </div>
+      <div class="faq-item reveal reveal-delay-2">
+        <button class="faq-question" aria-expanded="false">
+          <span>Comment puis-je passer une commande ?</span>
+          <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer">
+          <p>Vous pouvez nous contacter directement par <strong>email</strong> ou <strong>WhatsApp</strong> (coordonnées ci-dessous) avec vos besoins : produits souhaités, volumes, destination et délais. Notre équipe vous répondra sous 24h avec une proposition commerciale détaillée, les prix et les conditions logistiques adaptées à votre demande.</p>
+        </div>
+      </div>
+      <div class="faq-item reveal reveal-delay-3">
+        <button class="faq-question" aria-expanded="false">
+          <span>Proposez-vous des échantillons ?</span>
+          <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer">
+          <p>Oui, nous pouvons organiser l'envoi d'<strong>échantillons</strong> pour vous permettre d'évaluer la qualité de nos produits avant de passer commande. Les conditions et délais d'envoi des échantillons sont à discuter avec notre équipe commerciale — contactez-nous pour en savoir plus.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CONTACT
+     ============================================================ -->
+<section class="section-light section-card" id="contact" data-od-id="contact-section">
+  <div class="container" data-od-id="path-8-0">
+    <div class="contact-wrapper">
+      <div class="contact-info">
+        <span class="eyebrow reveal">Contact</span>
+        <h2 class="display-sub reveal reveal-delay-1">Parlons de votre projet</h2>
+        <p class="lead reveal reveal-delay-2">
+          Pour toute demande de cotation, partenariat commercial ou commande à l'export,
+          notre équipe est à votre disposition.
+        </p>
+
+        <div class="contact-block reveal reveal-delay-2" style="margin-top:var(--space-8)">
+          <h4>Directeur</h4>
+          <p><strong>Mohamed Sanogo</strong></p>
+          <p>Email : <a href="mailto:m.sanogo@sosafsarl.com">m.sanogo@sosafsarl.com</a></p>
+          <p>Tél / WhatsApp : <a href="tel:+2250710006500">+225 07 10 00 65 00</a></p>
+        </div>
+
+        <div class="contact-block reveal reveal-delay-3">
+          <h4>Export Manager</h4>
+          <p><strong>Bouramala Yaya Sanogo</strong></p>
+          <p>Email : <a href="mailto:bouramalayayasanogo@gmail.com">bouramalayayasanogo@gmail.com</a></p>
+          <p>Tél / WhatsApp : <a href="tel:+22389134555">+223 89 13 45 55</a></p>
+        </div>
+
+        <div class="contact-block reveal reveal-delay-3">
+          <h4>Adresse</h4>
+          <p>SOSAF-CI</p>
+          <p>Abidjan, Cocody, Angré, 9ème Tranche</p>
+          <p>Lot N446B, Îlot N20</p>
+          <p>23 BP 1099 Abidjan 23, Côte d'Ivoire</p>
+        </div>
+      </div>
+
+      <div class="contact-card reveal reveal-delay-2">
+        <h3 style="font-family:var(--font-display);font-size:var(--text-xl);margin-bottom:var(--space-6)">Nous écrire</h3>
+        <form id="contact-form">
+          <div style="margin-bottom:var(--space-4)">
+            <label for="contact-name" style="font-size:var(--text-sm);font-weight:500;display:block;margin-bottom:var(--space-1)">Votre nom</label>
+            <input id="contact-name" type="text" required style="width:100%;padding:12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--fg);font-size:15px">
+          </div>
+          <div style="margin-bottom:var(--space-4)">
+            <label for="contact-email" style="font-size:var(--text-sm);font-weight:500;display:block;margin-bottom:var(--space-1)">Email</label>
+            <input id="contact-email" type="email" required style="width:100%;padding:12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--fg);font-size:15px">
+          </div>
+          <div style="margin-bottom:var(--space-4)">
+            <label for="contact-message" style="font-size:var(--text-sm);font-weight:500;display:block;margin-bottom:var(--space-1)">Message</label>
+            <textarea id="contact-message" rows="4" required style="width:100%;padding:12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--fg);font-size:15px;resize:vertical"></textarea>
+          </div>
+          <button type="submit" class="contact-cta">Envoyer le message →</button>
+        </form>
+        <p class="rccm">RCCM : CI-ABJ-03-2024-B21-00015</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+  <div class="container">
+    <div class="footer-logo">
+      <img src="logo.svg" alt="SOSAF-CI" class="footer-logo-img">
+    </div>
+    <p>© 2025 SOSAF-CI — Tous droits réservés. Fourniture continue de fruits tropicaux de qualité depuis la Côte d'Ivoire.</p>
+  </div>
+</footer>
+
+<!-- ============================================================
+     SCRIPTS — Animations & interactions
+     ============================================================ -->
+<script>
+// ─── Scroll Reveal — Cascade premium ──────────────
+(function(){
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        // Une fois visible, on arrête de l'observer (performance)
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.08,
+    rootMargin: '0px 0px -30px 0px'
+  });
+
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-zoom')
+    .forEach(el => observer.observe(el));
+})();
+
+// ─── Counter Animation ─────────────────────────────
+(function(){
+  const counters = document.querySelectorAll('.pres-stat .num');
+  if(!counters.length) return;
+
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        const el = entry.target;
+        const text = el.textContent.trim();
+        const num = parseInt(text.replace(/[^0-9]/g,''), 10);
+        if(isNaN(num)) return;
+
+        // Detect suffix: % or +
+        const suffix = text.includes('%') ? '%' : text.includes('+') ? '+' : '';
+
+        // Animate counting from 0 to target number
+        const duration = 1200;
+        const start = performance.now();
+
+        function animate(now){
+          const elapsed = now - start;
+          const progress = Math.min(elapsed / duration, 1);
+          // Ease out cubic
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = Math.round(eased * num);
+
+          el.textContent = current + suffix;
+
+          if(progress < 1){
+            requestAnimationFrame(animate);
+          } else {
+            el.textContent = num + suffix;
+          }
+        }
+
+        requestAnimationFrame(animate);
+        counterObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  counters.forEach(el => counterObserver.observe(el));
+})();
+
+// ─── Nav: scroll spy, glass depth, shrink ───────────
+(function(){
+  const nav = document.querySelector('nav');
+  const toggle = document.getElementById('navToggle');
+  const links = document.querySelector('.nav-links');
+  const navLinks = links ? links.querySelectorAll('a:not(.nav-cta)') : [];
+  const sections = [];
+  const heroSection = document.getElementById('accueil');
+
+  // Build section map from nav hrefs
+  navLinks.forEach(a => {
+    const id = a.getAttribute('href');
+    if(id && id.startsWith('#') && id.length > 1){
+      const el = document.querySelector(id);
+      if(el) sections.push({ id, el, a });
+    }
+  });
+
+  // Scroll spy — highlight active link
+  let activeId = '';
+  function updateActive(){
+    const scrollY = window.scrollY + 100;
+    let current = '';
+    sections.forEach(({ id, el }) => {
+      if(el.offsetTop <= scrollY) current = id;
+    });
+    if(current !== activeId){
+      activeId = current;
+      navLinks.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === current);
+      });
+    }
+  }
+
+  // Scroll handler — combine glass depth + nav shrink + progress bar + parallax
+  const progressBar = document.getElementById('progress-bar');
+  const parallaxImgs = document.querySelectorAll('.parallax-wrap');
+  const docHeight = () => document.documentElement.scrollHeight - window.innerHeight;
+
+  function onScroll(){
+    const y = window.scrollY;
+    // Nav glass depth
+    const opacity = Math.min(0.65, 0.35 + (y / 300) * 0.3);
+    nav.style.background = `rgba(0,30,43,${opacity})`;
+    // Nav shrink
+    if(y > 80){
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+    // Progress bar — pourcentage de la page parcouru
+    if(progressBar){
+      const pct = Math.min((y / docHeight()) * 100, 100);
+      progressBar.style.width = pct + '%';
+    }
+    // Parallaxe subtil — les images bougent plus lentement que le scroll
+    parallaxImgs.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const speed = 0.12;
+      // Only when element is visible on screen
+      if(rect.top < window.innerHeight && rect.bottom > 0){
+        const offset = rect.top * speed;
+        const img = el.querySelector('.parallax-img');
+        if(img) img.style.transform = `translateY(${offset}px)`;
+      }
+    });
+    updateActive();
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Mobile toggle
+  if(toggle){
+    toggle.addEventListener('click', () => {
+      const open = links.classList.toggle('open');
+      toggle.classList.toggle('open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+  }
+
+  function closeMobile(){
+    links.classList.remove('open');
+    toggle.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Close mobile menu on link click
+  navLinks.forEach(a => a.addEventListener('click', closeMobile));
+  // Also close on CTA click
+  const navCta = links ? links.querySelector('.nav-cta') : null;
+  if(navCta) navCta.addEventListener('click', closeMobile);
+
+  // Close on outside click
+  document.addEventListener('click', (e) => {
+    if(links.classList.contains('open') && !nav.contains(e.target)){
+      closeMobile();
+    }
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape' && links.classList.contains('open')){
+      closeMobile();
+    }
+  });
+
+  // Initial active
+  updateActive();
+})();
+
+// ─── Form handler + Toast ────────────────────────────
+(function(){
+  const form = document.getElementById('contact-form');
+  const toast = document.getElementById('toast');
+  if(!form || !toast) return;
+
+  function showToast(){
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 5000);
+  }
+
+  // Validation feedback styles
+  const style = document.createElement('style');
+  style.textContent = `
+    .field-error{border-color:var(--danger)!important;box-shadow:0 0 0 2px rgba(220,38,38,0.15)!important}
+    .field-success{border-color:var(--accent)!important}
+    .error-msg{font-size:12px;color:var(--danger);margin-top:4px;display:none}
+    .error-msg.visible{display:block}
+  `;
+  document.head.appendChild(style);
+
+  // Add error message elements
+  form.querySelectorAll('input, textarea').forEach(input => {
+    const msg = document.createElement('div');
+    msg.className = 'error-msg';
+    msg.textContent = input.type === 'email' ? 'Veuillez entrer un email valide' : 'Ce champ est requis';
+    input.parentElement.appendChild(msg);
+
+    // Live validation on blur
+    input.addEventListener('blur', () => {
+      validateField(input);
+    });
+    input.addEventListener('input', () => {
+      if(input.classList.contains('field-error')){
+        validateField(input);
+      }
+    });
+  });
+
+  function validateField(input){
+    const msg = input.parentElement.querySelector('.error-msg');
+    if(!input.value.trim() || (input.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value))){
+      input.classList.add('field-error');
+      input.classList.remove('field-success');
+      if(msg) msg.classList.add('visible');
+      return false;
+    } else {
+      input.classList.remove('field-error');
+      input.classList.add('field-success');
+      if(msg) msg.classList.remove('visible');
+      return true;
+    }
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    let valid = true;
+    form.querySelectorAll('input, textarea').forEach(input => {
+      if(!validateField(input)) valid = false;
+    });
+    if(!valid) return;
+
+    const submitBtn = form.querySelector('.contact-cta');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Envoi en cours...';
+    submitBtn.disabled = true;
+    submitBtn.style.opacity = '0.7';
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: document.getElementById('contact-name').value.trim(),
+          email: document.getElementById('contact-email').value.trim(),
+          message: document.getElementById('contact-message').value.trim(),
+          _honeypot: ''
+        })
+      });
+      const data = await res.json();
+
+      if(data.success) {
+        showToast();
+        form.reset();
+        form.querySelectorAll('input, textarea').forEach(i => {
+          i.classList.remove('field-success');
+        });
+      } else {
+        alert(data.errors ? data.errors.join('\n') : 'Erreur lors de l\'envoi.');
+      }
+    } catch(err) {
+      alert('Erreur réseau. Vérifiez votre connexion et réessayez.');
+    } finally {
+      submitBtn.textContent = originalText;
+      submitBtn.disabled = false;
+      submitBtn.style.opacity = '1';
+    }
+  });
+})();
+
+// ─── FAQ Accordion ───────────────────────────────────
+document.querySelectorAll('.faq-question').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    document.querySelectorAll('.faq-question[aria-expanded="true"]').forEach(b => {
+      if(b !== btn) b.setAttribute('aria-expanded', 'false');
+    });
+    btn.setAttribute('aria-expanded', !expanded);
+  });
+});
+// ─── Lightbox Gallery ──────────────────────────────────
+const galleryData = {
+  mango: {
+    title: 'Mangue',
+    photos: [
+      'mrilirvq-WhatsApp-Image-2026-07-13-at-00.14.22.jpeg',
+      'mrilirw1-WhatsApp-Image-2026-07-13-at-00.14.23-_1_.jpeg',
+      'mrilirwx-WhatsApp-Image-2026-07-13-at-00.14.23.jpeg',
+      'https://images.unsplash.com/photo-1553279768-865429fa0078?w=800&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=800&q=85&fit=crop',
+
+      'https://images.unsplash.com/photo-1605027990121-cbae9e0642df?w=800&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1546548970-71785318a17b?w=800&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1563114773-84221bd62daa?w=800&q=85&fit=crop'
+    ],
+    captions: [
+      'Mangues Kent SOSAF-CI — conditionnement export avec filets et étiquettes',
+      'Entreposage frigorifique — palettes de cartons "Mangues de Côte d\'Ivoire"',
+      'Mangues Kent gros plan — calibre export, filets de protection',
+      'Mangues Kent mûres — qualité export',
+      'Récolte manuelle en plantation',
+
+      'Manguiers en pleine production',
+      'Mangues Amélie — variété traditionnelle',
+      'Verger de manguiers — Côte d\'Ivoire'
+    ]
+  },
+  coconut: {
+    title: 'Noix de Coco',
+    photos: [
+      'mrim4nu6-WhatsApp-Image-2026-07-13-at-00.14.44-_3_.jpeg',
+      'mrim4nsj-WhatsApp-Image-2026-07-13-at-00.14.44-_1_.jpeg',
+      'https://images.unsplash.com/photo-1560769680-ba2f3767c785?w=800&q=85&fit=crop'
+    ],
+    captions: [
+      'Entrepôt logistique — palettes sur transpalette, conditionnement sacs bleus et roses',
+      'Conteneur maritime chargé — palettes de sacs de noix de coco pour export',
+      'Noix de coco fraîche — Grand Africa Ouest'
+    ]
+  },
+  avocado: {
+    title: 'Avocat',
+    photos: [
+      'mrim90n5-WhatsApp-Image-2026-07-13-at-00.14.44-_4_.jpeg',
+      'mrim90p1-WhatsApp-Image-2026-07-13-at-00.14.44-_6_.jpeg',
+      'https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=800&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1519162808019-7de1683fa2ad?w=800&q=85&fit=crop'
+    ],
+    captions: [
+      'Collecte avocats frais — sacs de récolte prêts au tri',
+      'Avocats calibrés en carton — conditionnement export premium',
+      'Avocats Hass — maturité optimale',
+      'Récolte d\'avocats en verger'
+    ]
+  },
+  banana: {
+    title: 'Banane',
+    photos: [
+      'mrimelu4-WhatsApp-Image-2026-07-13-at-00.14.44-_5_.jpeg',
+      'mrimelw6-WhatsApp-Image-2026-07-13-at-00.14.44.jpeg',
+      'https://images.unsplash.com/photo-1528825871115-3581a5387919?w=800&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1587132137056-bfbf0166836e?w=800&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=800&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1481349518771-20055b2a7b24?w=800&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1603052875302-d376b7c0638a?w=800&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1543218024-57a70143c369?w=800&q=85&fit=crop'
+    ],
+    captions: [
+      'Bananes vertes en carton — conditionnement export avec film protecteur',
+      'Station d\'emballage — cartons de bananes Cavendish prêts à l\'expédition',
+      'Bananes Cavendish — qualité premium',
+      'Régime de bananes sur bananier',
+      'Récolte en bananeraie tropicale',
+      'Bananes vertes en maturation',
+      'Conditionnement en carton kraft 18,5 kg',
+      'Bananiers — Côte d\'Ivoire'
+    ]
+  },
+  pineapple: {
+    title: 'Ananas',
+    photos: [
+      'mrim0t97-WhatsApp-Image-2026-07-13-at-00.14.43-_1_.jpeg',
+      'mrim0t9k-WhatsApp-Image-2026-07-13-at-00.14.43-_2_.jpeg',
+      'mrim0tak-WhatsApp-Image-2026-07-13-at-00.14.43.jpeg',
+      'https://images.unsplash.com/photo-1550258987-190a2d41a8ba?w=800&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1589820296156-2454bb8a6ad1?w=800&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1587883012610-e3df17d41270?w=800&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1490885578174-acda8905c2c6?w=800&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1595475207225-428b62bda831?w=800&q=85&fit=crop',
+      'https://images.unsplash.com/photo-1452195100486-9cc805987862?w=800&q=85&fit=crop'
+    ],
+    captions: [
+      'Ananas Cayenne Lisse — carton export SOSAF-CI',
+      'Ananas frais — calibre export gros plan',
+      'Ananas conditionnés en carton — rangés pour expédition',
+      'Ananas MD2 — variété export premium',
+      'Ananas Pain de Sucre frais',
+      'Champ d\'ananas — plantation tropicale',
+      'Ananas tranché — chair dorée juteuse',
+      'Récolte d\'ananas en champ',
+      'Plantation d\'ananas — vue en rangées'
+    ]
+  }
+};
+
+let currentGallery = null;
+let currentIndex = 0;
+
+function openGallery(id){
+  const data = galleryData[id];
+  if(!data) return;
+  currentGallery = id;
+  currentIndex = 0;
+  const lb = document.getElementById('lightbox');
+  if(!lb) return;
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  updateLightbox();
+}
+
+function closeGallery(){
+  const lb = document.getElementById('lightbox');
+  if(!lb) return;
+  lb.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function prevPhoto(){
+  if(!currentGallery) return;
+  const photos = galleryData[currentGallery].photos;
+  currentIndex = (currentIndex - 1 + photos.length) % photos.length;
+  updateLightbox();
+}
+
+function nextPhoto(){
+  if(!currentGallery) return;
+  const photos = galleryData[currentGallery].photos;
+  currentIndex = (currentIndex + 1) % photos.length;
+  updateLightbox();
+}
+
+function updateLightbox(){
+  const data = galleryData[currentGallery];
+  if(!data) return;
+  const img = document.getElementById('lightbox-img');
+  const counter = document.getElementById('lightbox-counter');
+  const title = document.getElementById('lightbox-title');
+  if(img){
+    img.style.opacity = '0';
+    setTimeout(() => {
+      img.src = data.photos[currentIndex];
+      img.alt = data.captions ? data.captions[currentIndex] : data.title;
+      img.style.opacity = '1';
+    }, 150);
+  }
+  if(counter) counter.textContent = `${currentIndex + 1} / ${data.photos.length}`;
+  if(title) title.textContent = data.captions ? data.captions[currentIndex] : data.title;
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  const lb = document.getElementById('lightbox');
+  if(!lb || !lb.classList.contains('open')) return;
+  if(e.key === 'Escape') closeGallery();
+  if(e.key === 'ArrowLeft') prevPhoto();
+  if(e.key === 'ArrowRight') nextPhoto();
+});
+
+// Touch / swipe support — enhanced for mobile
+let touchStartX = 0;
+let touchStartY = 0;
+let touchStartTime = 0;
+let isSwiping = false;
+
+document.addEventListener('touchstart', (e) => {
+  const lb = document.getElementById('lightbox');
+  if(!lb || !lb.classList.contains('open')) return;
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+  touchStartTime = Date.now();
+  isSwiping = false;
+}, { passive: true });
+
+document.addEventListener('touchmove', (e) => {
+  const lb = document.getElementById('lightbox');
+  if(!lb || !lb.classList.contains('open')) return;
+  const dx = Math.abs(e.touches[0].clientX - touchStartX);
+  const dy = Math.abs(e.touches[0].clientY - touchStartY);
+  // If horizontal swipe detected, prevent vertical scroll
+  if(dx > dy && dx > 10) isSwiping = true;
+}, { passive: true });
+
+document.addEventListener('touchend', (e) => {
+  const lb = document.getElementById('lightbox');
+  if(!lb || !lb.classList.contains('open')) return;
+  const diff = e.changedTouches[0].clientX - touchStartX;
+  const dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
+  const elapsed = Date.now() - touchStartTime;
+  
+  // Quick flick (< 300ms) with less distance needed, or slow swipe with more distance
+  const threshold = elapsed < 300 ? 30 : 60;
+  
+  // Only register horizontal swipes (ignore vertical scroll attempts)
+  if(Math.abs(diff) > threshold && Math.abs(diff) > dy * 1.5){
+    if(diff > 0) prevPhoto();
+    else nextPhoto();
+  }
+  // Tap on image area to close (if no swipe detected)
+  else if(Math.abs(diff) < 10 && dy < 10 && elapsed < 200){
+    const target = e.target;
+    if(target.classList.contains('lightbox') || target.closest('.lightbox-body:not(.lightbox-nav):not(.lightbox-close)')){
+      // Tap outside image or nav to close
+    }
+  }
+}, { passive: true });
+</script>
+<div class="toast" id="toast" role="alert">
+  <div class="toast-icon">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  </div>
+  <div class="toast-content">
+    <p>Message envoyé ✓</p>
+    <span>Nous vous répondrons sous 24h.</span>
+  </div>
+  <button class="toast-close" onclick="document.getElementById('toast').classList.remove('show')" aria-label="Fermer">✕</button>
+</div>
+
+<!-- ─── Lightbox ──────────────────────────── -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Galerie photos" onclick="if(event.target===this)closeGallery()">
+  <button class="lightbox-close" onclick="closeGallery()" aria-label="Fermer la galerie">✕</button>
+  <div class="lightbox-body" onclick="event.stopPropagation()">
+    <div class="lightbox-img-wrap">
+      <button class="lightbox-nav lightbox-prev" onclick="prevPhoto()" aria-label="Photo précédente">‹</button>
+      <img class="lightbox-img" id="lightbox-img" src="" alt="Photo produit">
+      <button class="lightbox-nav lightbox-next" onclick="nextPhoto()" aria-label="Photo suivante">›</button>
+    </div>
+    <div class="lightbox-footer">
+      <span class="lightbox-counter" id="lightbox-counter">1 / 4</span>
+      <span class="lightbox-title" id="lightbox-title">Produit</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>
