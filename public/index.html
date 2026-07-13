@@ -970,14 +970,38 @@ nav.scrolled .nav-logo{
   display:flex;
   align-items:center;
   justify-content:center;
+  width:min(85vw,1200px);
+  height:72vh;
+  overflow:hidden;
 }
 .lightbox-img{
-  max-width:min(85vw,1200px);
-  max-height:72vh;
+  max-width:100%;
+  max-height:100%;
   border-radius:var(--radius-lg);
   box-shadow:0 24px 80px rgba(0,0,0,0.5);
   object-fit:contain;
-  transition:opacity 0.3s ease;
+  position:absolute;
+  transition:transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.lightbox-img.slide-out-left{
+  transform:translateX(-100%) scale(0.9);
+  opacity:0;
+}
+.lightbox-img.slide-out-right{
+  transform:translateX(100%) scale(0.9);
+  opacity:0;
+}
+.lightbox-img.slide-in-left{
+  transform:translateX(100%);
+  opacity:0;
+}
+.lightbox-img.slide-in-right{
+  transform:translateX(-100%);
+  opacity:0;
+}
+.lightbox-img.slide-center{
+  transform:translateX(0) scale(1);
+  opacity:1;
 }
 .lightbox-nav{
   position:absolute;
@@ -992,12 +1016,12 @@ nav.scrolled .nav-logo{
   font-size:24px;
   cursor:pointer;
   display:grid;place-items:center;
-  transition:background 0.2s,transform 0.2s;
+  transition:background 0.2s, transform 0.2s;
   z-index:5;
 }
 .lightbox-nav:hover{background:rgba(0,237,100,0.2);transform:translateY(-50%) scale(1.06)}
-.lightbox-prev{left:-60px}
-.lightbox-next{right:-60px}
+.lightbox-prev{left:16px}
+.lightbox-next{right:16px}
 .lightbox-footer{
   display:flex;
   justify-content:space-between;
@@ -1271,7 +1295,8 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   .lightbox-prev{left:12px}
   .lightbox-next{right:12px}
   .lightbox-nav{width:44px;height:44px;font-size:20px}
-  .lightbox-img{max-width:92vw;max-height:70vh;border-radius:var(--radius-md)}
+  .lightbox-img-wrap{width:92vw;height:70vh}
+  .lightbox-img{border-radius:var(--radius-md)}
 }
 
 /* ─── Mobile standard ≤640px ───────────────────────── */
@@ -1466,9 +1491,11 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
     max-height:100vh;
     padding:var(--space-3);
   }
+  .lightbox-img-wrap{
+    width:calc(100vw - 24px);
+    height:60vh;
+  }
   .lightbox-img{
-    max-width:calc(100vw - 24px);
-    max-height:60vh;
     border-radius:var(--radius-md);
   }
   .lightbox-close{
@@ -1592,7 +1619,8 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   .nav-links a{font-size:16px;min-height:44px;display:flex;align-items:center}
 
   /* Lightbox small */
-  .lightbox-img{max-height:55vh;max-width:calc(100vw - 16px)}
+  .lightbox-img-wrap{width:calc(100vw - 16px);height:55vh}
+  .lightbox-img{border-radius:var(--radius-md)}
   .lightbox-close{top:8px;right:8px;width:44px;height:44px}
   .lightbox-nav{width:40px;height:40px;font-size:18px}
   .lightbox-prev{left:4px}
@@ -1846,7 +1874,7 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
       <article class="product-card reveal" data-od-id="product-mango" data-gallery="mango" onclick="openGallery('mango')">
         <div class="product-card-image">
           <img src="mrilirwx-WhatsApp-Image-2026-07-13-at-00.14.23.jpeg" alt="Mangues Kent SOSAF-CI — calibre export avec filets de protection" loading="lazy">
-          <div class="gallery-overlay"><button class="gallery-overlay-btn" onclick="event.stopPropagation();openGallery('mango')" aria-label="Voir plus de photos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Galerie <span class="photo-count">8</span></button></div>
+          <div class="gallery-overlay"><button class="gallery-overlay-btn" onclick="event.stopPropagation();openGallery('mango')" aria-label="Voir plus de photos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Galerie <span class="photo-count">6</span></button></div>
         </div>
         <div class="product-card-body">
           <h3>Mangue</h3>
@@ -2612,9 +2640,7 @@ const galleryData = {
       'https://images.unsplash.com/photo-1553279768-865429fa0078?w=800&q=85&fit=crop',
       'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=800&q=85&fit=crop',
 
-      'https://images.unsplash.com/photo-1605027990121-cbae9e0642df?w=800&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1546548970-71785318a17b?w=800&q=85&fit=crop',
-      'https://images.unsplash.com/photo-1563114773-84221bd62daa?w=800&q=85&fit=crop'
+      'https://images.unsplash.com/photo-1605027990121-cbae9e0642df?w=800&q=85&fit=crop'
     ],
     captions: [
       'Mangues Kent SOSAF-CI — conditionnement export avec filets et étiquettes',
@@ -2623,9 +2649,7 @@ const galleryData = {
       'Mangues Kent mûres — qualité export',
       'Récolte manuelle en plantation',
 
-      'Manguiers en pleine production',
-      'Mangues Amélie — variété traditionnelle',
-      'Verger de manguiers — Côte d\'Ivoire'
+      'Manguiers en pleine production'
     ]
   },
   coconut: {
@@ -2732,29 +2756,41 @@ function prevPhoto(){
   if(!currentGallery) return;
   const photos = galleryData[currentGallery].photos;
   currentIndex = (currentIndex - 1 + photos.length) % photos.length;
-  updateLightbox();
+  updateLightbox('right');
 }
 
 function nextPhoto(){
   if(!currentGallery) return;
   const photos = galleryData[currentGallery].photos;
   currentIndex = (currentIndex + 1) % photos.length;
-  updateLightbox();
+  updateLightbox('left');
 }
 
-function updateLightbox(){
+function updateLightbox(direction){
   const data = galleryData[currentGallery];
   if(!data) return;
   const img = document.getElementById('lightbox-img');
   const counter = document.getElementById('lightbox-counter');
   const title = document.getElementById('lightbox-title');
   if(img){
-    img.style.opacity = '0';
-    setTimeout(() => {
+    if(direction){
+      // Slide out current image
+      img.className = 'lightbox-img slide-out-' + direction;
+      setTimeout(() => {
+        img.src = data.photos[currentIndex];
+        img.alt = data.captions ? data.captions[currentIndex] : data.title;
+        // Position new image on opposite side
+        img.className = 'lightbox-img slide-in-' + direction;
+        // Force reflow then slide to center
+        void img.offsetWidth;
+        img.className = 'lightbox-img slide-center';
+      }, 250);
+    } else {
+      // Initial open — no animation
       img.src = data.photos[currentIndex];
       img.alt = data.captions ? data.captions[currentIndex] : data.title;
-      img.style.opacity = '1';
-    }, 150);
+      img.className = 'lightbox-img slide-center';
+    }
   }
   if(counter) counter.textContent = `${currentIndex + 1} / ${data.photos.length}`;
   if(title) title.textContent = data.captions ? data.captions[currentIndex] : data.title;
