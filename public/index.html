@@ -2638,6 +2638,17 @@ const galleryData = {};
 const SHEET_ID = '1T9VDfbyFXO5j1CC-gTD4iuHfHhZbvF88dIYcYDR4Y3c';
 const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
 
+// ─── LIMITES DE SÉCURITÉ ───────────────────────────────
+const CMS_LIMITS = {
+  maxProducts: 10,       // Maximum 10 produits affichés
+  maxPhotos: 8,          // Maximum 8 photos par produit
+  maxNameLength: 30,     // Nom du produit
+  maxSubtitleLength: 80, // Sous-titre
+  maxFieldValue: 50,     // Valeur d'un champ info
+  maxFields: 4,          // 4 champs info par produit (grille 2x2)
+  requiredColumns: ['id', 'nom', 'photo_couverture'] // Colonnes obligatoires
+};
+
 function parseCSV(text){
   const rows = [];
   let current = '';
@@ -2657,6 +2668,16 @@ function parseCSV(text){
   return rows;
 }
 
+function truncate(str, max){
+  if(!str) return '';
+  return str.length > max ? str.substring(0, max - 1) + '\u2026' : str;
+}
+
+function sanitize(str){
+  if(!str) return '';
+  return str.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 function loadProducts(){
   fetch(SHEET_URL)
     .then(r => r.text())
@@ -2664,11 +2685,28 @@ function loadProducts(){
       const rows = parseCSV(csv);
       if(rows.length < 2) return;
       const headers = rows[0];
-      const products = rows.slice(1).map(row => {
+
+      // Vérifier que les colonnes obligatoires existent
+      const missing = CMS_LIMITS.requiredColumns.filter(col => !headers.includes(col));
+      if(missing.length > 0){
+        console.warn('Sheet: colonnes manquantes:', missing);
+        return;
+      }
+
+      let products = rows.slice(1).map(row => {
         const obj = {};
         headers.forEach((h, i) => { obj[h] = row[i] || ''; });
         return obj;
       });
+
+      // Filtrer les lignes vides (pas d'id ou pas de nom)
+      products = products.filter(p => p.id && p.nom && p.photo_couverture);
+
+      // Limiter le nombre de produits
+      if(products.length > CMS_LIMITS.maxProducts){
+        products = products.slice(0, CMS_LIMITS.maxProducts);
+      }
+
       renderProducts(products);
     })
     .catch(err => {
@@ -2684,42 +2722,52 @@ function renderProducts(products){
   const delays = ['', 'reveal-delay-1', 'reveal-delay-2', 'reveal-delay-3'];
 
   products.forEach((p, i) => {
-    // Build gallery data
-    const photos = [p.photo_couverture, p.photo_2, p.photo_3, p.photo_4, p.photo_5].filter(Boolean);
-    galleryData[p.id] = {
-      title: p.nom,
+    // Sanitize and truncate all values
+    const nom = sanitize(truncate(p.nom, CMS_LIMITS.maxNameLength));
+    const sousTitre = sanitize(truncate(p.sous_titre, CMS_LIMITS.maxSubtitleLength));
+    const id = sanitize(p.id.replace(/[^a-z0-9_-]/gi, ''));
+
+    // Build gallery data — max 8 photos
+    const photoKeys = ['photo_couverture','photo_2','photo_3','photo_4','photo_5','photo_6','photo_7','photo_8'];
+    const photos = photoKeys.map(k => p[k]).filter(Boolean).slice(0, CMS_LIMITS.maxPhotos);
+    
+    if(photos.length === 0) return; // Skip if no photos
+
+    galleryData[id] = {
+      title: nom,
       photos: photos,
-      captions: photos.map((_, idx) => idx === 0 ? p.nom + ' \u2014 SOSAF-CI' : p.nom + ' \u2014 photo ' + (idx+1))
+      captions: photos.map(function(_, idx){ return idx === 0 ? nom + ' \u2014 SOSAF-CI' : nom + ' \u2014 photo ' + (idx+1); })
     };
 
-    // Build meta fields
+    // Build meta fields — max 4
     let metaHTML = '';
-    for(let n = 1; n <= 4; n++){
+    let fieldCount = 0;
+    for(let n = 1; n <= 8 && fieldCount < CMS_LIMITS.maxFields; n++){
       const label = p['champ'+n+'_label'];
       const value = p['champ'+n+'_valeur'];
       if(label && value){
-        const safeVal = value.length > 50 ? value.substring(0, 47) + '\u2026' : value;
-        metaHTML += '<div class="product-meta-item"><strong>' + label + '</strong><span>' + safeVal + '</span></div>';
+        metaHTML += '<div class="product-meta-item"><strong>' + sanitize(truncate(label, 20)) + '</strong><span>' + sanitize(truncate(value, CMS_LIMITS.maxFieldValue)) + '</span></div>';
+        fieldCount++;
       }
     }
 
     // Certification badge
-    const certHTML = p.certification ? '<span class="cert-badge">\u2713 ' + p.certification + '</span>' : '';
+    const certHTML = p.certification ? '<span class="cert-badge">\u2713 ' + sanitize(truncate(p.certification, 20)) + '</span>' : '';
 
     // Gallery icon SVG
     const galSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>';
 
     const card = document.createElement('article');
     card.className = 'product-card reveal ' + delays[i % 4];
-    card.setAttribute('data-gallery', p.id);
-    card.onclick = function(){ openGallery(p.id); };
+    card.setAttribute('data-gallery', id);
+    card.onclick = function(){ openGallery(id); };
     card.innerHTML = '<div class="product-card-image">' +
-      '<img src="' + p.photo_couverture + '" alt="' + p.nom + ' \u2014 SOSAF-CI" loading="lazy">' +
-      '<div class="gallery-overlay"><button class="gallery-overlay-btn" onclick="event.stopPropagation();openGallery(\'' + p.id + '\')" aria-label="Voir plus de photos">' + galSVG + ' Galerie <span class="photo-count">' + photos.length + '</span></button></div>' +
+      '<img src="' + sanitize(photos[0]) + '" alt="' + nom + ' \u2014 SOSAF-CI" loading="lazy">' +
+      '<div class="gallery-overlay"><button class="gallery-overlay-btn" onclick="event.stopPropagation();openGallery(\'' + id + '\')" aria-label="Voir plus de photos">' + galSVG + ' Galerie <span class="photo-count">' + photos.length + '</span></button></div>' +
       '</div>' +
       '<div class="product-card-body">' +
-      '<h3>' + p.nom + '</h3>' +
-      '<p class="body-sm">' + p.sous_titre + '</p>' +
+      '<h3>' + nom + '</h3>' +
+      '<p class="body-sm">' + sousTitre + '</p>' +
       '<div class="product-meta">' + metaHTML + '</div>' +
       certHTML +
       '</div>';
