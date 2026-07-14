@@ -1012,22 +1012,6 @@ nav.scrolled .nav-logo{
   position:absolute;
   transition:opacity 0.12s ease;
 }
-.lightbox-img.slide-out-left{
-  opacity:0;
-}
-.lightbox-img.slide-out-right{
-  opacity:0;
-}
-.lightbox-img.slide-in-left{
-  opacity:0;
-}
-.lightbox-img.slide-in-right{
-  opacity:0;
-}
-.lightbox-img.slide-center{
-  transform:translateX(0) scale(1);
-  opacity:1;
-}
 .lightbox-nav{
   position:absolute;
   top:50%;
@@ -2872,7 +2856,6 @@ const galleryData = {
 
 let currentGallery = null;
 let currentIndex = 0;
-let isAnimating = false;
 
 function openGallery(id){
   const data = galleryData[id];
@@ -2894,45 +2877,29 @@ function closeGallery(){
 }
 
 function prevPhoto(){
-  if(!currentGallery || isAnimating) return;
+  if(!currentGallery) return;
   const photos = galleryData[currentGallery].photos;
   currentIndex = (currentIndex - 1 + photos.length) % photos.length;
-  updateLightbox('right');
+  updateLightbox();
 }
 
 function nextPhoto(){
-  if(!currentGallery || isAnimating) return;
+  if(!currentGallery) return;
   const photos = galleryData[currentGallery].photos;
   currentIndex = (currentIndex + 1) % photos.length;
-  updateLightbox('left');
+  updateLightbox();
 }
 
-function updateLightbox(direction){
+function updateLightbox(){
   const data = galleryData[currentGallery];
   if(!data) return;
-  if(direction && isAnimating) return;
   const img = document.getElementById('lightbox-img');
   const counter = document.getElementById('lightbox-counter');
   const title = document.getElementById('lightbox-title');
   if(img){
-    if(direction){
-      // Slide animation — bloquer les clics pendant la transition
-      isAnimating = true;
-      img.className = 'lightbox-img slide-out-' + direction;
-      setTimeout(() => {
-        img.src = data.photos[currentIndex];
-        img.alt = data.captions ? data.captions[currentIndex] : data.title;
-        img.className = 'lightbox-img slide-in-' + direction;
-        void img.offsetWidth; // force reflow
-        img.className = 'lightbox-img slide-center';
-        setTimeout(() => { isAnimating = false; }, 150);
-      }, 120);
-    } else {
-      // Initial open — pas d'animation
-      img.src = data.photos[currentIndex];
-      img.alt = data.captions ? data.captions[currentIndex] : data.title;
-      img.className = 'lightbox-img slide-center';
-    }
+    img.src = data.photos[currentIndex];
+    img.alt = data.captions ? data.captions[currentIndex] : data.title;
+    img.className = 'lightbox-img slide-center';
   }
   if(counter) counter.textContent = `${currentIndex + 1} / ${data.photos.length}`;
   if(title) title.textContent = data.captions ? data.captions[currentIndex] : data.title;
