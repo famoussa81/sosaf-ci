@@ -2915,15 +2915,17 @@ function closeGallery(){
   document.body.style.overflow = '';
 }
 
+let isAnimating = false;
+
 function prevPhoto(){
-  if(!currentGallery) return;
+  if(!currentGallery || isAnimating) return;
   const photos = galleryData[currentGallery].photos;
   currentIndex = (currentIndex - 1 + photos.length) % photos.length;
   updateLightbox('right');
 }
 
 function nextPhoto(){
-  if(!currentGallery) return;
+  if(!currentGallery || isAnimating) return;
   const photos = galleryData[currentGallery].photos;
   currentIndex = (currentIndex + 1) % photos.length;
   updateLightbox('left');
@@ -2937,6 +2939,7 @@ function updateLightbox(direction){
   const title = document.getElementById('lightbox-title');
   if(img){
     if(direction){
+      isAnimating = true;
       // Slide out current image
       img.className = 'lightbox-img slide-out-' + direction;
       setTimeout(() => {
@@ -2947,12 +2950,14 @@ function updateLightbox(direction){
         // Force reflow then slide to center
         void img.offsetWidth;
         img.className = 'lightbox-img slide-center';
+        setTimeout(() => { isAnimating = false; }, 250);
       }, 250);
     } else {
       // Initial open — no animation
       img.src = data.photos[currentIndex];
       img.alt = data.captions ? data.captions[currentIndex] : data.title;
       img.className = 'lightbox-img slide-center';
+      isAnimating = false;
     }
   }
   if(counter) counter.textContent = `${currentIndex + 1} / ${data.photos.length}`;
