@@ -1000,22 +1000,18 @@ nav.scrolled .nav-logo{
   box-shadow:0 24px 80px rgba(0,0,0,0.5);
   object-fit:contain;
   position:absolute;
-  transition:transform 0.15s cubic-bezier(0.16,1,0.3,1), opacity 0.15s cubic-bezier(0.16,1,0.3,1);
+  transition:opacity 0.12s ease;
 }
 .lightbox-img.slide-out-left{
-  transform:translateX(-100%) scale(0.9);
   opacity:0;
 }
 .lightbox-img.slide-out-right{
-  transform:translateX(100%) scale(0.9);
   opacity:0;
 }
 .lightbox-img.slide-in-left{
-  transform:translateX(100%);
   opacity:0;
 }
 .lightbox-img.slide-in-right{
-  transform:translateX(-100%);
   opacity:0;
 }
 .lightbox-img.slide-center{
@@ -2915,17 +2911,15 @@ function closeGallery(){
   document.body.style.overflow = '';
 }
 
-let isAnimating = false;
-
 function prevPhoto(){
-  if(!currentGallery || isAnimating) return;
+  if(!currentGallery) return;
   const photos = galleryData[currentGallery].photos;
   currentIndex = (currentIndex - 1 + photos.length) % photos.length;
   updateLightbox('right');
 }
 
 function nextPhoto(){
-  if(!currentGallery || isAnimating) return;
+  if(!currentGallery) return;
   const photos = galleryData[currentGallery].photos;
   currentIndex = (currentIndex + 1) % photos.length;
   updateLightbox('left');
@@ -2938,27 +2932,14 @@ function updateLightbox(direction){
   const counter = document.getElementById('lightbox-counter');
   const title = document.getElementById('lightbox-title');
   if(img){
-    if(direction){
-      isAnimating = true;
-      // Slide out current image
-      img.className = 'lightbox-img slide-out-' + direction;
-      setTimeout(() => {
-        img.src = data.photos[currentIndex];
-        img.alt = data.captions ? data.captions[currentIndex] : data.title;
-        // Position new image on opposite side
-        img.className = 'lightbox-img slide-in-' + direction;
-        // Force reflow then slide to center
-        void img.offsetWidth;
-        img.className = 'lightbox-img slide-center';
-        setTimeout(() => { isAnimating = false; }, 150);
-      }, 150);
-    } else {
-      // Initial open — no animation
-      img.src = data.photos[currentIndex];
-      img.alt = data.captions ? data.captions[currentIndex] : data.title;
+    img.className = 'lightbox-img';
+    img.style.opacity = '0';
+    img.src = data.photos[currentIndex];
+    img.alt = data.captions ? data.captions[currentIndex] : data.title;
+    // Quick fade in
+    requestAnimationFrame(() => {
       img.className = 'lightbox-img slide-center';
-      isAnimating = false;
-    }
+    });
   }
   if(counter) counter.textContent = `${currentIndex + 1} / ${data.photos.length}`;
   if(title) title.textContent = data.captions ? data.captions[currentIndex] : data.title;
