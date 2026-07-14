@@ -40,8 +40,16 @@ function isRateLimited(ip) {
 
 // ─── Handler ────────────────────────────────────────
 module.exports = async function handler(req, res) {
-  // CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  // CORS — restrict to same origin
+  const allowedOrigins = [
+    'https://sosafsarl.com',
+    'https://www.sosafsarl.com',
+    process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : ''
+  ].filter(Boolean);
+  const origin = req.headers.origin || '';
+  if (allowedOrigins.some(o => origin.startsWith(o)) || origin.includes('vercel.app')) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
