@@ -2932,14 +2932,10 @@ function updateLightbox(direction){
   const counter = document.getElementById('lightbox-counter');
   const title = document.getElementById('lightbox-title');
   if(img){
-    img.className = 'lightbox-img';
-    img.style.opacity = '0';
     img.src = data.photos[currentIndex];
     img.alt = data.captions ? data.captions[currentIndex] : data.title;
-    // Quick fade in
-    requestAnimationFrame(() => {
-      img.className = 'lightbox-img slide-center';
-    });
+    img.className = 'lightbox-img slide-center';
+    img.style.opacity = '';
   }
   if(counter) counter.textContent = `${currentIndex + 1} / ${data.photos.length}`;
   if(title) title.textContent = data.captions ? data.captions[currentIndex] : data.title;
