@@ -2925,8 +2925,8 @@ function updateLightbox(direction){
         img.className = 'lightbox-img slide-in-' + direction;
         void img.offsetWidth; // force reflow
         img.className = 'lightbox-img slide-center';
-        setTimeout(() => { isAnimating = false; }, 350);
-      }, 200);
+        setTimeout(() => { isAnimating = false; }, 150);
+      }, 120);
     } else {
       // Initial open — pas d'animation
       img.src = data.photos[currentIndex];
