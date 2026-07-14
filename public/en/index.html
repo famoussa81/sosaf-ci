@@ -2538,15 +2538,18 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
       const pct = Math.min((y / docHeight()) * 100, 100);
       progressBar.style.width = pct + '%';
     }
-    parallaxImgs.forEach(el => {
-      const rect = el.getBoundingClientRect();
-      const speed = 0.12;
-      if(rect.top < window.innerHeight && rect.bottom > 0){
-        const offset = rect.top * speed;
-        const img = el.querySelector('.parallax-img');
-        if(img) img.style.transform = `translateY(${offset}px)`;
-      }
-    });
+    // Parallax disabled on mobile (< 768px)
+    if(window.innerWidth >= 768){
+      parallaxImgs.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const speed = 0.12;
+        if(rect.top < window.innerHeight && rect.bottom > 0){
+          const offset = rect.top * speed;
+          const img = el.querySelector('.parallax-img');
+          if(img) img.style.transform = `translateY(${offset}px)`;
+        }
+      });
+    }
     updateActive();
   }
 
