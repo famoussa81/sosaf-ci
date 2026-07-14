@@ -795,25 +795,6 @@ section{
 }
 
 /* ─── Contact ────────────────────────────────────── */
-.whatsapp-btn{
-  display:inline-flex;
-  align-items:center;
-  gap:var(--space-3);
-  background:#25D366;
-  color:#ffffff;
-  padding:16px 32px;
-  border-radius:var(--radius-pill);
-  font-weight:600;
-  font-size:16px;
-  text-decoration:none;
-  transition:transform var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast);
-}
-.whatsapp-btn:hover{
-  transform:scale(1.04);
-  box-shadow:0 8px 24px rgba(37,211,102,0.3);
-}
-.whatsapp-btn:active{transform:scale(0.97)}
-.whatsapp-btn svg{flex-shrink:0}
 .contact-wrapper{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -1351,43 +1332,6 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   background:linear-gradient(90deg,var(--border),var(--accent),var(--border));
   margin-top:56px;
   opacity:0.5;
-}
-
-/* ─── WhatsApp Floating Button ────────────────────── */
-.whatsapp-float{
-  position:fixed;
-  bottom:24px;
-  right:24px;
-  z-index:900;
-  width:56px;
-  height:56px;
-  border-radius:50%;
-  background:#25D366;
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 4px 16px rgba(37,211,102,0.4), 0 2px 6px rgba(0,0,0,0.2);
-  transition:transform var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast);
-}
-.whatsapp-float:hover{
-  transform:scale(1.1);
-  box-shadow:0 6px 24px rgba(37,211,102,0.5), 0 3px 8px rgba(0,0,0,0.25);
-}
-.whatsapp-float:active{
-  transform:scale(0.95);
-}
-.whatsapp-float-pulse{
-  position:absolute;
-  inset:-4px;
-  border-radius:50%;
-  border:2px solid #25D366;
-  animation:whatsappPulse 2s ease-in-out infinite;
-  pointer-events:none;
-}
-@keyframes whatsappPulse{
-  0%,100%{transform:scale(1);opacity:0.6}
-  50%{transform:scale(1.15);opacity:0}
 }
 
 /* ─── WhatsApp CTA (Contact section) ─────────────── */
