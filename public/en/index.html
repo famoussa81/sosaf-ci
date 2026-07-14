@@ -1,44 +1,34 @@
 <!doctype html>
-<html lang="fr" data-theme="dark">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SOSAF-CI — Catalogue Produits Export | Côte d'Ivoire</title>
-<meta name="description" content="SOSAF-CI — Fourniture continue de fruits tropicaux de qualité depuis la Côte d'Ivoire. Mangue, avocat, banane, ananas, noix de coco.">
+<title>SOSAF-CI — Export Product Catalog | Côte d'Ivoire</title>
+<meta name="description" content="SOSAF-CI — Continuous supply of premium tropical fruits from Côte d'Ivoire. Mango, avocado, banana, pineapple, coconut.">
 <meta name="theme-color" content="#001e2b">
 <meta name="author" content="SOSAF-CI">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://sosafsarl.com">
+<link rel="canonical" href="https://sosafsarl.com/en/">
 <link rel="alternate" hreflang="fr" href="https://sosafsarl.com/">
 <link rel="alternate" hreflang="en" href="https://sosafsarl.com/en/">
 <link rel="alternate" hreflang="x-default" href="https://sosafsarl.com/">
-<script>
-// Auto-detect browser language — redirect English speakers to /en/ on first visit
-(function(){
-  if(sessionStorage.getItem('lang-chosen')) return;
-  var lang = (navigator.language || navigator.userLanguage || '').toLowerCase();
-  if(lang.indexOf('fr') !== 0){
-    sessionStorage.setItem('lang-chosen','auto');
-    window.location.replace('/en/');
-  }
-})();
-</script>
-<link rel="icon" type="image/svg+xml" href="logo.svg">
-<link rel="icon" type="image/png" href="logo.png">
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="icon" type="image/png" href="../logo.png">
 <!-- Open Graph -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="SOSAF-CI — Fruits Tropicaux Export | Côte d'Ivoire">
-<meta property="og:description" content="Fourniture continue de fruits tropicaux de qualité : mangue, avocat, banane, ananas, noix de coco. Export depuis Abidjan, Côte d'Ivoire.">
+<meta property="og:title" content="SOSAF-CI — Tropical Fruits Export | Côte d'Ivoire">
+<meta property="og:description" content="Continuous supply of premium tropical fruits: mango, avocado, banana, pineapple, coconut. Export from Abidjan, Côte d'Ivoire.">
 <meta property="og:image" content="https://sosafsarl.com/logo.png">
-<meta property="og:url" content="https://sosafsarl.com">
-<meta property="og:locale" content="fr_CI">
+<meta property="og:url" content="https://sosafsarl.com/en/">
+<meta property="og:locale" content="en_US">
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="SOSAF-CI — Fruits Tropicaux Export">
-<meta name="twitter:description" content="Fourniture continue de fruits tropicaux de qualité depuis la Côte d'Ivoire.">
+<meta name="twitter:title" content="SOSAF-CI — Tropical Fruits Export">
+<meta name="twitter:description" content="Continuous supply of premium tropical fruits from Côte d'Ivoire.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
 /* ============================================================
    TOKENS — MongoDB-inspired (adapted for fruit export catalog)
@@ -247,7 +237,6 @@ nav .container{
 .nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 .nav-toggle.open span:nth-child(2){opacity:0}
 .nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-/* nav mobile — see unified responsive block below */
 @media(max-width:920px){
   .nav-toggle{display:flex}
 }
@@ -295,7 +284,6 @@ section{
 .section-light h4{color:#1a1a1a}
 .section-light .eyebrow{color:var(--accent-hover)}
 .section-light .muted-text{color:#333}
-/* ─── Rounded card sections ── */
 .section-card{
   margin:var(--space-8) var(--space-6);
   border-radius:32px;
@@ -317,7 +305,7 @@ section{
 .section-card.section-dark{
   box-shadow:inset 0 1px 0 rgba(255,255,255,0.04), 0 8px 32px rgba(0,0,0,0.2);
 }
-/* section-card responsive — see unified responsive block */
+
 
 /* ─── Hero ────────────────────────────────────────── */
 .hero{
@@ -460,8 +448,6 @@ section{
 .hero-e-4{animation:heroFadeInUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.55s forwards}
 .hero-e-5{animation:heroFadeInUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.75s forwards}
 
-/* hero mobile — see unified responsive block */
-
 /* ─── Company Presentation ────────────────────────── */
 .pres-grid{
   display:grid;
@@ -513,7 +499,6 @@ section{
   box-shadow:var(--elev-raised);
 }
 .pres-image img{width:100%;height:100%;object-fit:cover}
-/* pres responsive — see unified responsive block */
 
 /* ─── Product Cards ───────────────────────────────── */
 .products-intro{
@@ -588,7 +573,6 @@ section{
   border-radius:var(--radius-sm);
   margin-top:var(--space-3);
 }
-/* products responsive — see unified responsive block */
 
 /* ─── Certifications ──────────────────────────────── */
 .cert-grid{
@@ -647,7 +631,7 @@ section{
   color:var(--fg);
 }
 .cert-badge-large p{font-size:var(--text-sm);color:var(--muted)}
-/* cert responsive — see unified responsive block */
+
 
 /* ─── Supply Capacity ─────────────────────────────── */
 .capacity-grid{
@@ -719,7 +703,6 @@ section{
   border-radius:var(--radius-md);
   color:#1a1a1a;
 }
-/* logistics responsive — see unified responsive block */
 
 /* ─── Why Us ──────────────────────────────────────── */
 .why-grid{
@@ -881,7 +864,6 @@ section{
   transition:transform var(--motion-fast) var(--ease-out);
 }
 .contact-cta:hover{transform:scale(1.04)}
-/* contact responsive — see unified responsive block */
 
 /* ─── Footer ──────────────────────────────────────── */
 footer{
@@ -902,7 +884,6 @@ footer p{font-size:var(--text-sm);color:var(--meta)}
 .footer-logo-img:hover{opacity:0.9}
 
 /* ─── Animations ──────────────────────────────────── */
-/* ─── Scroll Reveal — Cascade premium ────────────── */
 .reveal,.reveal-left,.reveal-right,.reveal-zoom{
   opacity:0;
   will-change:opacity,transform;
@@ -915,7 +896,6 @@ footer p{font-size:var(--text-sm);color:var(--meta)}
   opacity:1;
   transform:translateY(0);
 }
-/* Cascading delays — chaque élément de la grille apparaît l'un après l'autre */
 .reveal-delay-1{transition-delay:0.08s}
 .reveal-delay-2{transition-delay:0.16s}
 .reveal-delay-3{transition-delay:0.26s}
@@ -923,7 +903,6 @@ footer p{font-size:var(--text-sm);color:var(--meta)}
 .reveal-delay-5{transition-delay:0.46s}
 .reveal-delay-6{transition-delay:0.56s}
 
-/* Variante latérale pour les images et photos produits */
 .reveal-left{
   transform:translateX(-60px);
   transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
@@ -941,7 +920,6 @@ footer p{font-size:var(--text-sm);color:var(--meta)}
   transform:translateX(0);
 }
 
-/* Zoom subtil pour les images */
 .reveal-zoom{
   transform:scale(0.85);
   transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
@@ -975,7 +953,7 @@ nav.scrolled .nav-logo{
   height:32px;
 }
 
-/* ─── Reduced motion — animations plus douces mais PAS désactivées ── */
+
 /* ─── Lightbox Gallery ──────────────────────────── */
 .lightbox{
   position:fixed;
@@ -1031,18 +1009,10 @@ nav.scrolled .nav-logo{
   position:absolute;
   transition:opacity 0.12s ease;
 }
-.lightbox-img.slide-out-left{
-  opacity:0;
-}
-.lightbox-img.slide-out-right{
-  opacity:0;
-}
-.lightbox-img.slide-in-left{
-  opacity:0;
-}
-.lightbox-img.slide-in-right{
-  opacity:0;
-}
+.lightbox-img.slide-out-left{opacity:0}
+.lightbox-img.slide-out-right{opacity:0}
+.lightbox-img.slide-in-left{opacity:0}
+.lightbox-img.slide-in-right{opacity:0}
 .lightbox-img.slide-center{
   transform:translateX(0) scale(1);
   opacity:1;
@@ -1131,7 +1101,6 @@ nav.scrolled .nav-logo{
 .product-card-image{cursor:pointer;overflow:hidden}
 .product-card-image:hover .gallery-overlay{background:rgba(0,30,43,0.45)}
 .product-card-image:hover .gallery-overlay-btn{opacity:1;transform:translateY(0);pointer-events:auto}
-/* gallery/lightbox mobile — see unified responsive block */
 
 @media (prefers-reduced-motion: reduce) {
   .hero-pattern,.hero-gradient{animation:none !important}
@@ -1185,9 +1154,7 @@ nav.scrolled .nav-logo{
   justify-content:center;
   color:var(--accent);
 }
-.toast-content{
-  flex:1;
-}
+.toast-content{flex:1}
 .toast-content p{
   font-size:var(--text-sm);
   font-weight:600;
@@ -1269,9 +1236,7 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   grid-template-rows:0fr;
   transition:grid-template-rows var(--motion-slow) var(--ease-standard);
 }
-.faq-answer > *{
-  overflow:hidden;
-}
+.faq-answer > *{overflow:hidden}
 .faq-question[aria-expanded="true"] + .faq-answer{
   grid-template-rows:1fr;
 }
@@ -1287,7 +1252,6 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   color:var(--accent);
   font-weight:500;
 }
-/* faq responsive — see unified responsive block */
 
 /* ─── Process Timeline ────────────────────────────── */
 .process-timeline{
@@ -1305,9 +1269,7 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   position:relative;
   padding:0 var(--space-3);
 }
-.process-step-number{
-  margin-bottom:var(--space-3);
-}
+.process-step-number{margin-bottom:var(--space-3)}
 .process-step-number .num-label{
   font-family:var(--font-mono);
   font-size:var(--text-sm);
@@ -1374,9 +1336,7 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   transform:scale(1.1);
   box-shadow:0 6px 24px rgba(37,211,102,0.5), 0 3px 8px rgba(0,0,0,0.25);
 }
-.whatsapp-float:active{
-  transform:scale(0.95);
-}
+.whatsapp-float:active{transform:scale(0.95)}
 .whatsapp-float-pulse{
   position:absolute;
   inset:-4px;
@@ -1464,12 +1424,11 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   text-align:center;
 }
 
+
 /* ═══════════════════════════════════════════════════════════════
-   MOBILE-FIRST RESPONSIVE — 90% des utilisateurs sur mobile
-   Breakpoints: 360px → 390px → 414px → 640px → 768px → 920px
+   MOBILE-FIRST RESPONSIVE
    ═══════════════════════════════════════════════════════════════ */
 
-/* ─── Performance mobile globale ───────────────────── */
 @media(max-width:920px){
   *{-webkit-tap-highlight-color:transparent}
   html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
@@ -1481,7 +1440,6 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   }
 }
 
-/* ─── Tablet ≤768px ────────────────────────────────── */
 @media(max-width:768px){
   :root{
     --container-gutter:16px;
@@ -1493,31 +1451,26 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   nav{height:64px}
   .nav-logo{height:36px}
 
-  /* Hero tablet */
   .hero{min-height:auto;padding:calc(var(--nav-height) + 32px) 0 32px}
   .hero .container{grid-template-columns:1fr;text-align:center;gap:var(--space-8)}
   .hero-badge{margin-left:auto;margin-right:auto}
   .hero-actions{justify-content:center}
   .hero-image{max-width:480px;margin:0 auto;order:1}
 
-  /* Grilles 1 col sur tablet */
   .pres-grid{grid-template-columns:1fr;gap:var(--space-8)}
   .cert-grid{grid-template-columns:1fr;gap:var(--space-8)}
   .logistics-wrapper{grid-template-columns:1fr;gap:var(--space-6)}
   .contact-wrapper{grid-template-columns:1fr;gap:var(--space-8)}
   .doc-list{grid-template-columns:1fr}
 
-  /* Section cards */
   .section-card{border-radius:24px;margin:var(--space-4) var(--space-2)}
 
-  /* Lightbox tablet */
   .lightbox-prev{left:12px}
   .lightbox-next{right:12px}
   .lightbox-nav{width:44px;height:44px;font-size:20px}
   .lightbox-img-wrap{width:92vw;height:70vh}
   .lightbox-img{border-radius:var(--radius-md)}
 
-  /* Process timeline tablet */
   .process-timeline{
     flex-direction:column;
     align-items:center;
@@ -1532,7 +1485,6 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   }
 }
 
-/* ─── Mobile standard ≤640px ───────────────────────── */
 @media(max-width:640px){
   :root{
     --nav-height:60px;
@@ -1542,7 +1494,6 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   .container{padding:0 14px}
   nav{height:60px}
 
-  /* Hero mobile */
   .hero{
     min-height:auto;
     padding:calc(var(--nav-height) + 24px) 0 24px;
@@ -1577,14 +1528,12 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   .hero-image img{border-radius:16px}
   .hero-image-caption{font-size:11px;padding:8px 12px}
 
-  /* Section cards mobile */
   .section-card{
     border-radius:20px;
     margin:var(--space-3) var(--space-2);
   }
   .section-card::before{border-radius:20px 20px 0 0}
 
-  /* Présentation */
   .pres-grid{gap:var(--space-5)}
   .pres-stats{
     grid-template-columns:repeat(3,1fr);
@@ -1599,7 +1548,6 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   .pres-stat .stat-icon svg{width:24px;height:24px}
   .pres-image{aspect-ratio:16/9;border-radius:var(--radius-md)}
 
-  /* Produits */
   .products-grid{
     grid-template-columns:1fr;
     gap:var(--space-4);
@@ -1613,7 +1561,6 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
     grid-template-columns:1fr 1fr;
     gap:var(--space-2);
   }
-  /* Gallery overlay toujours visible sur mobile */
   .gallery-overlay{
     background:linear-gradient(to top,rgba(0,30,43,0.75) 0%,rgba(0,30,43,0) 50%);
   }
@@ -1630,14 +1577,12 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
     min-height:44px;
   }
 
-  /* Certifications */
   .cert-grid{gap:var(--space-5)}
   .cert-badge-large{padding:var(--space-5)}
   .cert-badge-large .cert-icon{width:56px;height:56px;font-size:28px}
   .cert-list{gap:var(--space-3);margin-top:var(--space-4)}
   .cert-list li{font-size:var(--text-sm)}
 
-  /* Capacité */
   .capacity-grid{
     grid-template-columns:1fr;
     gap:var(--space-3);
@@ -1655,7 +1600,6 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   .capacity-card h4{font-size:var(--text-base);margin-bottom:var(--space-1)}
   .capacity-card p{font-size:var(--text-sm)}
 
-  /* Why us */
   .why-grid{
     grid-template-columns:1fr;
     gap:var(--space-3);
@@ -1672,19 +1616,17 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   .why-card h4{margin-bottom:var(--space-1)}
   .why-card p{font-size:var(--text-sm)}
 
-  /* Logistique */
   .logistics-wrapper{gap:var(--space-5)}
   .logistics-block h3{font-size:var(--text-lg)}
   .logistics-block ul li{font-size:var(--text-sm);padding:var(--space-2) 0}
   .doc-list{gap:var(--space-2)}
   .doc-list li{padding:var(--space-3);font-size:var(--text-sm)}
 
-  /* Contact */
   .contact-wrapper{gap:var(--space-6)}
   .contact-card{padding:var(--space-5)}
   .contact-card input,
   .contact-card textarea{
-    font-size:16px!important; /* Prevent iOS zoom */
+    font-size:16px!important;
     padding:14px 12px;
     border-radius:var(--radius-md);
     min-height:48px;
@@ -1702,7 +1644,6 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
     box-shadow:0 -4px 20px rgba(0,30,43,0.3);
   }
 
-  /* FAQ */
   .faq-grid{max-width:100%}
   .faq-question{
     font-size:var(--text-base);
@@ -1711,17 +1652,14 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   }
   .faq-answer p{font-size:var(--text-sm)}
 
-  /* Footer */
   footer{padding:var(--space-6) 0}
   .footer-logo-img{height:36px}
   .footer-nav{gap:var(--space-3);flex-wrap:wrap}
   .footer-nav .footer-legal{border-left:none;padding-left:0}
 
-  /* WhatsApp float mobile */
   .whatsapp-float{width:60px;height:60px;bottom:20px;right:16px}
   .whatsapp-float svg{width:32px;height:32px}
 
-  /* WhatsApp CTA mobile */
   .whatsapp-cta{
     width:100%;
     justify-content:center;
@@ -1729,16 +1667,12 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
     font-size:16px;
   }
 
-  /* Process mobile */
   .process-step-icon{width:52px;height:52px}
   .process-step-icon svg{width:26px;height:26px}
   .process-step-title{font-size:var(--text-base)}
   .process-step-desc{font-size:13px}
 
-  /* Lightbox mobile */
-  .lightbox{
-    backdrop-filter:blur(8px);
-  }
+  .lightbox{backdrop-filter:blur(8px)}
   .lightbox-body{
     max-width:100vw;
     max-height:100vh;
@@ -1748,9 +1682,7 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
     width:calc(100vw - 24px);
     height:60vh;
   }
-  .lightbox-img{
-    border-radius:var(--radius-md);
-  }
+  .lightbox-img{border-radius:var(--radius-md)}
   .lightbox-close{
     top:12px;right:12px;
     width:48px;height:48px;
@@ -1771,7 +1703,6 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   .lightbox-counter{font-size:12px}
   .lightbox-title{font-size:13px;text-align:center}
 
-  /* Scroll reveal allégé sur mobile */
   .reveal,.reveal-left,.reveal-right,.reveal-zoom{
     transform:translateY(16px);
   }
@@ -1779,21 +1710,17 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   .reveal-right{transform:translateX(20px)}
   .reveal-zoom{transform:scale(0.95)}
 
-  /* Toast mobile */
   .toast{
     bottom:16px;right:16px;left:16px;
     max-width:none;
     border-radius:var(--radius-md);
   }
 
-  /* Progress bar mobile */
   #progress-bar{height:2px}
 
-  /* Scroll section anchor */
   section[id] .container{scroll-margin-top:60px}
 }
 
-/* ─── Mobile moyen ≤414px (iPhone SE → iPhone 12) ──── */
 @media(max-width:414px){
   :root{--nav-height:56px}
   .container{padding:0 12px}
@@ -1801,7 +1728,6 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   nav{height:56px}
   .nav-logo{height:32px}
 
-  /* Hero tiny */
   .hero{padding:calc(var(--nav-height) + 20px) 0 20px}
   .display-hero{font-size:clamp(1.6rem,9vw,2.1rem)!important;letter-spacing:-0.01em}
   .display-sub{font-size:clamp(1.3rem,6vw,1.6rem)!important}
@@ -1809,14 +1735,12 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   .lead{font-size:15px!important;line-height:1.6!important}
   .hero p.lead{font-size:14px!important}
 
-  /* Section card */
   .section-card{
     margin:var(--space-2) var(--space-1);
     border-radius:16px;
   }
   .section-card::before{border-radius:16px 16px 0 0}
 
-  /* Présentation stats */
   .pres-stats{
     grid-template-columns:repeat(3,1fr);
     gap:var(--space-1);
@@ -1826,7 +1750,6 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   .pres-stat .label{font-size:9px}
   .pres-stat .stat-icon svg{width:20px;height:20px}
 
-  /* Product cards */
   .product-card-body{padding:var(--space-3)}
   .product-card-body h3{font-size:var(--text-base);font-weight:500}
   .product-meta{gap:var(--space-2)}
@@ -1834,7 +1757,6 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   .product-meta-item strong{font-size:10px;letter-spacing:1px}
   .cert-badge{font-size:10px;padding:3px 8px}
 
-  /* Why us / capacity — compact */
   .capacity-card{padding:var(--space-4) var(--space-3);gap:var(--space-3)}
   .capacity-card .icon svg{width:28px;height:28px}
   .capacity-card h4{font-size:15px}
@@ -1844,34 +1766,28 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   .why-card h4{font-size:12px}
   .why-card p{font-size:13px}
 
-  /* Cert */
   .cert-list li{font-size:13px;gap:var(--space-2)}
   .cert-badge-large .cert-icon{width:48px;height:48px;font-size:24px}
   .cert-badge-large h3{font-size:var(--text-lg)}
   .cert-badge-large p{font-size:12px}
 
-  /* Logistique */
   .logistics-block h3{font-size:var(--text-base)}
   .logistics-block ul li{font-size:13px;padding:6px 0}
   .doc-list li{padding:var(--space-2);font-size:12px}
 
-  /* Contact */
   .contact-block p{font-size:var(--text-sm)}
   .contact-block a{font-size:var(--text-sm)}
   .contact-block h4{font-size:10px}
 
-  /* FAQ */
   .faq-question{font-size:15px;min-height:44px}
   .faq-answer p{font-size:13px}
 
-  /* Nav mobile menu */
   .nav-links{
     gap:var(--space-4);
     padding:var(--space-6) var(--space-4);
   }
   .nav-links a{font-size:16px;min-height:44px;display:flex;align-items:center}
 
-  /* Lightbox small */
   .lightbox-img-wrap{width:calc(100vw - 16px);height:55vh}
   .lightbox-img{border-radius:var(--radius-md)}
   .lightbox-close{top:8px;right:8px;width:44px;height:44px}
@@ -1880,7 +1796,6 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   .lightbox-next{right:4px}
 }
 
-/* ─── Petits téléphones ≤390px (iPhone SE, Galaxy S) ── */
 @media(max-width:390px){
   .container{padding:0 10px}
   .display-hero{font-size:clamp(1.5rem,8.5vw,1.9rem)!important}
@@ -1907,7 +1822,6 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   }
 }
 
-/* ─── Très petits ≤360px (iPhone SE 1st gen, vieux Android) ── */
 @media(max-width:360px){
   .container{padding:0 8px}
   section{padding:24px 0}
@@ -1933,7 +1847,6 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   .nav-links a{font-size:15px}
 }
 
-/* ─── Navigation mobile plein écran améliorée ──────── */
 @media(max-width:920px){
   .nav-links{
     position:fixed;
@@ -1993,8 +1906,9 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
 </style>
 </head>
 <body>
-<!-- Progress bar — indique la progression dans la page -->
-<div id="progress-bar" role="progressbar" aria-label="Progression dans la page"></div>
+
+<!-- Progress bar -->
+<div id="progress-bar" role="progressbar" aria-label="Page scroll progress"></div>
 
 <!-- ============================================================
      NAVIGATION
@@ -2002,21 +1916,21 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
 <nav>
   <div class="container">
     <a href="#" class="nav-brand">
-      <img src="logo.svg" alt="SOSAF-CI" class="nav-logo">
+      <img src="../logo.svg" alt="SOSAF-CI" class="nav-logo">
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
     <div class="nav-links">
-      <a href="#accueil">Accueil</a>
-      <a href="#presentation">Présentation</a>
-      <a href="#produits">Produits</a>
+      <a href="#accueil">Home</a>
+      <a href="#presentation">About</a>
+      <a href="#produits">Products</a>
       <a href="#certifications">Certifications</a>
       <a href="#process">Process</a>
       <a href="#faq">FAQ</a>
       <a href="#contact">Contact</a>
-      <a href="#contact" class="nav-cta">Devis →</a>
-      <a href="/en/" class="lang-switch" aria-label="English version" onclick="sessionStorage.setItem('lang-chosen','manual')">EN</a>
+      <a href="#contact" class="nav-cta">Quote →</a>
+      <a href="/" class="lang-switch" aria-label="Version française" onclick="sessionStorage.setItem('lang-chosen','manual')">FR</a>
     </div>
   </div>
 </nav>
@@ -2028,28 +1942,28 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   <div class="hero-pattern"></div>
   <div class="container">
     <div>
-      <div class="hero-badge hero-e hero-e-1">Catalogue Export</div>
+      <div class="hero-badge hero-e hero-e-1">Export Catalog</div>
       <h1 class="display-hero hero-e hero-e-2">
-        Fourniture continue de<br>
-        <span class="accent-text">fruits tropicaux</span><br>
-        de qualité
+        Continuous supply of<br>
+        <span class="accent-text">premium tropical fruits</span>
       </h1>
       <p class="lead hero-e hero-e-3" style="color:var(--fg-2)">
-        SOSAF-CI, votre partenaire export basé à Abidjan, Côte d'Ivoire.
-        Mangue, avocat, banane, ananas, noix de coco — du producteur
-        au marché international, avec rigueur et traçabilité.
+        SOSAF-CI, your export partner based in Abidjan, Côte d'Ivoire.
+        Mango, avocado, banana, pineapple, coconut — from grower
+        to international market, with rigor and traceability.
       </p>
       <div class="hero-actions hero-e hero-e-4">
-        <a href="#produits" class="btn-primary">Découvrir nos produits →</a>
-        <a href="#contact" class="btn-secondary">Nous contacter</a>
+        <a href="#produits" class="btn-primary">Discover our products →</a>
+        <a href="#contact" class="btn-secondary">Contact us</a>
       </div>
     </div>
     <div class="hero-image hero-e hero-e-5 parallax-wrap">
-      <img src="https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=800&q=80&fit=crop" alt="Panier de fruits tropicaux frais" loading="eager" class="parallax-img">
-      <div class="hero-image-caption">Mangue · Avocat · Banane · Ananas · Noix de coco</div>
+      <img src="https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=800&q=80&fit=crop" alt="Fresh tropical fruit basket" loading="eager" class="parallax-img">
+      <div class="hero-image-caption">Mango · Avocado · Banana · Pineapple · Coconut</div>
     </div>
   </div>
 </section>
+
 
 <!-- ============================================================
      COMPANY PRESENTATION
@@ -2058,14 +1972,14 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   <div class="container">
     <div class="pres-grid">
       <div class="pres-content">
-        <span class="eyebrow reveal">Qui sommes-nous</span>
-        <h2 class="display-sub reveal reveal-delay-1">SOSAF-CI — L'excellence du fruit ivoirien</h2>
+        <span class="eyebrow reveal">Who we are</span>
+        <h2 class="display-sub reveal reveal-delay-1">SOSAF-CI — The excellence of Ivorian fruit</h2>
         <p class="lead reveal reveal-delay-2">
-          SOSAF-CI est une entreprise d'import-export basée à Abidjan, Côte d'Ivoire,
-          spécialisée dans l'exportation de produits agricoles tropicaux vers le marché
-          international. Forts de notre réseau de producteurs, coopératives et stations
-          de conditionnement partenaires, nous assurons une fourniture régulière de
-          fruits de qualité, conformes aux exigences du marché mondial.
+          SOSAF-CI is an import-export company based in Abidjan, Côte d'Ivoire,
+          specialized in the export of tropical agricultural products to the
+          international market. Leveraging our network of partner growers, cooperatives
+          and packing stations, we ensure a regular supply of
+          quality fruits that meet global market requirements.
         </p>
         <div class="pres-stats reveal reveal-delay-3">
           <div class="pres-stat">
@@ -2076,7 +1990,7 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
               </svg>
             </div>
             <span class="num">100%</span>
-            <span class="label">Qualité garantie</span>
+            <span class="label">Quality guaranteed</span>
           </div>
           <div class="pres-stat">
             <div class="stat-icon">
@@ -2088,7 +2002,7 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
               </svg>
             </div>
             <span class="num">200+</span>
-            <span class="label">Producteurs partenaires</span>
+            <span class="label">Partner growers</span>
           </div>
           <div class="pres-stat">
             <div class="stat-icon">
@@ -2099,16 +2013,17 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
               </svg>
             </div>
             <span class="num">15+</span>
-            <span class="label">Pays exportateurs</span>
+            <span class="label">Export countries</span>
           </div>
         </div>
       </div>
       <div class="pres-image reveal-left reveal-delay-2 parallax-wrap">
-        <img src="https://plus.unsplash.com/premium_photo-1661911767915-d85524fc1991?w=800&q=80&fit=crop" alt="Agriculture en Afrique — plantations et producteurs" loading="lazy" class="parallax-img" style="display:block;width:100%;height:100%;object-fit:cover">
+        <img src="https://plus.unsplash.com/premium_photo-1661911767915-d85524fc1991?w=800&q=80&fit=crop" alt="Agriculture in Africa — plantations and growers" loading="lazy" class="parallax-img" style="display:block;width:100%;height:100%;object-fit:cover">
       </div>
     </div>
   </div>
 </section>
+
 
 <!-- ============================================================
      PRODUCTS
@@ -2116,162 +2031,162 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
 <section class="section-dark section-card" id="produits" data-od-id="products-section">
   <div class="container">
     <div class="products-intro">
-      <span class="eyebrow reveal">Notre gamme</span>
-      <h2 class="display-sub reveal reveal-delay-1">Produits exportés</h2>
+      <span class="eyebrow reveal">Our range</span>
+      <h2 class="display-sub reveal reveal-delay-1">Exported products</h2>
       <p class="lead reveal reveal-delay-2" style="margin:var(--space-4) auto 0;max-width:600px">
-        Cinq fruits d'exception, cultivés sous le soleil de Côte d'Ivoire,
-        sélectionnés avec soin pour les marchés les plus exigeants.
+        Five exceptional fruits, grown under the Côte d'Ivoire sun,
+        carefully selected for the most demanding markets.
       </p>
     </div>
 
     <div class="products-grid">
-      <!-- MANGUE -->
+      <!-- MANGO -->
       <article class="product-card reveal" data-od-id="product-mango" data-gallery="mango" onclick="openGallery('mango')">
         <div class="product-card-image">
-          <img src="mangue-01.jpeg" alt="Mangues Kent SOSAF-CI — calibre export avec filets de protection" loading="lazy">
-          <div class="gallery-overlay"><button class="gallery-overlay-btn" onclick="event.stopPropagation();openGallery('mango')" aria-label="Voir plus de photos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Galerie <span class="photo-count">6</span></button></div>
+          <img src="../mangue-01.jpeg" alt="Kent mangoes SOSAF-CI — export grade with protective nets" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-overlay-btn" onclick="event.stopPropagation();openGallery('mango')" aria-label="View more photos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Gallery <span class="photo-count">6</span></button></div>
         </div>
         <div class="product-card-body">
-          <h3>Mangue</h3>
-          <p class="body-sm">Origine Côte d'Ivoire · Variétés Kent et Amélie</p>
+          <h3>Mango</h3>
+          <p class="body-sm">Origin Côte d'Ivoire · Kent and Amélie varieties</p>
           <div class="product-meta">
             <div class="product-meta-item">
-              <strong>Variétés</strong>
+              <strong>Varieties</strong>
               <span>Kent, Amélie</span>
             </div>
             <div class="product-meta-item">
-              <strong>Saison</strong>
-              <span>Mars – Juillet</span>
+              <strong>Season</strong>
+              <span>March – July</span>
             </div>
             <div class="product-meta-item">
-              <strong>Calibre</strong>
-              <span>6–12 (selon variété)</span>
+              <strong>Size</strong>
+              <span>6–12 (depending on variety)</span>
             </div>
             <div class="product-meta-item">
-              <strong>Conditionnement</strong>
-              <span>Avion : carton 6 kg<br>Maritime : carton 4 kg</span>
+              <strong>Packaging</strong>
+              <span>Air: 6 kg carton<br>Sea: 4 kg carton</span>
             </div>
           </div>
           <span class="cert-badge">✓ GlobalG.A.P.</span>
         </div>
       </article>
 
-      <!-- NOIX DE COCO -->
+      <!-- COCONUT -->
       <article class="product-card reveal reveal-delay-1" data-od-id="product-coconut" data-gallery="coconut" onclick="openGallery('coconut')">
         <div class="product-card-image">
-          <img src="mrim4nu6-WhatsApp-Image-2026-07-13-at-00.14.44-_3_.jpeg" alt="Entrepôt logistique SOSAF-CI — palettes de noix de coco prêtes à l'expédition" loading="lazy">
-          <div class="gallery-overlay"><button class="gallery-overlay-btn" onclick="event.stopPropagation();openGallery('coconut')" aria-label="Voir plus de photos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Galerie <span class="photo-count">3</span></button></div>
+          <img src="../mrim4nu6-WhatsApp-Image-2026-07-13-at-00.14.44-_3_.jpeg" alt="SOSAF-CI logistics warehouse — coconut pallets ready for shipping" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-overlay-btn" onclick="event.stopPropagation();openGallery('coconut')" aria-label="View more photos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Gallery <span class="photo-count">3</span></button></div>
         </div>
         <div class="product-card-body">
-          <h3>Noix de Coco</h3>
-          <p class="body-sm">Origine Côte d'Ivoire · Variété Grand Africa Ouest</p>
+          <h3>Coconut</h3>
+          <p class="body-sm">Origin Côte d'Ivoire · Grand Africa West variety</p>
           <div class="product-meta">
             <div class="product-meta-item">
-              <strong>Variété</strong>
-              <span>Grand Africa Ouest</span>
+              <strong>Variety</strong>
+              <span>Grand Africa West</span>
             </div>
             <div class="product-meta-item">
-              <strong>Origine</strong>
+              <strong>Origin</strong>
               <span>Côte d'Ivoire</span>
             </div>
             <div class="product-meta-item">
               <strong>Type</strong>
-              <span>Fraîche, Sèche</span>
+              <span>Fresh, Dried</span>
             </div>
             <div class="product-meta-item">
-              <strong>Conditionnement</strong>
-              <span>Sac de 21 kg</span>
+              <strong>Packaging</strong>
+              <span>21 kg bag</span>
             </div>
           </div>
           <span class="cert-badge">✓ GlobalG.A.P.</span>
         </div>
       </article>
 
-      <!-- AVOCAT -->
+      <!-- AVOCADO -->
       <article class="product-card reveal reveal-delay-2" data-od-id="product-avocado" data-gallery="avocado" onclick="openGallery('avocado')">
         <div class="product-card-image">
-          <img src="mrim90p1-WhatsApp-Image-2026-07-13-at-00.14.44-_6_.jpeg" alt="Avocats calibrés en carton — conditionnement export SOSAF-CI" loading="lazy">
-          <div class="gallery-overlay"><button class="gallery-overlay-btn" onclick="event.stopPropagation();openGallery('avocado')" aria-label="Voir plus de photos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Galerie <span class="photo-count">4</span></button></div>
+          <img src="../mrim90p1-WhatsApp-Image-2026-07-13-at-00.14.44-_6_.jpeg" alt="Calibrated avocados in carton — SOSAF-CI export packaging" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-overlay-btn" onclick="event.stopPropagation();openGallery('avocado')" aria-label="View more photos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Gallery <span class="photo-count">4</span></button></div>
         </div>
         <div class="product-card-body">
-          <h3>Avocat</h3>
-          <p class="body-sm">Origine Côte d'Ivoire · Variétés Hass et Fuerte</p>
+          <h3>Avocado</h3>
+          <p class="body-sm">Origin Côte d'Ivoire · Hass and Fuerte varieties</p>
           <div class="product-meta">
             <div class="product-meta-item">
-              <strong>Variétés</strong>
+              <strong>Varieties</strong>
               <span>Hass, Fuerte</span>
             </div>
             <div class="product-meta-item">
-              <strong>Calibre</strong>
+              <strong>Size</strong>
               <span>16–22</span>
             </div>
             <div class="product-meta-item">
-              <strong>Conditionnement</strong>
-              <span>Avion : carton 6 kg<br>Maritime : carton 4 kg</span>
+              <strong>Packaging</strong>
+              <span>Air: 6 kg carton<br>Sea: 4 kg carton</span>
             </div>
             <div class="product-meta-item">
-              <strong>Disponibilité</strong>
-              <span>Selon saison</span>
+              <strong>Availability</strong>
+              <span>Seasonal</span>
             </div>
           </div>
         </div>
       </article>
 
-      <!-- BANANE -->
+      <!-- BANANA -->
       <article class="product-card reveal reveal-delay-3" data-od-id="product-banana" data-gallery="banana" onclick="openGallery('banana')">
         <div class="product-card-image">
-          <img src="mrimelw6-WhatsApp-Image-2026-07-13-at-00.14.44.jpeg" alt="Bananes Cavendish — cartons d'export en station d'emballage SOSAF-CI" loading="lazy">
-          <div class="gallery-overlay"><button class="gallery-overlay-btn" onclick="event.stopPropagation();openGallery('banana')" aria-label="Voir plus de photos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Galerie <span class="photo-count">8</span></button></div>
+          <img src="../mrimelw6-WhatsApp-Image-2026-07-13-at-00.14.44.jpeg" alt="Cavendish bananas — export cartons at SOSAF-CI packing station" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-overlay-btn" onclick="event.stopPropagation();openGallery('banana')" aria-label="View more photos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Gallery <span class="photo-count">8</span></button></div>
         </div>
         <div class="product-card-body">
-          <h3>Banane</h3>
-          <p class="body-sm">Origine Côte d'Ivoire · Variété Cavendish</p>
+          <h3>Banana</h3>
+          <p class="body-sm">Origin Côte d'Ivoire · Cavendish variety</p>
           <div class="product-meta">
             <div class="product-meta-item">
-              <strong>Variété</strong>
+              <strong>Variety</strong>
               <span>Cavendish</span>
             </div>
             <div class="product-meta-item">
-              <strong>Origine</strong>
+              <strong>Origin</strong>
               <span>Côte d'Ivoire</span>
             </div>
             <div class="product-meta-item">
-              <strong>Quantité</strong>
-              <span>Selon disponibilité</span>
+              <strong>Quantity</strong>
+              <span>Subject to availability</span>
             </div>
             <div class="product-meta-item">
-              <strong>Conditionnement</strong>
-              <span>Carton kraft 18,5 kg</span>
+              <strong>Packaging</strong>
+              <span>18.5 kg kraft carton</span>
             </div>
           </div>
         </div>
       </article>
 
-      <!-- ANANAS -->
+      <!-- PINEAPPLE -->
       <article class="product-card reveal" data-od-id="product-pineapple" data-gallery="pineapple" onclick="openGallery('pineapple')">
         <div class="product-card-image">
-          <img src="mrim0tak-WhatsApp-Image-2026-07-13-at-00.14.43.jpeg" alt="Ananas conditionnés en carton export — SOSAF-CI Côte d'Ivoire" loading="lazy">
-          <div class="gallery-overlay"><button class="gallery-overlay-btn" onclick="event.stopPropagation();openGallery('pineapple')" aria-label="Voir plus de photos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Galerie <span class="photo-count">9</span></button></div>
+          <img src="../mrim0tak-WhatsApp-Image-2026-07-13-at-00.14.43.jpeg" alt="Pineapples packed in export cartons — SOSAF-CI Côte d'Ivoire" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-overlay-btn" onclick="event.stopPropagation();openGallery('pineapple')" aria-label="View more photos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Gallery <span class="photo-count">9</span></button></div>
         </div>
         <div class="product-card-body">
-          <h3>Ananas</h3>
-          <p class="body-sm">Origine Côte d'Ivoire · Variétés MD2, Pain de Sucre, Cayenne Lisse</p>
+          <h3>Pineapple</h3>
+          <p class="body-sm">Origin Côte d'Ivoire · MD2, Sugar Loaf, Smooth Cayenne varieties</p>
           <div class="product-meta">
             <div class="product-meta-item">
-              <strong>Variétés</strong>
-              <span>MD2, Pain de Sucre, Cayenne Lisse</span>
+              <strong>Varieties</strong>
+              <span>MD2, Sugar Loaf, Smooth Cayenne</span>
             </div>
             <div class="product-meta-item">
-              <strong>Calibre</strong>
+              <strong>Size</strong>
               <span>6–12</span>
             </div>
             <div class="product-meta-item">
-              <strong>Saison</strong>
-              <span>Toute l'année</span>
+              <strong>Season</strong>
+              <span>Year-round</span>
             </div>
             <div class="product-meta-item">
-              <strong>Conditionnement</strong>
-              <span>Carton de 12 kg</span>
+              <strong>Packaging</strong>
+              <span>12 kg carton</span>
             </div>
           </div>
         </div>
@@ -2279,6 +2194,7 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
     </div>
   </div>
 </section>
+
 
 <!-- ============================================================
      CERTIFICATIONS & QUALITY
@@ -2287,30 +2203,30 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   <div class="container">
     <div class="cert-grid">
       <div class="cert-content">
-        <span class="eyebrow reveal">Qualité</span>
-        <h2 class="display-sub reveal reveal-delay-1">Certifications et contrôle qualité</h2>
+        <span class="eyebrow reveal">Quality</span>
+        <h2 class="display-sub reveal reveal-delay-1">Certifications and quality control</h2>
         <p class="lead reveal reveal-delay-2">
-          SOSAF-CI travaille en collaboration avec des coopératives agricoles et des stations
-          de conditionnement partenaires disposant de certifications reconnues,
-          notamment <strong>GlobalG.A.P.</strong> pour certains produits comme la mangue et la noix de coco.
+          SOSAF-CI works in collaboration with agricultural cooperatives and partner
+          packing stations holding recognized certifications,
+          notably <strong>GlobalG.A.P.</strong> for certain products such as mango and coconut.
         </p>
         <p class="lead reveal reveal-delay-2" style="margin-top:var(--space-4)">
-          Grâce à ce réseau de partenaires certifiés, nous sommes en mesure de proposer
-          des produits conformes aux exigences du marché international, avec un meilleur suivi
-          de la qualité, de la traçabilité et du conditionnement avant exportation.
+          Through this network of certified partners, we are able to offer
+          products that comply with international market requirements, with enhanced monitoring
+          of quality, traceability and packaging before export.
         </p>
         <ul class="cert-list reveal reveal-delay-3">
-          <li>Contrôle qualité avant chaque expédition</li>
-          <li>Respect des normes et standards export internationaux</li>
-          <li>Traçabilité complète des produits, du champ au conteneur</li>
-          <li>Fourniture des documents nécessaires selon la commande</li>
+          <li>Quality control before each shipment</li>
+          <li>Compliance with international export standards and norms</li>
+          <li>Full product traceability, from field to container</li>
+          <li>Provision of required documentation per order</li>
         </ul>
       </div>
       <div class="cert-visual reveal-zoom reveal-delay-2">
         <div class="cert-badge-large">
           <div class="cert-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 12 6a7 7 0 0 1 1 13.9"/><path d="M12 13v7"/><path d="M9 20h6"/><path d="M21 9c0 2-2 4-4 4"/></svg></div>
           <h3>GlobalG.A.P.</h3>
-          <p>Certification reconnue pour la mangue et la noix de coco — garantie de bonnes pratiques agricoles, qualité et traçabilité.</p>
+          <p>Recognized certification for mango and coconut — guarantee of good agricultural practices, quality and traceability.</p>
         </div>
       </div>
     </div>
@@ -2318,21 +2234,16 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
 </section>
 
 
-
-
-
-
-
 <!-- ============================================================
-     PROCESS DE COMMANDE
+     ORDER PROCESS
      ============================================================ -->
 <section class="section-dark section-card" id="process" data-od-id="order-process">
   <div class="container">
     <div style="text-align:center">
       <span class="eyebrow reveal">Process</span>
-      <h2 class="display-sub reveal reveal-delay-1">Comment commander</h2>
+      <h2 class="display-sub reveal reveal-delay-1">How to order</h2>
       <p class="lead reveal reveal-delay-2" style="margin:var(--space-4) auto 0;max-width:620px;color:var(--fg-2)">
-        De la demande de devis à la livraison, un processus clair et transparent en 4 étapes.
+        From quote request to delivery, a clear and transparent process in 4 steps.
       </p>
     </div>
     <div class="process-timeline reveal reveal-delay-2">
@@ -2341,8 +2252,8 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
         <div class="process-step-icon">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         </div>
-        <h4 class="process-step-title">Contactez-nous</h4>
-        <p class="process-step-desc">Par email ou WhatsApp, décrivez vos besoins : produits, volumes, destination et délais souhaités.</p>
+        <h4 class="process-step-title">Contact us</h4>
+        <p class="process-step-desc">By email or WhatsApp, describe your needs: products, volumes, destination and desired timelines.</p>
       </div>
       <div class="process-connector"></div>
       <div class="process-step">
@@ -2350,8 +2261,8 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
         <div class="process-step-icon">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         </div>
-        <h4 class="process-step-title">Devis sous 24h</h4>
-        <p class="process-step-desc">Recevez une proposition détaillée avec les prix, conditions logistiques et planning d'expédition.</p>
+        <h4 class="process-step-title">Quote within 24h</h4>
+        <p class="process-step-desc">Receive a detailed proposal with prices, logistics conditions and shipping schedule.</p>
       </div>
       <div class="process-connector"></div>
       <div class="process-step">
@@ -2359,8 +2270,8 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
         <div class="process-step-icon">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
         </div>
-        <h4 class="process-step-title">Validation & préparation</h4>
-        <p class="process-step-desc">Confirmation de la commande, paiement selon les termes convenus, sélection et conditionnement des produits.</p>
+        <h4 class="process-step-title">Confirmation & preparation</h4>
+        <p class="process-step-desc">Order confirmation, payment per agreed terms, product selection and packaging.</p>
       </div>
       <div class="process-connector"></div>
       <div class="process-step">
@@ -2368,12 +2279,13 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
         <div class="process-step-icon">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
         </div>
-        <h4 class="process-step-title">Expédition</h4>
-        <p class="process-step-desc">Transport maritime ou aérien avec tous les documents export : facture, packing list, certificats phytosanitaire et d'origine.</p>
+        <h4 class="process-step-title">Shipment</h4>
+        <p class="process-step-desc">Sea or air transport with all export documents: invoice, packing list, phytosanitary and certificate of origin.</p>
       </div>
     </div>
   </div>
 </section>
+
 
 <!-- ============================================================
      FAQ
@@ -2381,97 +2293,98 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
 <section class="section-dark section-card" id="faq" data-od-id="faq-section">
   <div class="container" style="padding-block:var(--section-y-desktop) 48px">
     <div style="text-align:center">
-      <span class="eyebrow reveal">Questions fréquentes</span>
-      <h2 class="display-sub reveal reveal-delay-1">Tout savoir sur SOSAF-CI</h2>
+      <span class="eyebrow reveal">Frequently asked questions</span>
+      <h2 class="display-sub reveal reveal-delay-1">Everything about SOSAF-CI</h2>
       <p class="lead" style="max-width:620px;margin:var(--space-3) auto var(--space-6);color:var(--fg-2)">
-        Retrouvez les réponses aux questions les plus courantes sur nos produits, notre processus d'export et nos services.
+        Find answers to the most common questions about our products, export process and services.
       </p>
     </div>
     <div class="faq-grid">
       <div class="faq-item reveal">
         <button class="faq-question" aria-expanded="false">
-          <span>Quels produits exportez-vous ?</span>
+          <span>What products do you export?</span>
           <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
         <div class="faq-answer">
-          <p>SOSAF-CI exporte une large gamme de fruits tropicaux depuis la Côte d'Ivoire : <strong>mangue</strong> (Kent, Amélie), <strong>noix de coco</strong> (fraîche et sèche), <strong>avocat</strong> (Hass), <strong>banane</strong> (Cavendish) et <strong>ananas</strong> (MD2, Cayenne Lisse). Nous pouvons également fournir d'autres produits agricoles selon la disponibilité saisonnière.</p>
+          <p>SOSAF-CI exports a wide range of tropical fruits from Côte d'Ivoire: <strong>mango</strong> (Kent, Amélie), <strong>coconut</strong> (fresh and dried), <strong>avocado</strong> (Hass), <strong>banana</strong> (Cavendish) and <strong>pineapple</strong> (MD2, Smooth Cayenne). We can also supply other agricultural products depending on seasonal availability.</p>
         </div>
       </div>
       <div class="faq-item reveal reveal-delay-1">
         <button class="faq-question" aria-expanded="false">
-          <span>Quelles certifications qualité possédez-vous ?</span>
+          <span>What quality certifications do you hold?</span>
           <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
         <div class="faq-answer">
-          <p>Nous travaillons en collaboration avec des coopératives agricoles et stations de conditionnement partenaires disposant de la <strong>certification GlobalG.A.P.</strong>, notamment pour la mangue et la noix de coco. Ce réseau de partenaires certifiés nous permet de proposer des produits conformes aux exigences du marché international, avec un suivi rigoureux de la qualité, de la traçabilité et du conditionnement.</p>
+          <p>We work in collaboration with agricultural cooperatives and partner packing stations holding <strong>GlobalG.A.P. certification</strong>, particularly for mango and coconut. This network of certified partners enables us to offer products that comply with international market requirements, with rigorous monitoring of quality, traceability and packaging.</p>
         </div>
       </div>
       <div class="faq-item reveal reveal-delay-1">
         <button class="faq-question" aria-expanded="false">
-          <span>Quels sont les volumes minimum de commande ?</span>
+          <span>What are the minimum order volumes?</span>
           <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
         <div class="faq-answer">
-          <p>Nous sommes flexibles et pouvons répondre aussi bien aux commandes <strong>par conteneur complet</strong> qu'aux commandes <strong>par palette ou volume négocié</strong>. Notre réseau de producteurs et coopératives nous permet d'assurer une fourniture continue et de nous adapter à vos besoins spécifiques. Contactez-nous pour discuter des quantités qui vous intéressent.</p>
+          <p>We are flexible and can fulfill both <strong>full container</strong> orders and <strong>pallet or negotiated volume</strong> orders. Our network of growers and cooperatives allows us to ensure continuous supply and adapt to your specific needs. Contact us to discuss the quantities you are interested in.</p>
         </div>
       </div>
       <div class="faq-item reveal reveal-delay-2">
         <button class="faq-question" aria-expanded="false">
-          <span>Quels documents fournissez-vous pour l'export ?</span>
+          <span>What documents do you provide for export?</span>
           <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
         <div class="faq-answer">
-          <p>Nous fournissons tous les documents nécessaires à l'exportation : <strong>facture commerciale</strong>, <strong>packing list</strong>, <strong>certificat phytosanitaire</strong>, <strong>certificat d'origine</strong>, documents de transport, et certificats qualité selon disponibilité. Nous assurons une transparence totale sur l'ensemble des documents accompagnant votre commande.</p>
+          <p>We provide all documents required for export: <strong>commercial invoice</strong>, <strong>packing list</strong>, <strong>phytosanitary certificate</strong>, <strong>certificate of origin</strong>, transport documents, and quality certificates as available. We ensure full transparency on all documents accompanying your order.</p>
         </div>
       </div>
       <div class="faq-item reveal reveal-delay-2">
         <button class="faq-question" aria-expanded="false">
-          <span>Quels sont les délais et modes d'expédition ?</span>
+          <span>What are the lead times and shipping methods?</span>
           <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
         <div class="faq-answer">
-          <p>Nous proposons deux modes de transport : <strong>maritime</strong> (conteneurs réfrigérés pour les volumes importants, délai 10–20 jours selon destination) et <strong>aérien</strong> (pour les commandes urgentes ou les petits volumes, délai 2–5 jours). Le choix du mode de transport dépend de votre destination, du volume commandé et de l'urgence. Nous expédions vers l'Europe, le Moyen-Orient, l'Asie et les Amériques.</p>
+          <p>We offer two transport modes: <strong>sea freight</strong> (refrigerated containers for large volumes, 10–20 days depending on destination) and <strong>air freight</strong> (for urgent orders or small volumes, 2–5 days). The choice of transport mode depends on your destination, order volume and urgency. We ship to Europe, the Middle East, Asia and the Americas.</p>
         </div>
       </div>
       <div class="faq-item reveal reveal-delay-2">
         <button class="faq-question" aria-expanded="false">
-          <span>Comment sont conditionnés les produits ?</span>
+          <span>How are the products packaged?</span>
           <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
         <div class="faq-answer">
-          <p>Chaque produit est conditionné de manière professionnelle, adaptée à sa nature et à la destination : <strong>cartons ventilés</strong> pour les mangues avec filets de protection, <strong>sacs ou caisses</strong> pour les noix de coco, <strong>cartons alvéolés</strong> pour les avocats, <strong>cartons doublés</strong> pour les bananes et ananas. Tout le conditionnement est conçu pour préserver la fraîcheur et respecter les normes d'import de votre pays.</p>
+          <p>Each product is professionally packaged, adapted to its nature and destination: <strong>ventilated cartons</strong> for mangoes with protective nets, <strong>bags or crates</strong> for coconuts, <strong>cell-pack cartons</strong> for avocados, <strong>lined cartons</strong> for bananas and pineapples. All packaging is designed to preserve freshness and comply with your country's import standards.</p>
         </div>
       </div>
       <div class="faq-item reveal reveal-delay-3">
         <button class="faq-question" aria-expanded="false">
-          <span>Quels marchés desservez-vous ?</span>
+          <span>Which markets do you serve?</span>
           <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
         <div class="faq-answer">
-          <p>SOSAF-CI exporte vers tous les marchés internationaux : <strong>Europe</strong> (France, Pays-Bas, Belgique, Allemagne, Espagne…), <strong>Moyen-Orient</strong> (EAU, Arabie Saoudite, Qatar…), <strong>Asie</strong> et <strong>Amériques</strong>. Nous adaptons notre logistique et nos documents aux exigences spécifiques de chaque marché de destination.</p>
+          <p>SOSAF-CI exports to all international markets: <strong>Europe</strong> (France, Netherlands, Belgium, Germany, Spain…), <strong>Middle East</strong> (UAE, Saudi Arabia, Qatar…), <strong>Asia</strong> and the <strong>Americas</strong>. We adapt our logistics and documentation to the specific requirements of each destination market.</p>
         </div>
       </div>
       <div class="faq-item reveal reveal-delay-2">
         <button class="faq-question" aria-expanded="false">
-          <span>Comment puis-je passer une commande ?</span>
+          <span>How can I place an order?</span>
           <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
         <div class="faq-answer">
-          <p>Vous pouvez nous contacter directement par <strong>email</strong> ou <strong>WhatsApp</strong> (coordonnées ci-dessous) avec vos besoins : produits souhaités, volumes, destination et délais. Notre équipe vous répondra sous 24h avec une proposition commerciale détaillée, les prix et les conditions logistiques adaptées à votre demande.</p>
+          <p>You can contact us directly by <strong>email</strong> or <strong>WhatsApp</strong> (details below) with your requirements: desired products, volumes, destination and timelines. Our team will respond within 24 hours with a detailed commercial proposal, prices and logistics conditions tailored to your request.</p>
         </div>
       </div>
       <div class="faq-item reveal reveal-delay-3">
         <button class="faq-question" aria-expanded="false">
-          <span>Proposez-vous des échantillons ?</span>
+          <span>Do you offer samples?</span>
           <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
         <div class="faq-answer">
-          <p>Oui, nous pouvons organiser l'envoi d'<strong>échantillons</strong> pour vous permettre d'évaluer la qualité de nos produits avant de passer commande. Les conditions et délais d'envoi des échantillons sont à discuter avec notre équipe commerciale — contactez-nous pour en savoir plus.</p>
+          <p>Yes, we can arrange to send <strong>samples</strong> to allow you to evaluate the quality of our products before placing an order. Sample shipping conditions and timelines are to be discussed with our sales team — contact us to learn more.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
+
 
 <!-- ============================================================
      CONTACT
@@ -2481,28 +2394,28 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
     <div class="contact-wrapper">
       <div class="contact-info">
         <span class="eyebrow reveal">Contact</span>
-        <h2 class="display-sub reveal reveal-delay-1">Parlons de votre projet</h2>
+        <h2 class="display-sub reveal reveal-delay-1">Let's discuss your project</h2>
         <p class="lead reveal reveal-delay-2">
-          Pour toute demande de cotation, partenariat commercial ou commande à l'export,
-          notre équipe est à votre disposition.
+          For any quote request, commercial partnership or export order,
+          our team is at your disposal.
         </p>
 
         <div class="contact-block reveal reveal-delay-2" style="margin-top:var(--space-8)">
-          <h4>Directeur</h4>
+          <h4>Director</h4>
           <p><strong>Mohamed Sanogo</strong></p>
-          <p>Email : <a href="mailto:m.sanogo@sosafsarl.com">m.sanogo@sosafsarl.com</a></p>
-          <p>Tél / WhatsApp : <a href="tel:+2250710006500">+225 07 10 00 65 00</a></p>
+          <p>Email: <a href="mailto:m.sanogo@sosafsarl.com">m.sanogo@sosafsarl.com</a></p>
+          <p>Phone / WhatsApp: <a href="tel:+2250710006500">+225 07 10 00 65 00</a></p>
         </div>
 
         <div class="contact-block reveal reveal-delay-3">
           <h4>Export Manager</h4>
           <p><strong>Bouramala Yaya Sanogo</strong></p>
-          <p>Email : <a href="mailto:bouramalayayasanogo@gmail.com">bouramalayayasanogo@gmail.com</a></p>
-          <p>Tél / WhatsApp : <a href="tel:+22389134555">+223 89 13 45 55</a></p>
+          <p>Email: <a href="mailto:bouramalayayasanogo@gmail.com">bouramalayayasanogo@gmail.com</a></p>
+          <p>Phone / WhatsApp: <a href="tel:+22389134555">+223 89 13 45 55</a></p>
         </div>
 
         <div class="contact-block reveal reveal-delay-3">
-          <h4>Adresse</h4>
+          <h4>Address</h4>
           <p>SOSAF-CI</p>
           <p>Abidjan, Cocody, Angré, 9ème Tranche</p>
           <p>Lot N446B, Îlot N20</p>
@@ -2512,16 +2425,16 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
         <!-- WhatsApp CTA prominent -->
         <a href="https://wa.me/22389134555" target="_blank" rel="noopener noreferrer" class="whatsapp-cta reveal reveal-delay-3">
           <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          <span>Discuter sur WhatsApp</span>
+          <span>Chat on WhatsApp</span>
         </a>
-        <p class="whatsapp-cta-sub reveal reveal-delay-3">Réponse immédiate sur WhatsApp</p>
+        <p class="whatsapp-cta-sub reveal reveal-delay-3">Instant reply on WhatsApp</p>
       </div>
 
       <div class="contact-card reveal reveal-delay-2">
-        <h3 style="font-family:var(--font-display);font-size:var(--text-xl);margin-bottom:var(--space-6)">Nous écrire</h3>
+        <h3 style="font-family:var(--font-display);font-size:var(--text-xl);margin-bottom:var(--space-6)">Write to us</h3>
         <form id="contact-form">
           <div style="margin-bottom:var(--space-4)">
-            <label for="contact-name" style="font-size:var(--text-sm);font-weight:500;display:block;margin-bottom:var(--space-1)">Votre nom</label>
+            <label for="contact-name" style="font-size:var(--text-sm);font-weight:500;display:block;margin-bottom:var(--space-1)">Your name</label>
             <input id="contact-name" type="text" required style="width:100%;padding:12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--fg);font-size:15px">
           </div>
           <div style="margin-bottom:var(--space-4)">
@@ -2532,13 +2445,14 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
             <label for="contact-message" style="font-size:var(--text-sm);font-weight:500;display:block;margin-bottom:var(--space-1)">Message</label>
             <textarea id="contact-message" rows="4" required style="width:100%;padding:12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--fg);font-size:15px;resize:vertical"></textarea>
           </div>
-          <button type="submit" class="contact-cta">Envoyer le message →</button>
+          <button type="submit" class="contact-cta">Send message →</button>
         </form>
         <p class="rccm">RCCM : CI-ABJ-03-2024-B21-00015</p>
       </div>
     </div>
   </div>
 </section>
+
 
 <!-- ============================================================
      FOOTER
@@ -2547,22 +2461,23 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   <div class="container">
     <div class="footer-content">
       <div class="footer-logo">
-        <img src="logo.svg" alt="SOSAF-CI" class="footer-logo-img">
+        <img src="../logo.svg" alt="SOSAF-CI" class="footer-logo-img">
       </div>
-      <nav class="footer-nav" aria-label="Navigation pied de page">
-        <a href="#accueil">Accueil</a>
-        <a href="#presentation">Présentation</a>
-        <a href="#produits">Produits</a>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="#accueil">Home</a>
+        <a href="#presentation">About</a>
+        <a href="#produits">Products</a>
         <a href="#certifications">Certifications</a>
         <a href="#process">Process</a>
         <a href="#faq">FAQ</a>
         <a href="#contact">Contact</a>
-        <a href="#" class="footer-legal">Mentions légales</a>
+        <a href="#" class="footer-legal">Legal notice</a>
       </nav>
-      <p class="footer-copy">© 2026 SOSAF-CI — Tous droits réservés. Fourniture continue de fruits tropicaux de qualité depuis la Côte d'Ivoire.</p>
+      <p class="footer-copy">© 2026 SOSAF-CI — All rights reserved. Continuous supply of premium tropical fruits from Côte d'Ivoire.</p>
     </div>
   </div>
 </footer>
+
 
 <!-- ============================================================
      SCRIPTS — Animations & interactions
@@ -2574,7 +2489,6 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
     entries.forEach(entry => {
       if(entry.isIntersecting){
         entry.target.classList.add('visible');
-        // Une fois visible, on arrête de l'observer (performance)
         observer.unobserve(entry.target);
       }
     });
@@ -2600,17 +2514,14 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
         const num = parseInt(text.replace(/[^0-9]/g,''), 10);
         if(isNaN(num)) return;
 
-        // Detect suffix: % or +
         const suffix = text.includes('%') ? '%' : text.includes('+') ? '+' : '';
 
-        // Animate counting from 0 to target number
         const duration = 1200;
         const start = performance.now();
 
         function animate(now){
           const elapsed = now - start;
           const progress = Math.min(elapsed / duration, 1);
-          // Ease out cubic
           const eased = 1 - Math.pow(1 - progress, 3);
           const current = Math.round(eased * num);
 
@@ -2639,9 +2550,7 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   const links = document.querySelector('.nav-links');
   const navLinks = links ? links.querySelectorAll('a:not(.nav-cta)') : [];
   const sections = [];
-  const heroSection = document.getElementById('accueil');
 
-  // Build section map from nav hrefs
   navLinks.forEach(a => {
     const id = a.getAttribute('href');
     if(id && id.startsWith('#') && id.length > 1){
@@ -2650,7 +2559,6 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
     }
   });
 
-  // Scroll spy — highlight active link
   let activeId = '';
   function updateActive(){
     const scrollY = window.scrollY + 100;
@@ -2666,32 +2574,26 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
     }
   }
 
-  // Scroll handler — combine glass depth + nav shrink + progress bar + parallax
   const progressBar = document.getElementById('progress-bar');
   const parallaxImgs = document.querySelectorAll('.parallax-wrap');
   const docHeight = () => document.documentElement.scrollHeight - window.innerHeight;
 
   function onScroll(){
     const y = window.scrollY;
-    // Nav glass depth
     const opacity = Math.min(0.65, 0.35 + (y / 300) * 0.3);
     nav.style.background = `rgba(0,30,43,${opacity})`;
-    // Nav shrink
     if(y > 80){
       nav.classList.add('scrolled');
     } else {
       nav.classList.remove('scrolled');
     }
-    // Progress bar — pourcentage de la page parcouru
     if(progressBar){
       const pct = Math.min((y / docHeight()) * 100, 100);
       progressBar.style.width = pct + '%';
     }
-    // Parallaxe subtil — les images bougent plus lentement que le scroll
     parallaxImgs.forEach(el => {
       const rect = el.getBoundingClientRect();
       const speed = 0.12;
-      // Only when element is visible on screen
       if(rect.top < window.innerHeight && rect.bottom > 0){
         const offset = rect.top * speed;
         const img = el.querySelector('.parallax-img');
@@ -2703,7 +2605,6 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
 
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  // Mobile toggle
   if(toggle){
     toggle.addEventListener('click', () => {
       const open = links.classList.toggle('open');
@@ -2718,29 +2619,25 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
     document.body.style.overflow = '';
   }
 
-  // Close mobile menu on link click
   navLinks.forEach(a => a.addEventListener('click', closeMobile));
-  // Also close on CTA click
   const navCta = links ? links.querySelector('.nav-cta') : null;
   if(navCta) navCta.addEventListener('click', closeMobile);
 
-  // Close on outside click
   document.addEventListener('click', (e) => {
     if(links.classList.contains('open') && !nav.contains(e.target)){
       closeMobile();
     }
   });
 
-  // Close on Escape
   document.addEventListener('keydown', (e) => {
     if(e.key === 'Escape' && links.classList.contains('open')){
       closeMobile();
     }
   });
 
-  // Initial active
   updateActive();
 })();
+
 
 // ─── Form handler + Toast ────────────────────────────
 (function(){
@@ -2753,7 +2650,6 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
     setTimeout(() => toast.classList.remove('show'), 5000);
   }
 
-  // Validation feedback styles
   const style = document.createElement('style');
   style.textContent = `
     .field-error{border-color:var(--danger)!important;box-shadow:0 0 0 2px rgba(220,38,38,0.15)!important}
@@ -2763,14 +2659,12 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   `;
   document.head.appendChild(style);
 
-  // Add error message elements
   form.querySelectorAll('input, textarea').forEach(input => {
     const msg = document.createElement('div');
     msg.className = 'error-msg';
-    msg.textContent = input.type === 'email' ? 'Veuillez entrer un email valide' : 'Ce champ est requis';
+    msg.textContent = input.type === 'email' ? 'Please enter a valid email' : 'This field is required';
     input.parentElement.appendChild(msg);
 
-    // Live validation on blur
     input.addEventListener('blur', () => {
       validateField(input);
     });
@@ -2806,7 +2700,7 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
 
     const submitBtn = form.querySelector('.contact-cta');
     const originalText = submitBtn.textContent;
-    submitBtn.textContent = 'Envoi en cours...';
+    submitBtn.textContent = 'Sending...';
     submitBtn.disabled = true;
     submitBtn.style.opacity = '0.7';
 
@@ -2830,10 +2724,10 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
           i.classList.remove('field-success');
         });
       } else {
-        alert(data.errors ? data.errors.join('\n') : 'Erreur lors de l\'envoi.');
+        alert(data.errors ? data.errors.join('\n') : 'Error sending message.');
       }
     } catch(err) {
-      alert('Erreur réseau. Vérifiez votre connexion et réessayez.');
+      alert('Network error. Please check your connection and try again.');
     } finally {
       submitBtn.textContent = originalText;
       submitBtn.disabled = false;
@@ -2852,69 +2746,71 @@ document.querySelectorAll('.faq-question').forEach(btn => {
     btn.setAttribute('aria-expanded', !expanded);
   });
 });
+
+
 // ─── Lightbox Gallery ──────────────────────────────────
 const galleryData = {
   mango: {
-    title: 'Mangue',
+    title: 'Mango',
     photos: [
-      'mangue-01.jpeg',
-      'mangue-02.jpeg',
-      'mangue-03.jpeg',
-      'mangue-04.jpeg',
-      'mangue-05.jpeg'
+      '../mangue-01.jpeg',
+      '../mangue-02.jpeg',
+      '../mangue-03.jpeg',
+      '../mangue-04.jpeg',
+      '../mangue-05.jpeg'
     ],
     captions: [
-      'Mangues fraîches — récolte SOSAF-CI',
-      'Mangues Kent — qualité export premium',
-      'Mangues conditionnées — prêtes à l\'expédition',
-      'Mangues en caisse — calibre export',
-      'Mangues fraîches — production Côte d\'Ivoire'
+      'Fresh mangoes — SOSAF-CI harvest',
+      'Kent mangoes — premium export quality',
+      'Packaged mangoes — ready for shipment',
+      'Mangoes in crate — export grade',
+      'Fresh mangoes — Côte d\'Ivoire production'
     ]
   },
   coconut: {
-    title: 'Noix de Coco',
+    title: 'Coconut',
     photos: [
-      'mrim4nu6-WhatsApp-Image-2026-07-13-at-00.14.44-_3_.jpeg',
-      'mrim4nsj-WhatsApp-Image-2026-07-13-at-00.14.44-_1_.jpeg'
+      '../mrim4nu6-WhatsApp-Image-2026-07-13-at-00.14.44-_3_.jpeg',
+      '../mrim4nsj-WhatsApp-Image-2026-07-13-at-00.14.44-_1_.jpeg'
     ],
     captions: [
-      'Entrepôt logistique — palettes sur transpalette, conditionnement sacs bleus et roses',
-      'Conteneur maritime chargé — palettes de sacs de noix de coco pour export'
+      'Logistics warehouse — pallets on pallet jack, blue and pink bag packaging',
+      'Loaded shipping container — coconut bag pallets for export'
     ]
   },
   avocado: {
-    title: 'Avocat',
+    title: 'Avocado',
     photos: [
-      'mrim90n5-WhatsApp-Image-2026-07-13-at-00.14.44-_4_.jpeg',
-      'mrim90p1-WhatsApp-Image-2026-07-13-at-00.14.44-_6_.jpeg'
+      '../mrim90n5-WhatsApp-Image-2026-07-13-at-00.14.44-_4_.jpeg',
+      '../mrim90p1-WhatsApp-Image-2026-07-13-at-00.14.44-_6_.jpeg'
     ],
     captions: [
-      'Collecte avocats frais — sacs de récolte prêts au tri',
-      'Avocats calibrés en carton — conditionnement export premium'
+      'Fresh avocado collection — harvest bags ready for sorting',
+      'Calibrated avocados in carton — premium export packaging'
     ]
   },
   banana: {
-    title: 'Banane',
+    title: 'Banana',
     photos: [
-      'mrimelu4-WhatsApp-Image-2026-07-13-at-00.14.44-_5_.jpeg',
-      'mrimelw6-WhatsApp-Image-2026-07-13-at-00.14.44.jpeg'
+      '../mrimelu4-WhatsApp-Image-2026-07-13-at-00.14.44-_5_.jpeg',
+      '../mrimelw6-WhatsApp-Image-2026-07-13-at-00.14.44.jpeg'
     ],
     captions: [
-      'Bananes vertes en carton — conditionnement export avec film protecteur',
-      'Station d\'emballage — cartons de bananes Cavendish prêts à l\'expédition'
+      'Green bananas in carton — export packaging with protective film',
+      'Packing station — Cavendish banana cartons ready for shipment'
     ]
   },
   pineapple: {
-    title: 'Ananas',
+    title: 'Pineapple',
     photos: [
-      'mrim0t97-WhatsApp-Image-2026-07-13-at-00.14.43-_1_.jpeg',
-      'mrim0t9k-WhatsApp-Image-2026-07-13-at-00.14.43-_2_.jpeg',
-      'mrim0tak-WhatsApp-Image-2026-07-13-at-00.14.43.jpeg'
+      '../mrim0t97-WhatsApp-Image-2026-07-13-at-00.14.43-_1_.jpeg',
+      '../mrim0t9k-WhatsApp-Image-2026-07-13-at-00.14.43-_2_.jpeg',
+      '../mrim0tak-WhatsApp-Image-2026-07-13-at-00.14.43.jpeg'
     ],
     captions: [
-      'Ananas Cayenne Lisse — carton export SOSAF-CI',
-      'Ananas frais — calibre export gros plan',
-      'Ananas conditionnés en carton — rangés pour expédition'
+      'Smooth Cayenne pineapple — SOSAF-CI export carton',
+      'Fresh pineapple — export grade close-up',
+      'Pineapples packed in carton — arranged for shipment'
     ]
   }
 };
@@ -2980,7 +2876,7 @@ document.addEventListener('keydown', (e) => {
   if(e.key === 'ArrowRight') nextPhoto();
 });
 
-// Touch / swipe support — enhanced for mobile
+// Touch / swipe support
 let touchStartX = 0;
 let touchStartY = 0;
 let touchStartTime = 0;
@@ -3000,7 +2896,6 @@ document.addEventListener('touchmove', (e) => {
   if(!lb || !lb.classList.contains('open')) return;
   const dx = Math.abs(e.touches[0].clientX - touchStartX);
   const dy = Math.abs(e.touches[0].clientY - touchStartY);
-  // If horizontal swipe detected, prevent vertical scroll
   if(dx > dy && dx > 10) isSwiping = true;
 }, { passive: true });
 
@@ -3011,46 +2906,43 @@ document.addEventListener('touchend', (e) => {
   const dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
   const elapsed = Date.now() - touchStartTime;
   
-  // Quick flick (< 300ms) with less distance needed, or slow swipe with more distance
   const threshold = elapsed < 300 ? 30 : 60;
   
-  // Only register horizontal swipes (ignore vertical scroll attempts)
   if(Math.abs(diff) > threshold && Math.abs(diff) > dy * 1.5){
     if(diff > 0) prevPhoto();
     else nextPhoto();
   }
-  // Tap on image area to close (if no swipe detected)
   else if(Math.abs(diff) < 10 && dy < 10 && elapsed < 200){
     const target = e.target;
     if(target.classList.contains('lightbox') || target.closest('.lightbox-body:not(.lightbox-nav):not(.lightbox-close)')){
-      // Tap outside image or nav to close
     }
   }
 }, { passive: true });
 </script>
+
 <div class="toast" id="toast" role="alert">
   <div class="toast-icon">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
   </div>
   <div class="toast-content">
-    <p>Message envoyé ✓</p>
-    <span>Nous vous répondrons sous 24h.</span>
+    <p>Message sent ✓</p>
+    <span>We will respond within 24 hours.</span>
   </div>
-  <button class="toast-close" onclick="document.getElementById('toast').classList.remove('show')" aria-label="Fermer">✕</button>
+  <button class="toast-close" onclick="document.getElementById('toast').classList.remove('show')" aria-label="Close">✕</button>
 </div>
 
 <!-- ─── Lightbox ──────────────────────────── -->
-<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Galerie photos" onclick="if(event.target===this)closeGallery()">
-  <button class="lightbox-close" onclick="closeGallery()" aria-label="Fermer la galerie">✕</button>
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo gallery" onclick="if(event.target===this)closeGallery()">
+  <button class="lightbox-close" onclick="closeGallery()" aria-label="Close gallery">✕</button>
   <div class="lightbox-body" onclick="event.stopPropagation()">
     <div class="lightbox-img-wrap">
-      <button class="lightbox-nav lightbox-prev" onclick="prevPhoto()" aria-label="Photo précédente">‹</button>
-      <img class="lightbox-img" id="lightbox-img" src="" alt="Photo produit">
-      <button class="lightbox-nav lightbox-next" onclick="nextPhoto()" aria-label="Photo suivante">›</button>
+      <button class="lightbox-nav lightbox-prev" onclick="prevPhoto()" aria-label="Previous photo">‹</button>
+      <img class="lightbox-img" id="lightbox-img" src="" alt="Product photo">
+      <button class="lightbox-nav lightbox-next" onclick="nextPhoto()" aria-label="Next photo">›</button>
     </div>
     <div class="lightbox-footer">
       <span class="lightbox-counter" id="lightbox-counter">1 / 4</span>
-      <span class="lightbox-title" id="lightbox-title">Produit</span>
+      <span class="lightbox-title" id="lightbox-title">Product</span>
     </div>
   </div>
 </div>
