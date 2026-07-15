@@ -2802,6 +2802,11 @@ function openGallery(id){
   lb.classList.add('open');
   document.body.style.overflow = 'hidden';
   updateLightbox();
+  // Preload all gallery images for instant navigation
+  data.photos.forEach(function(src){
+    var img = new Image();
+    img.src = src;
+  });
 }
 
 function closeGallery(){
