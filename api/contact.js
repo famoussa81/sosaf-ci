@@ -71,7 +71,8 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const { name, email, message, _honeypot } = req.body;
+    const body = req.body || {};
+    const { name, email, message, _honeypot } = body;
 
     // Honeypot
     if (_honeypot) {
