@@ -1628,7 +1628,13 @@ ul { list-style: none; }
       </div>
       <div class="form-group">
         <label for="loginPass">Mot de passe</label>
-        <input type="password" id="loginPass" placeholder="••••••••" value="">
+        <div style="position:relative;">
+          <input type="password" id="loginPass" placeholder="••••••••" value="" style="padding-right:48px;">
+          <button type="button" onclick="togglePasswordVisibility()" id="togglePwBtn" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;padding:4px;" aria-label="Afficher le mot de passe">
+            <svg id="eyeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg id="eyeOffIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+          </button>
+        </div>
       </div>
       <a href="#" class="forgot-link" onclick="event.preventDefault(); showToast('Fonctionnalité à venir', 'info')">Mot de passe oublié ?</a>
       <button type="button" class="btn btn-primary btn-lg btn-full" onclick="handleLogin()">
@@ -2250,10 +2256,33 @@ async function handleLogin() {
     navigateTo('dashboard');
     showToast('Connexion réussie ✓', 'success');
   } catch (err) {
-    showToast(err.message || 'Erreur de connexion', 'error');
+    const msg = err.message || 'Erreur de connexion';
+    if (msg.includes('Invalid login')) {
+      showToast('Email ou mot de passe incorrect', 'error');
+    } else if (msg.includes('Email not confirmed')) {
+      showToast('Email non confirmé — vérifiez votre boîte mail', 'error');
+    } else {
+      showToast(msg, 'error');
+    }
+    console.error('[LOGIN ERROR]', err.message, err);
   }
   btn.classList.remove('loading');
   btn.innerHTML = 'Se connecter<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+}
+
+function togglePasswordVisibility() {
+  const input = document.getElementById('loginPass');
+  const eyeIcon = document.getElementById('eyeIcon');
+  const eyeOffIcon = document.getElementById('eyeOffIcon');
+  if (input.type === 'password') {
+    input.type = 'text';
+    eyeIcon.style.display = 'none';
+    eyeOffIcon.style.display = 'block';
+  } else {
+    input.type = 'password';
+    eyeIcon.style.display = 'block';
+    eyeOffIcon.style.display = 'none';
+  }
 }
 
 async function logout() {
