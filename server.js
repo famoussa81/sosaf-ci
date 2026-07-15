@@ -22,7 +22,7 @@ app.use(helmet({
 // ─── CORS ───────────────────────────────────────────
 app.use(cors({
   origin: process.env.NODE_ENV === 'production'
-    ? ['https://sosafsarl.com', 'https://www.sosafsarl.com']
+    ? ['https://sosafci-export.com', 'https://www.sosafci-export.com']
     : '*',
 }));
 
@@ -129,7 +129,7 @@ app.post('/api/contact', contactLimiter, async (req, res) => {
             <div style="white-space: pre-wrap; line-height: 1.6; color: #1a1a1a;">${safeMessage}</div>
           </div>
           <p style="text-align: center; color: #9ca3af; font-size: 12px; margin-top: 16px;">
-            Envoyé depuis le formulaire de contact sosafsarl.com
+            Envoyé depuis le formulaire de contact sosafci-export.com
           </p>
         </div>
       `,

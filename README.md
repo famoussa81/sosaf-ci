@@ -3,7 +3,7 @@
 > Site vitrine B2B pour SOSAF-CI, entreprise d'export de fruits tropicaux basée à Abidjan, Côte d'Ivoire.  
 > Cible : importateurs européens et Moyen-Orient.
 
-**URL Production :** `https://sosafsarl.com` (Vercel)  
+**URL Production :** `https://sosafci-export.com` (Vercel)  
 **Repo :** `https://github.com/famoussa81/sosaf-ci`  
 **Compte GitHub :** `famoussa81`
 
@@ -46,7 +46,7 @@ sosaf-ci/
 | Backend | Vercel Serverless Function (Node.js) |
 | Email | Resend API (free tier) |
 | CMS Produits | Google Sheets (fetch CSV côté client) |
-| DNS/Domaine | Vercel Domains (sosafsarl.com) |
+| DNS/Domaine | Vercel Domains (sosafci-export.com) |
 | Repo | GitHub |
 
 ---
@@ -160,7 +160,7 @@ Configurées dans **Vercel Dashboard → Settings → Environment Variables** :
 - `Permissions-Policy` — Caméra, micro, géoloc bloqués
 
 ### API Contact
-- CORS restreint aux domaines autorisés (sosafsarl.com + *.vercel.app)
+- CORS restreint aux domaines autorisés (sosafci-export.com + *.vercel.app)
 - Rate limiting : 5 requêtes / 15 min / IP
 - Honeypot anti-bot
 - Validation + sanitization des inputs
@@ -261,8 +261,8 @@ powershell -Command "cd 'C:\Users\PC\Projects\sosaf-ci'; git add -A; git commit 
 
 ## TODO / Améliorations futures
 
-- [ ] Acheter et connecter le domaine `sosafsarl.com` sur Vercel
-- [ ] Vérifier le domaine sur Resend → emails depuis `contact@sosafsarl.com`
+- [x] Acheter et connecter le domaine `sosafci-export.com` sur Vercel
+- [ ] Vérifier le domaine sur Resend → emails depuis `contact@sosafci-export.com`
 - [ ] Remplacer les 2 images Unsplash restantes (hero + présentation) par de vraies photos
 - [ ] Google Analytics (optionnel)
 - [ ] Version arabe (si demandée par clients Moyen-Orient)

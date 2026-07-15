@@ -42,8 +42,8 @@ function isRateLimited(ip) {
 module.exports = async function handler(req, res) {
   // CORS — restrict to same origin
   const allowedOrigins = [
-    'https://sosafsarl.com',
-    'https://www.sosafsarl.com',
+    'https://sosafci-export.com',
+    'https://www.sosafci-export.com',
     process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : ''
   ].filter(Boolean);
   const origin = req.headers.origin || '';
@@ -130,7 +130,7 @@ module.exports = async function handler(req, res) {
             <div style="white-space: pre-wrap; line-height: 1.6; color: #1a1a1a;">${safeMessage}</div>
           </div>
           <p style="text-align: center; color: #9ca3af; font-size: 12px; margin-top: 16px;">
-            Envoyé depuis le formulaire de contact sosafsarl.com
+            Envoyé depuis le formulaire de contact sosafci-export.com
           </p>
         </div>
       `,
