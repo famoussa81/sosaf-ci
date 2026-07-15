@@ -2712,7 +2712,21 @@ function updateLivePreview() {
   const subtitle = document.getElementById('editSubtitle')?.value || 'Sous-titre du produit';
   const cert = document.getElementById('editCert')?.value || '';
   const chars = document.querySelectorAll('.char-pair');
-  const photoCount = document.getElementById('photoThumbs')?.children.length || 0;
+  const photoThumbs = document.getElementById('photoThumbs');
+  const photoCount = photoThumbs?.children.length || 0;
+
+  // Get cover photo URL (first thumb image)
+  let coverUrl = '';
+  if (photoThumbs && photoThumbs.children.length > 0) {
+    const firstImg = photoThumbs.children[0]?.querySelector('img');
+    if (firstImg) coverUrl = firstImg.src;
+  }
+  // Fallback: if editing existing product, use photos from STATE
+  if (!coverUrl && STATE.editProductIndex >= 0 && STATE.editProductIndex < STATE.products.length) {
+    const pid = STATE.products[STATE.editProductIndex].id;
+    const photos = STATE.productPhotos[pid] || [];
+    if (photos.length > 0) coverUrl = photos[0].url;
+  }
 
   // Build 2x2 info grid
   let infoGrid = '';
@@ -2742,12 +2756,15 @@ function updateLivePreview() {
   const preview = document.getElementById('livePreview');
   preview.innerHTML = `
     <div class="preview-card">
-      <div class="preview-card-image">
-        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-          <rect x="10" y="16" width="28" height="26" rx="3" fill="var(--surface-3)" stroke="var(--border-light)" stroke-width="1.5"/>
-          <path d="M10 22h28" stroke="var(--border-light)" stroke-width="1.5"/>
-          <path d="M16 16V12a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4" stroke="var(--border-light)" stroke-width="1.5" fill="none"/>
-        </svg>
+      <div class="preview-card-image" style="${coverUrl ? 'padding:0;' : ''}">
+        ${coverUrl 
+          ? `<img src="${coverUrl}" alt="${escHtml(name)}" style="width:100%;height:100%;object-fit:cover;">`
+          : `<svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+              <rect x="10" y="16" width="28" height="26" rx="3" fill="var(--surface-3)" stroke="var(--border-light)" stroke-width="1.5"/>
+              <path d="M10 22h28" stroke="var(--border-light)" stroke-width="1.5"/>
+              <path d="M16 16V12a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4" stroke="var(--border-light)" stroke-width="1.5" fill="none"/>
+            </svg>`
+        }
         <div class="preview-gallery-overlay">
           <span class="preview-gallery-btn">Galerie ${photoCount}</span>
         </div>
