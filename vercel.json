@@ -1,11 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "",
-  "functions": {
-    "api/contact.js": {
-      "runtime": "@vercel/node@3"
-    }
-  },
+  "outputDirectory": "public",
   "headers": [
     {
       "source": "/(.*)",
