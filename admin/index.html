@@ -2121,13 +2121,20 @@ ul { list-style: none; }
    ═══════════════════════════════════════════════════════════════════ */
 const SUPABASE_URL = 'https://lwjtftrjcmnzfsdkhuhf.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx3anRmdHJqY21uemZzZGtodWhmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQxMjA5OTMsImV4cCI6MjA5OTY5Njk5M30.BpXjmooq86Mdgp3GC6OvpO0v9-E0yZJ3sFOsvU-1Gj8';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-  auth: {
-    autoRefreshToken: true,
-    persistSession: true,
-    storage: window.localStorage
-  }
-});
+
+let sb;
+try {
+  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: {
+      autoRefreshToken: true,
+      persistSession: true,
+      storage: window.localStorage
+    }
+  });
+  console.log('[INIT] Supabase connecté ✓');
+} catch(e) {
+  console.error('[INIT] Erreur Supabase:', e);
+}
 
 /* ═══════════════════════════════════════════════════════════════════
    STATE — cache local, synchronisé avec Supabase
@@ -2241,9 +2248,9 @@ async function handleLogin() {
     showToast('Veuillez remplir tous les champs', 'error');
     return;
   }
-  if (!window.supabase || !supabase.auth) {
-    showToast('Erreur: Supabase non chargé — vérifiez votre connexion', 'error');
-    console.error('[LOGIN] supabase not available:', typeof window.supabase);
+  if (!sb || !sb.auth) {
+    showToast('Erreur: Supabase non chargé — rechargez la page (Ctrl+Shift+R)', 'error');
+    console.error('[LOGIN] sb client not available');
     return;
   }
   const btn = document.querySelector('.login-form .btn-primary');
@@ -2251,7 +2258,7 @@ async function handleLogin() {
   btn.innerHTML = '<span class="btn-loading-spinner"></span><span class="btn-text">Connexion...</span>';
   try {
     console.log('[LOGIN] calling signInWithPassword...');
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await sb.auth.signInWithPassword({
       email: email,
       password: pass
     });
@@ -2295,7 +2302,7 @@ function togglePasswordVisibility() {
 }
 
 async function logout() {
-  await supabase.auth.signOut();
+  await sb.auth.signOut();
   STATE.isLoggedIn = false;
   STATE.user = null;
   document.getElementById('appLayout').style.display = 'none';
@@ -2514,7 +2521,7 @@ async function toggleProductVisibility(index) {
   const p = STATE.products[index];
   p.visible = !p.visible;
   try {
-    await supabase.from('products').update({ visible: p.visible }).eq('id', p.id);
+    await sb.from('products').update({ visible: p.visible }).eq('id', p.id);
     renderProducts();
     const status = p.visible ? 'visible sur le site ✓' : 'masqué du site';
     showToast(`${p.name} : ${status}`, p.visible ? 'success' : 'info');
@@ -2534,9 +2541,9 @@ function confirmDeleteProduct(index) {
   showConfirm('Supprimer ce produit ?', `"${p.name}" sera définitivement supprimé. Cette action est irréversible.`, async () => {
     try {
       // Delete chars and photos first
-      await supabase.from('product_chars').delete().eq('product_id', p.id);
-      await supabase.from('product_photos').delete().eq('product_id', p.id);
-      await supabase.from('products').delete().eq('id', p.id);
+      await sb.from('product_chars').delete().eq('product_id', p.id);
+      await sb.from('product_photos').delete().eq('product_id', p.id);
+      await sb.from('products').delete().eq('id', p.id);
       STATE.products.splice(index, 1);
       delete STATE.productChars[p.id];
       delete STATE.productPhotos[p.id];
@@ -2796,7 +2803,7 @@ async function saveProduct() {
       if (prodErr) throw prodErr;
 
       // Delete and re-insert chars
-      await supabase.from('product_chars').delete().eq('product_id', p.id);
+      await sb.from('product_chars').delete().eq('product_id', p.id);
       const newChars = chars.map((c, ci) => ({
         product_id: p.id,
         label: c.label,
@@ -2804,7 +2811,7 @@ async function saveProduct() {
         sort_order: ci
       }));
       if (newChars.length) {
-        const { error: charsErr } = await supabase.from('product_chars').insert(newChars);
+        const { error: charsErr } = await sb.from('product_chars').insert(newChars);
         if (charsErr) throw charsErr;
       }
 
@@ -2846,7 +2853,7 @@ async function saveProduct() {
           value: c.value,
           sort_order: ci
         }));
-        const { error: charsErr } = await supabase.from('product_chars').insert(newChars);
+        const { error: charsErr } = await sb.from('product_chars').insert(newChars);
         if (charsErr) throw charsErr;
         STATE.productChars[newProd.id] = newChars;
       } else {
@@ -2922,7 +2929,7 @@ async function openMessage(index) {
   const m = STATE.messages[index];
   if (m.status === 'unread') {
     m.status = 'read';
-    await supabase.from('messages').update({ status: 'read' }).eq('id', m.id);
+    await sb.from('messages').update({ status: 'read' }).eq('id', m.id);
     updateSidebarBadge();
     updateDashboardBadge();
   }
@@ -2976,7 +2983,7 @@ function closeMessageDetail() {
 async function markAsTreated(index) {
   const m = STATE.messages[index];
   m.status = 'read';
-  await supabase.from('messages').update({ status: 'read' }).eq('id', m.id);
+  await sb.from('messages').update({ status: 'read' }).eq('id', m.id);
   showToast('Message marqué comme traité ✓', 'success');
   closeMessageDetail();
 }
@@ -2984,7 +2991,7 @@ async function markAsTreated(index) {
 function confirmDeleteMessage(index) {
   const m = STATE.messages[index];
   showConfirm('Supprimer ce message ?', 'Cette action est irréversible.', async () => {
-    await supabase.from('messages').delete().eq('id', m.id);
+    await sb.from('messages').delete().eq('id', m.id);
     STATE.messages.splice(index, 1);
     updateSidebarBadge();
     updateDashboardBadge();
@@ -3067,7 +3074,7 @@ async function saveSettings() {
    COMPTE — Supabase Auth
    ═══════════════════════════════════════════════════════════════════ */
 function renderAccount() {
-  const user = supabase.auth.user();
+  const user = sb.auth.user();
   if (user) {
     const emailInput = document.querySelector('#pageAccount input[type="email"]');
     if (emailInput) emailInput.value = user.email || '';
@@ -3078,7 +3085,7 @@ async function updateEmail() {
   const email = document.querySelector('#pageAccount input[type="email"]')?.value?.trim();
   if (!email) return showToast('Veuillez entrer un email', 'error');
   try {
-    const { error } = await supabase.auth.updateUser({ email });
+    const { error } = await sb.auth.updateUser({ email });
     if (error) throw error;
     showToast('Email de confirmation envoyé ✓', 'success');
   } catch (err) {
@@ -3095,11 +3102,11 @@ async function changePassword() {
   if (newPw.length < 6) return showToast('Minimum 6 caractères', 'error');
   try {
     // Re-authenticate first
-    const user = supabase.auth.user();
+    const user = sb.auth.user();
     if (user?.email) {
-      await supabase.auth.signInWithPassword({ email: user.email, password: oldPw });
+      await sb.auth.signInWithPassword({ email: user.email, password: oldPw });
     }
-    const { error } = await supabase.auth.updateUser({ password: newPw });
+    const { error } = await sb.auth.updateUser({ password: newPw });
     if (error) throw error;
     showToast('Mot de passe mis à jour ✓', 'success');
     document.querySelectorAll('#pageAccount input[type="password"]').forEach(i => i.value = '');
@@ -3138,7 +3145,7 @@ function updateSync() {
    ═══════════════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', async () => {
   // Check for existing session
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { session } } = await sb.auth.getSession();
   if (session) {
     STATE.isLoggedIn = true;
     STATE.user = session.user;
