@@ -1621,7 +1621,7 @@ ul { list-style: none; }
       </div>
       <p style="color:var(--muted);font-size:13px;margin:0;">Espace administration</p>
     </div>
-    <form class="login-form">
+    <form class="login-form" onsubmit="event.preventDefault(); handleLogin();">
       <div class="form-group">
         <label for="loginEmail">Email</label>
         <input type="email" id="loginEmail" placeholder="Votre email" value="">
@@ -2233,20 +2233,29 @@ async function loadAllData() {
    AUTH — Supabase Auth
    ═══════════════════════════════════════════════════════════════════ */
 async function handleLogin() {
+  console.log('[LOGIN] handleLogin called');
   const email = document.getElementById('loginEmail').value.trim();
   const pass = document.getElementById('loginPass').value.trim();
+  console.log('[LOGIN] email:', email, 'pass length:', pass.length);
   if (!email || !pass) {
     showToast('Veuillez remplir tous les champs', 'error');
+    return;
+  }
+  if (!window.supabase || !supabase.auth) {
+    showToast('Erreur: Supabase non chargé — vérifiez votre connexion', 'error');
+    console.error('[LOGIN] supabase not available:', typeof window.supabase);
     return;
   }
   const btn = document.querySelector('.login-form .btn-primary');
   btn.classList.add('loading');
   btn.innerHTML = '<span class="btn-loading-spinner"></span><span class="btn-text">Connexion...</span>';
   try {
+    console.log('[LOGIN] calling signInWithPassword...');
     const { data, error } = await supabase.auth.signInWithPassword({
       email: email,
       password: pass
     });
+    console.log('[LOGIN] result:', JSON.stringify({ data: data?.user?.email, error }));
     if (error) throw error;
     STATE.isLoggedIn = true;
     STATE.user = data.user;
