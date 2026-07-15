@@ -1,0 +1,3141 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard SOSAF-CI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* ═════════════════════════════════════════════════════════════════════
+   TOKENS — SOSAF-CI Admin Dashboard
+   Inspired by the Apple design system, adapted for dark admin theme
+   ═════════════════════════════════════════════════════════════════════ */
+:root {
+  --bg: #001e2b;
+  --surface: #1c2d38;
+  --surface-2: #243642;
+  --surface-3: #2a3d4a;
+  --surface-hover: #314552;
+  --border: #2a3d4a;
+  --border-light: #3a5160;
+  --fg: #ffffff;
+  --fg-2: #b8c9d4;
+  --muted: #7a9bab;
+  --accent: #00ed64;
+  --accent-hover: #00ff70;
+  --accent-active: #00cc55;
+  --accent-on: #001e2b;
+  --danger: #ef4444;
+  --danger-hover: #f87171;
+  --warn: #fbbf24;
+  --success: #00ed64;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.25);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.35);
+  --transition: 200ms cubic-bezier(0.28, 0, 0.22, 1);
+  --sidebar-w: 260px;
+  --header-h: 64px;
+}
+
+/* ─── Reset & Base ──────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.5;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+img { max-width: 100%; display: block; }
+input, textarea, select, button { font-family: inherit; font-size: inherit; }
+button { cursor: pointer; border: none; background: none; }
+ul { list-style: none; }
+
+/* ─── Scrollbar ─────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 3px; }
+
+/* ═════════════════════════════════════════════════════════════════════
+   LAYOUT — Sidebar + Main
+   ═════════════════════════════════════════════════════════════════════ */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ─── Sidebar ────────────────────────────────────────────────────── */
+.sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: var(--sidebar-w);
+  height: 100vh;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  transition: transform var(--transition);
+}
+.sidebar-brand {
+  padding: 20px 20px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-brand .logo-icon {
+  width: 36px; height: 36px;
+  background: var(--accent);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.sidebar-brand .logo-text {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.sidebar-brand .logo-text span { display: block; font-size: 11px; font-family: var(--font-body); font-weight: 400; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.sidebar-nav { flex: 1; padding: 12px 12px; overflow-y: auto; }
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  color: var(--fg-2);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-decoration: none;
+  position: relative;
+}
+.nav-item:hover { background: var(--surface-hover); color: var(--fg); }
+.nav-item.active {
+  background: rgba(0,237,100,0.12);
+  color: var(--accent);
+}
+.nav-item .nav-icon { width: 20px; height: 20px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.nav-item .nav-icon svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 1.8; fill: none; }
+.nav-badge {
+  margin-left: auto;
+  background: var(--accent);
+  color: var(--accent-on);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+}
+.sidebar-footer {
+  padding: 12px 14px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 6px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--transition);
+}
+.sidebar-user:hover { background: var(--surface-hover); }
+.sidebar-user .avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #00b7a0);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 600; color: var(--accent-on);
+  flex-shrink: 0;
+}
+.sidebar-user .user-info { flex: 1; min-width: 0; }
+.sidebar-user .user-name { font-size: 13px; font-weight: 600; color: var(--fg); }
+.sidebar-user .user-role { font-size: 11px; color: var(--muted); }
+.sidebar-site-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 6px;
+  font-size: 13px;
+  color: var(--muted);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition);
+}
+.sidebar-site-link:hover { color: var(--accent); background: var(--surface-hover); }
+.sidebar-site-link svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 1.8; fill: none; }
+
+/* ─── Main Content ───────────────────────────────────────────────── */
+.main-area {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.main-header {
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.main-header .page-title {
+  font-size: 20px;
+  font-weight: 600;
+}
+.header-actions { display: flex; align-items: center; gap: 16px; }
+.header-actions .btn-icon {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--fg-2);
+  position: relative;
+  transition: all var(--transition);
+}
+.header-actions .btn-icon:hover { background: var(--surface-hover); color: var(--fg); }
+.header-actions .btn-icon svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 1.8; fill: none; }
+.header-badge {
+  position: absolute;
+  top: 4px; right: 4px;
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  border: 2px solid var(--surface);
+}
+.sync-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.sync-indicator .sync-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.sync-indicator .sync-dot.syncing { animation: pulse-dot 1.5s ease infinite; }
+@keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+.content-area {
+  flex: 1;
+  padding: 24px 28px;
+  overflow-y: auto;
+}
+
+/* ─── Hamburger (mobile) ─────────────────────────────────────────── */
+.hamburger {
+  display: none;
+  width: 38px; height: 38px;
+  align-items: center; justify-content: center;
+  border-radius: var(--radius-sm);
+  color: var(--fg);
+  margin-right: 8px;
+}
+.hamburger svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 2; fill: none; }
+.hamburger:hover { background: var(--surface-hover); }
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 99;
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+   PAGE SECTIONS
+   ═════════════════════════════════════════════════════════════════════ */
+.page-section { display: none; }
+.page-section.active { display: block; }
+
+/* ═════════════════════════════════════════════════════════════════════
+   LOGIN PAGE
+   ═════════════════════════════════════════════════════════════════════ */
+.login-page {
+  display: none;
+  min-height: 100vh;
+  background: var(--bg);
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(0,237,100,0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(0,237,100,0.03) 0%, transparent 50%);
+}
+.login-page.active { display: flex; align-items: center; justify-content: center; }
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 40px 36px;
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+  margin: 20px;
+}
+.login-logo {
+  text-align: center;
+  margin-bottom: 32px;
+}
+.login-logo .logo-badge {
+  width: 56px; height: 56px;
+  background: var(--accent);
+  border-radius: 16px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 30px;
+  margin-bottom: 12px;
+}
+.login-logo h1 {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+.login-logo p {
+  font-size: 14px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.login-form { display: flex; flex-direction: column; gap: 20px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--fg-2);
+}
+.form-group input {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--fg);
+  font-size: 15px;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  outline: none;
+}
+.form-group input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0,237,100,0.15);
+}
+.form-group input::placeholder { color: var(--muted); }
+.form-group.error input { border-color: var(--danger); box-shadow: 0 0 0 3px rgba(239,68,68,0.15); }
+.form-group.success input { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,237,100,0.15); }
+.form-group .field-error { font-size: 12px; color: var(--danger); margin-top: 2px; display: none; }
+.form-group.error .field-error { display: block; }
+.login-form .forgot-link {
+  font-size: 13px;
+  color: var(--muted);
+  text-align: right;
+  margin-top: -8px;
+}
+.login-form .forgot-link:hover { color: var(--accent); }
+
+/* ═════════════════════════════════════════════════════════════════════
+   BUTTONS
+   ═════════════════════════════════════════════════════════════════════ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-on);
+}
+.btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
+.btn-primary:active { background: var(--accent-active); transform: translateY(0); }
+.btn-outline {
+  background: transparent;
+  color: var(--fg);
+  border: 1px solid var(--border-light);
+}
+.btn-outline:hover { background: var(--surface-hover); border-color: var(--fg-2); }
+.btn-danger {
+  background: var(--danger);
+  color: #fff;
+}
+.btn-danger:hover { background: var(--danger-hover); }
+.btn-ghost {
+  background: transparent;
+  color: var(--fg-2);
+  padding: 8px 12px;
+}
+.btn-ghost:hover { background: var(--surface-hover); color: var(--fg); }
+.btn-sm { padding: 6px 14px; font-size: 13px; }
+.btn-lg { padding: 14px 28px; font-size: 16px; }
+.btn-full { width: 100%; }
+.btn svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; flex-shrink: 0; }
+
+/* ═════════════════════════════════════════════════════════════════════
+   STAT CARDS
+   ═════════════════════════════════════════════════════════════════════ */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all var(--transition);
+}
+.stat-card:hover {
+  border-color: var(--border-light);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.stat-icon {
+  width: 44px; height: 44px;
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.stat-icon svg { width: 22px; height: 22px; stroke: var(--accent); stroke-width: 1.8; fill: none; }
+.stat-icon.green { background: rgba(0,237,100,0.15); }
+.stat-icon.blue { background: rgba(41,151,255,0.15); }
+.stat-icon.blue svg { stroke: #2997ff; }
+.stat-icon.amber { background: rgba(245,158,11,0.15); }
+.stat-icon.amber svg { stroke: #f59e0b; }
+.stat-info { flex: 1; min-width: 0; }
+.stat-info .stat-value { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.1; }
+.stat-info .stat-label { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.stat-info .stat-label svg { width: 14px; height: 14px; display: inline; vertical-align: middle; margin-right: 2px; stroke: var(--accent); stroke-width: 2; fill: none; }
+
+/* ═════════════════════════════════════════════════════════════════════
+   CARDS
+   ═════════════════════════════════════════════════════════════════════ */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.card:hover { border-color: var(--border-light); }
+.card-header {
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+.card-header h3 { font-size: 16px; font-weight: 600; }
+.card-body { padding: 20px; }
+
+/* ═════════════════════════════════════════════════════════════════════
+   MESSAGES LIST
+   ═════════════════════════════════════════════════════════════════════ */
+.message-item {
+  display: flex;
+  gap: 14px;
+  padding: 14px 0;
+  cursor: pointer;
+  transition: all var(--transition);
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+.message-item:last-child { border-bottom: none; }
+.message-item:hover {
+  background: var(--surface-hover);
+  border-radius: var(--radius-sm);
+  margin: 0 -8px;
+  padding: 14px 8px;
+}
+.message-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  margin-top: 8px;
+}
+.message-dot.read { background: transparent; }
+.message-content { flex: 1; min-width: 0; }
+.message-sender { font-size: 14px; font-weight: 600; }
+.message-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 1px;
+}
+.message-preview {
+  font-size: 13px;
+  color: var(--fg-2);
+  margin-top: 4px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.message-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+   PRODUCT CARDS GRID
+   ═════════════════════════════════════════════════════════════════════ */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.product-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all var(--transition);
+  position: relative;
+}
+.product-card:hover {
+  border-color: var(--border-light);
+  box-shadow: var(--shadow-md);
+}
+.product-card .drag-handle {
+  position: absolute;
+  top: 10px; left: 8px;
+  width: 24px; height: 24px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted);
+  cursor: grab;
+  opacity: 0;
+  transition: opacity var(--transition);
+  z-index: 2;
+}
+.product-card:hover .drag-handle { opacity: 1; }
+.product-card .drag-handle svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 1.8; fill: none; }
+.product-cover {
+  height: 140px;
+  background: var(--surface-2);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.product-cover .ph-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.product-cover .cover-count {
+  position: absolute;
+  bottom: 8px; right: 8px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  backdrop-filter: blur(4px);
+}
+.product-info { padding: 14px 16px 14px; }
+.product-info h3 { font-size: 16px; font-weight: 600; }
+.product-info .product-subtitle {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.product-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px 14px;
+  gap: 8px;
+}
+.product-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.product-badge.cert {
+  background: rgba(0,237,100,0.15);
+  color: var(--accent);
+}
+
+/* ─── Live Preview Card (public site mirror) ────────────────────── */
+.preview-card {
+  background: #1c2d38;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  max-width: 360px;
+}
+.preview-card-image {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--surface-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.preview-card-image .preview-gallery-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--transition);
+  cursor: pointer;
+}
+.preview-card-image:hover .preview-gallery-overlay {
+  opacity: 1;
+}
+.preview-gallery-btn {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--transition);
+  pointer-events: none;
+}
+.preview-gallery-btn:hover {
+  background: rgba(255,255,255,0.25);
+}
+.preview-card-body {
+  padding: 16px;
+}
+.preview-card-body h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 2px;
+}
+.preview-card-body .preview-subtitle {
+  font-size: 14px;
+  color: #b8c4c2;
+  margin-bottom: 14px;
+  line-height: 1.4;
+}
+.preview-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 16px;
+  margin-bottom: 14px;
+}
+.preview-info-item .preview-info-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #00ed64;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+.preview-info-item .preview-info-value {
+  display: block;
+  font-size: 14px;
+  color: #ffffff;
+}
+.preview-card-footer {
+  padding: 0 16px 16px;
+}
+.preview-cert-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid #00ed64;
+  color: #00ed64;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.product-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.product-actions .btn-icon-sm {
+  width: 30px; height: 30px;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--fg-2);
+  transition: all var(--transition);
+}
+.product-actions .btn-icon-sm:hover { background: var(--surface-hover); color: var(--fg); }
+.product-actions .btn-icon-sm svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 1.8; fill: none; }
+
+/* ─── Toggle Switch ───────────────────────────────────────────────── */
+.toggle {
+  width: 38px; height: 22px;
+  background: var(--border-light);
+  border-radius: 11px;
+  position: relative;
+  cursor: pointer;
+  transition: background var(--transition);
+  flex-shrink: 0;
+}
+.toggle.active { background: var(--accent); }
+.toggle .toggle-knob {
+  width: 18px; height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px; left: 2px;
+  transition: transform var(--transition);
+}
+.toggle.active .toggle-knob { transform: translateX(16px); }
+
+/* ═════════════════════════════════════════════════════════════════════
+   PRODUCT EDIT PAGE
+   ═════════════════════════════════════════════════════════════════════ */
+.edit-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+.edit-form { display: flex; flex-direction: column; gap: 20px; }
+.edit-preview { position: sticky; top: 88px; }
+
+/* ─── Drop Zone ───────────────────────────────────────────────────── */
+.drop-zone {
+  border: 2px dashed var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 32px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition);
+  background: var(--surface-2);
+}
+.drop-zone:hover, .drop-zone.drag-over {
+  border-color: var(--accent);
+  background: rgba(0,237,100,0.05);
+}
+.drop-zone svg { width: 36px; height: 36px; stroke: var(--muted); stroke-width: 1.5; fill: none; }
+.drop-zone p { font-size: 14px; color: var(--fg-2); margin-top: 8px; }
+.drop-zone .drop-hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.photo-thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+.photo-thumb {
+  width: 80px; height: 80px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  position: relative;
+  border: 2px solid var(--border);
+  cursor: grab;
+}
+.photo-thumb:first-child { border-color: var(--accent); }
+.photo-thumb .thumb-img { width: 100%; height: 100%; object-fit: cover; background: var(--surface-3); }
+.photo-thumb .thumb-remove {
+  position: absolute;
+  top: -6px; right: -6px;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--danger);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  cursor: pointer;
+  border: 2px solid var(--surface);
+}
+.photo-thumb .thumb-star {
+  position: absolute;
+  bottom: -4px; left: -4px;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--warn);
+  color: #000;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px;
+}
+.photo-counter { font-size: 13px; color: var(--muted); margin-top: 8px; }
+
+/* ─── Characteristic pairs ────────────────────────────────────────── */
+.char-pair {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.char-pair input {
+  flex: 1;
+  padding: 10px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--fg);
+  font-size: 14px;
+  outline: none;
+  transition: border-color var(--transition);
+}
+.char-pair input:focus { border-color: var(--accent); }
+.char-pair input::placeholder { color: var(--muted); }
+.char-pair .char-remove {
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--danger);
+  flex-shrink: 0;
+  transition: background var(--transition);
+}
+.char-pair .char-remove:hover { background: rgba(239,68,68,0.12); }
+.char-pair .char-remove svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2; fill: none; }
+
+/* ─── Sticky bottom bar ───────────────────────────────────────────── */
+.sticky-bar {
+  position: sticky;
+  bottom: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 14px 28px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  z-index: 40;
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+   MESSAGE DETAIL
+   ═════════════════════════════════════════════════════════════════════ */
+.message-detail { max-width: 720px; }
+.message-detail .msg-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.message-detail .msg-sender-info h3 { font-size: 20px; font-weight: 600; }
+.message-detail .msg-sender-info .msg-email { font-size: 14px; color: var(--accent); }
+.message-detail .msg-sender-info .msg-date { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.message-detail .msg-body {
+  background: var(--surface-2);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--fg-2);
+  white-space: pre-wrap;
+}
+.message-detail .msg-actions { margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* ─── Message filters ─────────────────────────────────────────────── */
+.filter-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  width: fit-content;
+  margin-bottom: 20px;
+}
+.filter-tab {
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--fg-2);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.filter-tab.active { background: var(--surface); color: var(--fg); }
+.filter-tab:hover:not(.active) { color: var(--fg); }
+
+/* ═════════════════════════════════════════════════════════════════════
+   SETTINGS
+   ═════════════════════════════════════════════════════════════════════ */
+.settings-section {
+  margin-bottom: 32px;
+}
+.settings-section h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--fg-2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.settings-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.settings-grid .form-group label { font-size: 12px; color: var(--muted); }
+.settings-grid input {
+  padding: 10px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--fg);
+  font-size: 14px;
+  outline: none;
+  transition: border-color var(--transition);
+}
+.settings-grid input:focus { border-color: var(--accent); }
+.settings-grid input::placeholder { color: var(--muted); }
+.logo-upload {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.logo-preview {
+  width: 64px; height: 64px;
+  background: var(--surface-2);
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px;
+  border: 1px solid var(--border);
+}
+.logo-upload .btn { font-size: 13px; }
+
+/* ═════════════════════════════════════════════════════════════════════
+   ACCOUNT PAGE
+   ═════════════════════════════════════════════════════════════════════ */
+.account-page { max-width: 560px; }
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+.profile-avatar {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #00b7a0);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; font-weight: 700; color: var(--accent-on);
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: opacity var(--transition);
+}
+.profile-avatar:hover { opacity: 0.8; }
+.profile-info h2 { font-size: 22px; font-weight: 600; }
+.profile-info p { font-size: 14px; color: var(--muted); }
+.account-form { display: flex; flex-direction: column; gap: 20px; }
+.password-section h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--fg-2);
+  margin-bottom: 12px;
+  padding-top: 8px;
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+   TOASTS
+   ═════════════════════════════════════════════════════════════════════ */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+.toast {
+  padding: 14px 20px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  pointer-events: auto;
+  animation: toast-in 300ms ease-out;
+  max-width: 380px;
+}
+.toast.removing { animation: toast-out 200ms ease-in forwards; }
+.toast-success { border-left: 3px solid var(--accent); }
+.toast-success .toast-icon { color: var(--accent); }
+.toast-info { border-left: 3px solid #2997ff; }
+.toast-info .toast-icon { color: #2997ff; }
+.toast-error { border-left: 3px solid var(--danger); }
+.toast-error .toast-icon { color: var(--danger); }
+.toast-icon { width: 20px; height: 20px; flex-shrink: 0; }
+.toast-icon svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; }
+@keyframes toast-in { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes toast-out { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(40px); } }
+
+/* ═════════════════════════════════════════════════════════════════════
+   MODAL
+   ═════════════════════════════════════════════════════════════════════ */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 9998;
+  align-items: center; justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(2px);
+}
+.modal-overlay.active { display: flex; }
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 28px;
+  max-width: 440px;
+  width: 100%;
+  box-shadow: var(--shadow-lg);
+  animation: modal-in 200ms ease-out;
+}
+@keyframes modal-in { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+.modal h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+.modal p { font-size: 14px; color: var(--fg-2); margin-bottom: 20px; line-height: 1.6; }
+.modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+
+/* ═════════════════════════════════════════════════════════════════════
+   SKELETON LOADERS
+   ═════════════════════════════════════════════════════════════════════ */
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-2) 25%, var(--surface-hover) 50%, var(--surface-2) 75%);
+  background-size: 200% 100%;
+  animation: skeleton 1.5s ease infinite;
+  border-radius: var(--radius-sm);
+}
+@keyframes skeleton { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+.skeleton-card {
+  height: 260px;
+  border-radius: var(--radius-lg);
+}
+.skeleton-line { height: 14px; margin-bottom: 8px; width: 80%; }
+.skeleton-line.w60 { width: 60%; }
+.skeleton-line.w40 { width: 40%; }
+
+/* ═════════════════════════════════════════════════════════════════════
+   EMPTY STATE
+   ═════════════════════════════════════════════════════════════════════ */
+.empty-state {
+  text-align: center;
+  padding: 48px 20px;
+}
+.empty-state .empty-icon {
+  width: 72px; height: 72px;
+  margin: 0 auto 16px;
+  background: var(--surface-2);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.empty-state .empty-icon svg { width: 32px; height: 32px; stroke: var(--muted); stroke-width: 1.5; fill: none; }
+.empty-state h3 { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+.empty-state p { font-size: 14px; color: var(--muted); margin-bottom: 20px; }
+
+/* ═════════════════════════════════════════════════════════════════════
+   INFO BANNER
+   ═════════════════════════════════════════════════════════════════════ */
+.info-banner {
+  background: rgba(0,237,100,0.08);
+  border: 1px solid rgba(0,237,100,0.2);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--fg-2);
+  margin-bottom: 20px;
+}
+.info-banner svg { width: 18px; height: 18px; stroke: var(--accent); stroke-width: 2; fill: none; flex-shrink: 0; }
+
+/* ═════════════════════════════════════════════════════════════════════
+   SECTION DIVIDER
+   ═════════════════════════════════════════════════════════════════════ */
+.section-divider {
+  border: 0;
+  height: 1px;
+  background: var(--border);
+  margin: 24px 0;
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+   LIVE STATUS BADGE
+   ═════════════════════════════════════════════════════════════════════ */
+.live-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--accent);
+}
+.live-indicator .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+/* ═════════════════════════════════════════════════════════════════════
+   PAGE TRANSITIONS — fade + slide
+   ═════════════════════════════════════════════════════════════════════ */
+.page-section {
+  display: none;
+  animation: none;
+}
+.page-section.active {
+  display: block;
+  animation: page-in 350ms cubic-bezier(0.28, 0, 0.22, 1) both;
+}
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─── Micro-interactions boutons ─────────────────────────────────── */
+.btn {
+  position: relative;
+  overflow: hidden;
+}
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.15);
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+.btn:active::after {
+  opacity: 1;
+}
+.btn-primary:active {
+  transform: scale(0.97);
+}
+.btn-outline:active {
+  transform: scale(0.97);
+}
+
+/* ─── Focus-visible ring ────────────────────────────────────────── */
+.btn:focus-visible,
+.nav-item:focus-visible,
+.toggle:focus-visible,
+.btn-icon:focus-visible,
+.btn-icon-sm:focus-visible,
+.filter-tab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.form-group input:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0,237,100,0.15);
+}
+
+/* ─── Micro-interactions cartes ──────────────────────────────────── */
+.stat-card {
+  transition: all 300ms cubic-bezier(0.28, 0, 0.22, 1);
+}
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.3);
+}
+.product-card {
+  transition: all 300ms cubic-bezier(0.28, 0, 0.22, 1);
+}
+.product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+}
+
+/* ─── Toggle switch spring ───────────────────────────────────────── */
+.toggle .toggle-knob {
+  transition: transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ─── Stats progress bars ────────────────────────────────────────── */
+.stat-progress {
+  margin-top: 10px;
+  height: 4px;
+  background: var(--surface-2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.stat-progress-bar {
+  height: 100%;
+  border-radius: 2px;
+  background: var(--accent);
+  width: 0%;
+  transition: width 1s cubic-bezier(0.28, 0, 0.22, 1);
+}
+.stat-progress-bar.animate {
+  width: var(--pct);
+}
+.stat-card .stat-progress-bar.green { background: var(--accent); }
+.stat-card .stat-progress-bar.blue { background: #2997ff; }
+.stat-card .stat-progress-bar.amber { background: #f59e0b; }
+
+/* ─── Toast slide-in amélioré ────────────────────────────────────── */
+.toast {
+  animation: toast-in 350ms cubic-bezier(0.28, 0, 0.22, 1);
+}
+.toast.removing {
+  animation: toast-out 250ms cubic-bezier(0.28, 0, 0.22, 1) both;
+}
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(100%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+@keyframes toast-out {
+  to {
+    opacity: 0;
+    transform: translateX(50px) scale(0.95);
+  }
+}
+
+/* ─── Drop zone améliorée ────────────────────────────────────────── */
+.drop-zone {
+  transition: all 300ms cubic-bezier(0.28, 0, 0.22, 1);
+}
+.drop-zone.drag-over {
+  border-color: var(--accent);
+  background: rgba(0,237,100,0.08);
+  transform: scale(1.01);
+}
+.drop-zone .drop-icon {
+  transition: transform 300ms ease;
+}
+.drop-zone.drag-over .drop-icon {
+  transform: scale(1.1) translateY(-2px);
+}
+
+/* ─── Login animation ────────────────────────────────────────────── */
+.login-card {
+  animation: login-in 500ms cubic-bezier(0.28, 0, 0.22, 1) both;
+}
+@keyframes login-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ─── Loading spinner for buttons ───────────────────────────────── */
+.btn.loading { pointer-events: none; opacity: 0.8; }
+.btn.loading .btn-text { visibility: hidden; }
+.btn.loading .btn-loading-spinner {
+  position: absolute;
+  width: 16px; height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: btn-spin 0.6s linear infinite;
+}
+@keyframes btn-spin { to { transform: rotate(360deg); } }
+
+/* ─── Toggle success pulse ──────────────────────────────────────── */
+.toggle.pulse { animation: toggle-pulse 400ms ease; }
+@keyframes toggle-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(0,237,100,0.35); }
+  50% { box-shadow: 0 0 0 6px rgba(0,237,100,0.12); }
+  100% { box-shadow: 0 0 0 0 rgba(0,237,100,0); }
+}
+.login-page .login-bg-glow {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse at 30% 40%, rgba(0,237,100,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 60%, rgba(0,237,100,0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 90%, rgba(0,237,100,0.03) 0%, transparent 40%);
+  animation: glow-drift 8s ease-in-out infinite alternate;
+}
+@keyframes glow-drift {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-20px, -10px) scale(1.05); }
+}
+
+/* ─── Sidebar nav items micro-interaction ────────────────────────── */
+.nav-item {
+  position: relative;
+  overflow: hidden;
+}
+.nav-item::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  width: 3px; height: 100%;
+  background: var(--accent);
+  transform: scaleY(0);
+  transition: transform 300ms cubic-bezier(0.28, 0, 0.22, 1);
+  border-radius: 0 2px 2px 0;
+}
+.nav-item.active::after {
+  transform: scaleY(1);
+}
+
+/* ─── Skeleton shimmer ───────────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--surface-2) 25%,
+    color-mix(in oklab, var(--surface-2), var(--surface-hover) 40%) 50%,
+    var(--surface-2) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.8s ease infinite;
+}
+@keyframes skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ─── Counter badge pulse ────────────────────────────────────────── */
+.nav-badge {
+  animation: none;
+}
+.nav-badge.has-unread {
+  animation: badge-pulse 2s ease infinite;
+}
+@keyframes badge-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+   RESPONSIVE — Mobile-first, touch-friendly
+   ═════════════════════════════════════════════════════════════════════ */
+
+/* ─── General mobile touch targets ────────────────────────────── */
+@media (max-width: 820px) {
+  .btn, .btn-sm { padding: 12px 20px; font-size: 15px; min-height: 44px; }
+  .btn-icon, .btn-icon-sm { width: 44px; height: 44px; }
+  .hamburger { display: flex; width: 44px; height: 44px; }
+  .nav-item { padding: 14px 16px; font-size: 15px; min-height: 48px; }
+  .filter-tab { padding: 10px 16px; font-size: 14px; min-height: 44px; }
+  input, textarea, select { font-size: 16px !important; min-height: 48px; }
+  .form-group input { padding: 14px 16px; }
+  .toggle { width: 44px; height: 26px; }
+  .toggle .toggle-knob { width: 22px; height: 22px; }
+  .toggle.active .toggle-knob { transform: translateX(18px); }
+}
+
+/* ─── Tablet (≤ 1024px) ──────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .products-grid { grid-template-columns: repeat(2, 1fr); }
+  .edit-layout { grid-template-columns: 1fr; }
+  .edit-preview { position: static; }
+  .sync-indicator .sync-label { display: none; }
+}
+
+/* ─── Mobile — sidebar collapses (≤ 820px) ───────────────────────── */
+@media (max-width: 820px) {
+  .sidebar {
+    transform: translateX(-100%);
+    width: 280px;
+  }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-overlay.active { display: block; }
+  .main-area { margin-left: 0; }
+  .main-header {
+    padding: 0 12px;
+    height: 56px;
+  }
+  .content-area { padding: 16px; }
+  .page-title { font-size: 18px; }
+  .hamburger { display: flex; }
+
+  /* Stats */
+  .stats-grid { grid-template-columns: 1fr; gap: 12px; }
+  .stat-card { padding: 16px; }
+  .stat-icon { width: 40px; height: 40px; }
+  .stat-info .stat-value { font-size: 24px; }
+  .stat-progress { margin-top: 8px; }
+
+  /* Login page */
+  .login-card { padding: 28px 20px; margin: 16px; }
+
+  /* Products */
+  .products-grid { grid-template-columns: 1fr; gap: 12px; }
+  .product-cover { height: 180px; }
+  .product-card .drag-handle { opacity: 0.5; }
+  .product-footer { flex-wrap: wrap; gap: 8px; }
+  .product-actions { margin-left: auto; }
+
+  /* Edit page */
+  .edit-layout { grid-template-columns: 1fr; }
+  .edit-preview { position: static; margin-top: 0; }
+  .drop-zone { padding: 24px 16px; }
+  .photo-thumb { width: 68px; height: 68px; }
+  .char-pair { flex-wrap: wrap; gap: 6px; }
+  .char-pair input { flex: 1 1 40%; min-width: 0; }
+  .sticky-bar { padding: 12px 16px; gap: 8px; }
+  .sticky-bar .btn { flex: 1; }
+
+  /* Messages */
+  .filter-tabs { width: 100%; }
+  .filter-tab { flex: 1; text-align: center; font-size: 13px; }
+  .message-detail .msg-header { flex-direction: column; }
+  .message-detail .msg-body { padding: 16px; font-size: 14px; }
+  .message-detail .msg-actions { flex-direction: column; }
+  .message-detail .msg-actions .btn { width: 100%; justify-content: center; }
+  #messagesListView .message-item { padding: 14px 8px; }
+
+  /* Settings */
+  .settings-grid { grid-template-columns: 1fr; }
+  .settings-section { margin-bottom: 24px; }
+  .settings-section h3 { font-size: 14px; }
+  .logo-upload { flex-direction: column; align-items: flex-start; gap: 12px; }
+
+  /* Account */
+  .profile-header { flex-direction: column; text-align: center; gap: 12px; }
+  .profile-avatar { width: 64px; height: 64px; font-size: 24px; }
+  .profile-info h2 { font-size: 20px; }
+  .account-form .btn { width: 100%; justify-content: center; }
+
+  /* Toasts */
+  .toast-container { top: 12px; right: 12px; left: 12px; }
+  .toast { max-width: 100%; font-size: 14px; padding: 14px 16px; }
+
+  /* General */
+  .card-header { padding: 14px 16px; flex-wrap: wrap; gap: 8px; }
+  .card-body { padding: 16px; }
+  .info-banner { font-size: 12px; padding: 10px 14px; }
+  .empty-state { padding: 36px 16px; }
+  .empty-state .empty-icon { width: 60px; height: 60px; }
+  .live-indicator { font-size: 11px; }
+  .section-divider { margin: 20px 0; }
+  .preview-card { max-width: 100%; }
+  .preview-card-body { padding: 14px; }
+  .preview-card-body h3 { font-size: 18px; }
+}
+
+/* ─── Large phones / small tablets (≤ 640px) ─────────────────────── */
+@media (max-width: 640px) {
+  .sidebar { width: 100%; max-width: 300px; }
+  .content-area { padding: 12px; }
+  .stat-card { padding: 14px; }
+  .stat-info .stat-value { font-size: 22px; }
+  .product-cover { height: 160px; }
+  .product-info { padding: 12px 14px; }
+  .product-info h3 { font-size: 15px; }
+  .product-footer { padding: 8px 14px 12px; }
+  .product-cover .cover-count { font-size: 10px; }
+  .preview-card-body h3 { font-size: 17px; }
+  .preview-info-grid { gap: 8px 12px; }
+  .edit-form { gap: 16px; }
+  .char-pair input { flex: 1 1 100%; }
+  .char-pair .char-remove { align-self: stretch; width: 36px; height: auto; }
+  .header-actions .sync-indicator { display: none; }
+  .header-actions .btn-icon { width: 40px; height: 40px; }
+  .login-card { padding: 24px 18px; margin: 12px; }
+  .login-logo svg { width: 160px; height: auto; }
+  .login-logo p { font-size: 12px; }
+  .login-form { gap: 16px; }
+  .login-form input { padding: 14px; }
+  .sticky-bar { flex-direction: column; }
+  .sticky-bar .btn { width: 100%; }
+  .toast { margin: 0 4px; }
+  .toast-container { top: 8px; right: 8px; left: 8px; }
+  .nav-badge { font-size: 10px; min-width: 16px; padding: 1px 6px; }
+  .settings-grid input { padding: 14px; }
+}
+
+/* ─── Phones (≤ 480px) ───────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .sidebar { max-width: 280px; }
+  .content-area { padding: 10px; }
+  .main-header { padding: 0 10px; height: 52px; }
+  .page-title { font-size: 16px; }
+  .hamburger { width: 40px; height: 40px; }
+  .header-actions { gap: 6px; }
+  .header-actions .btn-icon { width: 36px; height: 36px; }
+  .header-actions .btn-icon svg { width: 18px; height: 18px; }
+  .stat-card { padding: 12px; gap: 12px; }
+  .stat-icon { width: 36px; height: 36px; }
+  .stat-icon svg { width: 18px; height: 18px; }
+  .stat-info .stat-value { font-size: 20px; }
+  .stat-info .stat-label { font-size: 12px; }
+  .stat-progress { margin-top: 6px; height: 3px; }
+  .products-grid { gap: 10px; }
+  .product-cover { height: 140px; }
+  .product-info h3 { font-size: 14px; }
+  .product-info .product-subtitle { font-size: 11px; }
+  .product-badge { font-size: 9px; padding: 2px 6px; }
+  .login-card { padding: 20px 16px; margin: 8px; border-radius: var(--radius-lg); }
+  .login-logo svg { width: 140px; }
+  .login-form .btn { padding: 14px; font-size: 15px; }
+  .login-form .forgot-link { font-size: 12px; }
+  .drop-zone svg { width: 32px; height: 32px; }
+  .drop-zone p { font-size: 13px; }
+  .photo-thumb { width: 60px; height: 60px; }
+  .preview-card-body { padding: 12px; }
+  .preview-card-body h3 { font-size: 16px; }
+  .preview-card-body .preview-subtitle { font-size: 13px; margin-bottom: 12px; }
+  .preview-info-item .preview-info-label { font-size: 10px; }
+  .preview-info-item .preview-info-value { font-size: 13px; }
+  .preview-cert-badge { font-size: 11px; padding: 3px 10px; }
+  .filter-tab { font-size: 12px; padding: 8px 12px; }
+  .message-item { gap: 10px; padding: 12px 8px; }
+  .message-sender { font-size: 13px; }
+  .message-meta { font-size: 11px; }
+  .message-preview { font-size: 12px; }
+  #messagesListView .message-item { padding: 12px 6px; }
+  .message-detail .msg-sender-info h3 { font-size: 17px; }
+  .message-detail .msg-body { padding: 14px; font-size: 13px; }
+  .modal { padding: 24px 20px; margin: 12px; }
+  .modal h3 { font-size: 16px; }
+  .modal p { font-size: 13px; }
+  .modal-actions { flex-direction: column; }
+  .modal-actions .btn { width: 100%; }
+  .preview-gallery-btn { font-size: 12px; padding: 6px 14px; }
+  .account-page { max-width: 100%; }
+  .profile-header { gap: 10px; }
+  .profile-avatar { width: 56px; height: 56px; font-size: 20px; }
+  .profile-info h2 { font-size: 18px; }
+  .profile-info p { font-size: 13px; }
+  .settings-grid input { padding: 12px; font-size: 14px; }
+  .settings-grid .form-group label { font-size: 11px; }
+  .sticky-bar .btn { font-size: 14px; padding: 14px; }
+  .card-header h3 { font-size: 15px; }
+  .card-body .btn { width: 100%; justify-content: center; }
+  .info-banner { flex-direction: column; text-align: center; }
+  .about-actions { flex-direction: column; }
+  .about-actions .btn { width: 100%; }
+  .logo-upload .logo-preview { width: 56px; height: 56px; }
+  .logo-upload .btn { font-size: 12px; }
+  .toast { font-size: 13px; padding: 12px 14px; }
+  .toast-icon { width: 18px; height: 18px; }
+  .toast-icon svg { width: 18px; height: 18px; }
+  .empty-state h3 { font-size: 16px; }
+  .empty-state p { font-size: 13px; }
+  .empty-state .empty-icon { width: 52px; height: 52px; }
+  .empty-state .empty-icon svg { width: 26px; height: 26px; }
+}
+
+/* ─── Very small phones (≤ 360px) ────────────────────────────────── */
+@media (max-width: 360px) {
+  .sidebar { max-width: 100%; }
+  .content-area { padding: 8px; }
+  .stat-card { padding: 10px; gap: 10px; }
+  .stat-icon { width: 32px; height: 32px; }
+  .stat-icon svg { width: 16px; height: 16px; }
+  .stat-info .stat-value { font-size: 18px; }
+  .product-cover { height: 120px; }
+  .product-info h3 { font-size: 13px; }
+  .preview-card-body h3 { font-size: 15px; }
+  .login-logo svg { width: 120px; }
+  .login-card { padding: 16px 14px; margin: 6px; }
+  .filter-tab { font-size: 11px; padding: 6px 10px; }
+  .nav-item { padding: 12px 14px; font-size: 14px; }
+  .toast-container { top: 4px; right: 4px; left: 4px; }
+  .toast { padding: 10px 12px; }
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════
+     TOAST CONTAINER
+     ════════════════════════════════════════════════════════ -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ════════════════════════════════════════════════════════
+     MODAL CONTAINER
+     ════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <h3 id="modalTitle">Confirmer</h3>
+    <p id="modalBody">Voulez-vous vraiment effectuer cette action ?</p>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal()">Annuler</button>
+      <button class="btn btn-danger" id="modalConfirmBtn" onclick="closeModal()">Confirmer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     SIDEBAR OVERLAY (mobile)
+     ════════════════════════════════════════════════════════ -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- ════════════════════════════════════════════════════════
+     LOGIN PAGE (standalone, not inside app-layout)
+     ════════════════════════════════════════════════════════ -->
+<div class="login-page active" id="pageLogin">
+  <div class="login-bg-glow"></div>
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="logo-badge" style="background:transparent;width:auto;height:auto;margin-bottom:8px;padding:0;border-radius:0;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="200" height="50">
+          <path d="M12 60 C12 30 30 12 55 12 C40 28 32 45 35 60 Z" fill="#00ed64"/>
+          <path d="M12 60 C12 30 30 12 55 12" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+          <text x="72" y="52" font-family="'Georgia', 'Times New Roman', serif" font-size="38" font-weight="700" fill="#ffffff" letter-spacing="2">SOSAF</text>
+          <circle cx="232" cy="44" r="4" fill="#FF8C00"/>
+          <text x="244" y="52" font-family="'Georgia', 'Times New Roman', serif" font-size="38" font-weight="700" fill="#00ed64" letter-spacing="1">CI</text>
+        </svg>
+      </div>
+      <p style="color:var(--muted);font-size:13px;margin:0;">Espace administration</p>
+    </div>
+    <form class="login-form">
+      <div class="form-group">
+        <label for="loginEmail">Email</label>
+        <input type="email" id="loginEmail" placeholder="m.sanogo@sosafsarl.com" value="m.sanogo@sosafsarl.com">
+      </div>
+      <div class="form-group">
+        <label for="loginPass">Mot de passe</label>
+        <input type="password" id="loginPass" placeholder="••••••••" value="admin123">
+      </div>
+      <a href="#" class="forgot-link" onclick="event.preventDefault(); showToast('Fonctionnalité à venir', 'info')">Mot de passe oublié ?</a>
+      <button type="button" class="btn btn-primary btn-lg btn-full" onclick="handleLogin()">
+        Se connecter
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     APP LAYOUT (sidebar + main, hidden until login)
+     ════════════════════════════════════════════════════════ -->
+<div class="app-layout" id="appLayout" style="display:none;">
+
+  <!-- ─── Sidebar ─────────────────────────────────── -->
+  <aside class="sidebar" id="sidebar" role="navigation" aria-label="Navigation principale">
+    <div class="sidebar-brand">
+      <div class="logo-icon">
+        <svg width="24" height="24" viewBox="0 0 60 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 60 C12 30 30 12 55 12 C40 28 32 45 35 60 Z" fill="#00ed64"/>
+          <path d="M12 60 C12 30 30 12 55 12" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="logo-text">SOSAF-CI<span>Dashboard</span></div>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="nav-item active" data-page="dashboard" onclick="navigateTo('dashboard')">
+        <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></span>
+        Accueil
+      </a>
+      <a class="nav-item" data-page="products" onclick="navigateTo('products')">
+        <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
+        Produits
+      </a>
+      <a class="nav-item" data-page="messages" onclick="navigateTo('messages')">
+        <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+        Messages
+        <span class="nav-badge" id="msgBadge">3</span>
+      </a>
+      <a class="nav-item" data-page="settings" onclick="navigateTo('settings')">
+        <span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+        Paramètres
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user" onclick="navigateTo('account')">
+        <div class="avatar">MS</div>
+        <div class="user-info">
+          <div class="user-name">Mohamed Sanogo</div>
+          <div class="user-role">Directeur</div>
+        </div>
+      </div>
+      <a class="sidebar-site-link" href="https://sosafci-export.com" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        Voir mon site
+      </a>
+    </div>
+  </aside>
+
+  <!-- ─── Main Area ───────────────────────────────── -->
+  <div class="main-area">
+    <header class="main-header">
+      <div style="display:flex;align-items:center;">
+        <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu" aria-expanded="false" id="hamburgerBtn">
+          <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <h1 class="page-title" id="pageTitle">Tableau de bord</h1>
+      </div>
+      <div class="header-actions">
+        <div class="sync-indicator">
+          <span class="sync-dot" id="syncDot"></span>
+          <span id="syncText">Dernière sync : à l'instant</span>
+        </div>
+        <button class="btn-icon" onclick="navigateTo('messages')" aria-label="Messages">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <span class="header-badge"></span>
+        </button>
+      </div>
+    </header>
+
+    <div class="content-area">
+
+      <!-- ════════════════ PAGE: DASHBOARD ════════════════ -->
+      <section class="page-section active" id="pageDashboard" data-od-id="dashboard">
+        <div style="margin-bottom:24px;">
+          <h2 style="font-size:28px;font-weight:700;letter-spacing:-0.5px;display:flex;align-items:center;gap:10px;">
+            Bonjour Mohamed
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="animation:wave-hand 2.5s ease-in-out infinite;transform-origin:70% 70%;">
+              <path d="M12 20c-1-1.5-2-4-1.5-6s1-3 2-3.5" stroke="var(--fg)" stroke-width="1.3" stroke-linecap="round"/>
+              <path d="M12 20c-2-1-4-3-4-6s1-5 3-5.5" stroke="var(--fg)" stroke-width="1.3" stroke-linecap="round"/>
+              <path d="M14 18c-2-1.5-4-4-4-7s2-6 4-6.5" stroke="var(--fg)" stroke-width="1.3" stroke-linecap="round"/>
+              <path d="M15 24c-3 0-6-3-7-7s1-8 3-9" stroke="var(--fg)" stroke-width="1.3" stroke-linecap="round"/>
+              <path d="M16 24c-1 0-3-3-4-7s-1-7 1-9" stroke="var(--fg)" stroke-width="1.3" stroke-linecap="round"/>
+              <path d="M7 9c0 0 2 0 4 1" stroke="var(--fg)" stroke-width="1.3" stroke-linecap="round"/>
+              <circle cx="14" cy="24" r="2" fill="var(--fg)" opacity="0.8"/>
+            </svg>
+          </h2>
+          <p style="font-size:15px;color:var(--fg-2);margin-top:4px;">Voici le résumé de votre activité aujourd'hui.</p>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon green"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+            <div class="stat-info">
+              <div class="stat-value">5</div>
+              <div class="stat-label">Produits actifs</div>
+            </div>
+            <div class="stat-progress"><div class="stat-progress-bar green" style="--pct: 62%;"></div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon blue"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+            <div class="stat-info">
+              <div class="stat-value">3</div>
+              <div class="stat-label">Messages non lus</div>
+            </div>
+            <div class="stat-progress"><div class="stat-progress-bar blue" style="--pct: 42%;"></div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon amber"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+            <div class="stat-info">
+              <div class="stat-value">127</div>
+              <div class="stat-label">Visites ce mois</div>
+            </div>
+            <div class="stat-progress"><div class="stat-progress-bar amber" style="--pct: 85%;"></div></div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="navigateTo('products');setTimeout(()=>{document.querySelector('[data-add-product]')?.click()},100)">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Ajouter un produit
+          </button>
+          <a href="https://sosafci-export.com" target="_blank" rel="noopener" class="btn btn-outline">
+            Voir mon site
+            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>Derniers messages</h3>
+            <button class="btn btn-ghost btn-sm" onclick="navigateTo('messages')">Voir tout →</button>
+          </div>
+          <div class="card-body">
+            <div class="message-item" onclick="navigateTo('messages')">
+              <span class="message-dot"></span>
+              <div class="message-content">
+                <div class="message-sender">Sophie Kouamé</div>
+                <div class="message-meta">sophie.k@example.com · il y a 2h</div>
+                <div class="message-preview">Bonjour, je suis intéressée par l'export de mangues Kent vers la France. Pouvez-vous me faire un devis pour un conteneur de 20 pieds ?</div>
+              </div>
+            </div>
+            <div class="message-item" onclick="navigateTo('messages')">
+              <span class="message-dot"></span>
+              <div class="message-content">
+                <div class="message-sender">Jean-Marc Lefebvre</div>
+                <div class="message-meta">jm.lefebvre@import-eu.com · il y a 6h</div>
+                <div class="message-preview">Bonjour, nous sommes une société d'import basée à Marseille. Nous cherchons un fournisseur régulier de noix de coco...</div>
+              </div>
+            </div>
+            <div class="message-item" onclick="navigateTo('messages')">
+              <span class="message-dot read"></span>
+              <div class="message-content">
+                <div class="message-sender">Amadou Traoré</div>
+                <div class="message-meta">a.traore@agrifood.ci · il y a 1j</div>
+                <div class="message-preview">Merci pour votre réponse. Nous confirmons notre intérêt pour un conteneur d'avocats. Pouvez-vous...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="live-indicator" style="margin-top:20px;">
+          <span class="live-dot"></span>
+          Site en ligne ✓
+        </div>
+      </section>
+
+      <!-- ════════════════ PAGE: PRODUCTS ════════════════ -->
+      <section class="page-section" id="pageProducts" data-od-id="products">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+          <h2 style="font-size:22px;font-weight:700;">Mes produits</h2>
+          <button class="btn btn-primary" data-add-product onclick="navigateTo('product-edit')">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Nouveau produit
+          </button>
+        </div>
+
+        <div class="info-banner">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          Les modifications sont publiées automatiquement sur sosafci-export.com
+        </div>
+
+        <div class="products-grid" id="productsGrid">
+          <!-- Product cards rendered by JS -->
+        </div>
+      </section>
+
+      <!-- ════════════════ PAGE: PRODUCT EDIT ════════════════ -->
+      <section class="page-section" id="pageProductEdit" data-od-id="product-edit">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;">
+          <button class="btn btn-ghost" onclick="navigateTo('products')">
+            <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            Retour
+          </button>
+          <h2 style="font-size:22px;font-weight:700;" id="editPageTitle">Nouveau produit</h2>
+        </div>
+
+        <div class="edit-layout">
+          <!-- FORM -->
+          <div class="edit-form">
+            <div class="form-group">
+              <label>Nom du produit</label>
+              <input type="text" id="editName" placeholder="Ex: Mangue" value="">
+            </div>
+            <div class="form-group">
+              <label>Sous-titre</label>
+              <input type="text" id="editSubtitle" placeholder="Ex: Origine Côte d'Ivoire · Variété Kent" value="">
+            </div>
+
+            <div>
+              <label style="font-size:13px;font-weight:500;color:var(--fg-2);display:block;margin-bottom:6px;">Photos</label>
+              <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+                <div class="drop-icon">
+                  <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                    <rect x="8" y="14" width="32" height="26" rx="5" stroke="var(--muted)" stroke-width="1.5" fill="none"/>
+                    <circle cx="24" cy="27" r="8" stroke="var(--muted)" stroke-width="1.5" fill="none"/>
+                    <circle cx="24" cy="27" r="4" fill="var(--muted)" opacity="0.3"/>
+                    <path d="M18 14l2-4h8l2 4" stroke="var(--muted)" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <p>Glissez vos photos ici ou cliquez pour choisir</p>
+                <span class="drop-hint">JPG, PNG · 8 photos max</span>
+                <input type="file" id="fileInput" accept="image/*" multiple style="display:none" onchange="handleFileUpload(event)">
+              </div>
+              <div class="photo-thumbs" id="photoThumbs"></div>
+              <div class="photo-counter" id="photoCounter">0/8 photos</div>
+            </div>
+
+            <div>
+              <label style="font-size:13px;font-weight:500;color:var(--fg-2);display:block;margin-bottom:8px;">Caractéristiques du produit</label>
+              <div id="charList">
+                <div class="char-pair">
+                  <input type="text" placeholder="Label (ex: Variété)" value="Variété" class="char-label-input">
+                  <input type="text" placeholder="Valeur (ex: Kent)" value="Kent, Amélie" class="char-value-input">
+                  <button class="char-remove" onclick="removeChar(this)" style="display:flex;">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </button>
+                </div>
+                <div class="char-pair">
+                  <input type="text" placeholder="Label" value="Saison" class="char-label-input">
+                  <input type="text" placeholder="Valeur" value="Mars - Juillet" class="char-value-input">
+                  <button class="char-remove" onclick="removeChar(this)">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </button>
+                </div>
+                <div class="char-pair">
+                  <input type="text" placeholder="Label" value="Calibre" class="char-label-input">
+                  <input type="text" placeholder="Valeur" value="6 - 12" class="char-value-input">
+                  <button class="char-remove" onclick="removeChar(this)">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </button>
+                </div>
+                <div class="char-pair">
+                  <input type="text" placeholder="Label" value="Conditionnement" class="char-label-input">
+                  <input type="text" placeholder="Valeur" value="Carton 6 kg" class="char-value-input">
+                  <button class="char-remove" onclick="removeChar(this)">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </button>
+                </div>
+              </div>
+              <button class="btn btn-ghost btn-sm" id="addCharBtn" onclick="addCharacteristic()" style="margin-top:4px;">
+                <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Ajouter une caractéristique
+              </button>
+            </div>
+
+            <div class="form-group">
+              <label>Certification <span style="color:var(--muted);font-weight:400;">(optionnelle)</span></label>
+              <input type="text" id="editCert" placeholder="Ex: GlobalG.A.P." value="">
+            </div>
+          </div>
+
+          <!-- PREVIEW -->
+          <div class="edit-preview">
+            <label style="font-size:13px;font-weight:500;color:var(--fg-2);display:block;margin-bottom:10px;">Aperçu en direct</label>
+            <div id="livePreview" style="max-width:360px;"></div>
+          </div>
+        </div>
+
+        <div class="sticky-bar">
+          <button class="btn btn-outline" onclick="navigateTo('products')">Annuler</button>
+          <button class="btn btn-primary" onclick="saveProduct()">Enregistrer</button>
+        </div>
+      </section>
+
+      <!-- ════════════════ PAGE: MESSAGES ════════════════ -->
+      <section class="page-section" id="pageMessages" data-od-id="messages">
+        <h2 style="font-size:22px;font-weight:700;margin-bottom:16px;">Messages</h2>
+
+        <div class="filter-tabs">
+          <span class="filter-tab active" data-filter="all" onclick="filterMessages('all')">Tous</span>
+          <span class="filter-tab" data-filter="unread" onclick="filterMessages('unread')">Non lus</span>
+          <span class="filter-tab" data-filter="read" onclick="filterMessages('done')">Traités</span>
+        </div>
+
+        <div id="messagesListView">
+          <!-- Rendered by JS -->
+        </div>
+
+        <div id="messageDetailView" style="display:none;">
+          <!-- Rendered by JS when clicking a message -->
+        </div>
+      </section>
+
+      <!-- ════════════════ PAGE: SETTINGS ════════════════ -->
+      <section class="page-section" id="pageSettings" data-od-id="settings">
+        <h2 style="font-size:22px;font-weight:700;margin-bottom:24px;">Paramètres</h2>
+
+        <div class="settings-section">
+          <h3>Entreprise</h3>
+          <div class="settings-grid">
+            <div class="form-group">
+              <label>Nom de l'entreprise</label>
+              <input type="text" value="SOSAF-CI" placeholder="Nom">
+            </div>
+            <div class="form-group">
+              <label>RCCM</label>
+              <input type="text" value="CI-ABJ-03-2024-B21-00015" placeholder="Numéro RCCM">
+            </div>
+            <div class="form-group" style="grid-column:1/-1;">
+              <label>Adresse</label>
+              <input type="text" value="Abidjan, Cocody, Angré, 9ème Tranche, Lot N446B" placeholder="Adresse complète">
+            </div>
+          </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="settings-section">
+          <h3>Contacts</h3>
+          <div style="background:var(--surface-2);border-radius:var(--radius-md);padding:16px;margin-bottom:12px;">
+            <div class="settings-grid">
+              <div class="form-group">
+                <label>Nom</label>
+                <input type="text" value="Mohamed Sanogo">
+              </div>
+              <div class="form-group">
+                <label>Titre</label>
+                <input type="text" value="Directeur">
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" value="m.sanogo@sosafsarl.com">
+              </div>
+              <div class="form-group">
+                <label>Téléphone</label>
+                <input type="tel" value="+225 07 10 00 65 00">
+              </div>
+            </div>
+          </div>
+          <div style="background:var(--surface-2);border-radius:var(--radius-md);padding:16px;">
+            <div class="settings-grid">
+              <div class="form-group">
+                <label>Nom</label>
+                <input type="text" value="Bouramala Yaya Sanogo">
+              </div>
+              <div class="form-group">
+                <label>Titre</label>
+                <input type="text" value="Export Manager">
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" value="bouramalayayasanogo@gmail.com">
+              </div>
+              <div class="form-group">
+                <label>Téléphone</label>
+                <input type="tel" value="+223 89 13 45 55">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="settings-section">
+          <h3>WhatsApp</h3>
+          <div class="settings-grid" style="grid-template-columns:1fr;">
+            <div class="form-group">
+              <label>Numéro WhatsApp</label>
+              <input type="tel" value="+223 89 13 45 55" placeholder="Numéro WhatsApp">
+            </div>
+          </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="settings-section">
+          <h3>Logo</h3>
+          <div class="logo-upload">
+            <div class="logo-preview">
+              <svg width="40" height="40" viewBox="0 0 60 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 60 C12 30 30 12 55 12 C40 28 32 45 35 60 Z" fill="#00ed64"/>
+                <path d="M12 60 C12 30 30 12 55 12" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div>
+              <button class="btn btn-outline btn-sm" onclick="showToast('Fonctionnalité à venir','info')">Changer le logo</button>
+              <p style="font-size:12px;color:var(--muted);margin-top:4px;">PNG, JPG · Carré de préférence</p>
+            </div>
+          </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="settings-section">
+          <h3>Site web</h3>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <span style="font-size:15px;color:var(--fg-2);">sosafci-export.com</span>
+            <a href="https://sosafci-export.com" target="_blank" rel="noopener" class="btn btn-outline btn-sm">
+              Ouvrir
+              <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div style="margin-top:24px;">
+          <button class="btn btn-primary" onclick="showToast('Modifications enregistrées ✓','success')">Enregistrer les modifications</button>
+        </div>
+      </section>
+
+      <!-- ════════════════ PAGE: ACCOUNT ════════════════ -->
+      <section class="page-section" id="pageAccount" data-od-id="account">
+        <h2 style="font-size:22px;font-weight:700;margin-bottom:24px;">Mon compte</h2>
+
+        <div class="account-page">
+          <div class="profile-header">
+            <div class="profile-avatar" onclick="showToast('Changer la photo de profil','info')">MS</div>
+            <div class="profile-info">
+              <h2>Mohamed Sanogo</h2>
+              <p>Directeur · m.sanogo@sosafsarl.com</p>
+            </div>
+          </div>
+
+          <div class="account-form">
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" value="m.sanogo@sosafsarl.com" placeholder="Nouvel email">
+            </div>
+
+            <div class="password-section">
+              <h4>Changer le mot de passe</h4>
+              <div style="display:flex;flex-direction:column;gap:12px;">
+                <div class="form-group">
+                  <label>Mot de passe actuel</label>
+                  <input type="password" placeholder="••••••••">
+                </div>
+                <div class="form-group">
+                  <label>Nouveau mot de passe</label>
+                  <input type="password" placeholder="••••••••">
+                </div>
+                <div class="form-group">
+                  <label>Confirmer le mot de passe</label>
+                  <input type="password" placeholder="••••••••">
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:12px;padding-top:8px;flex-wrap:wrap;">
+              <button class="btn btn-primary" onclick="showToast('Mot de passe mis à jour ✓','success')">Mettre à jour</button>
+              <button class="btn btn-danger" onclick="showConfirm('Déconnexion','Voulez-vous vraiment vous déconnecter ?',logout)">Se déconnecter</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /content-area -->
+  </div><!-- /main-area -->
+</div><!-- /app-layout -->
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   SUPABASE CONFIG
+   ═══════════════════════════════════════════════════════════════════ */
+const SUPABASE_URL = 'https://lwjtftrjcmnzfsdkhuhf.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_jcHNq-LFVjQ7eQlDCzrCYA_FvttR4S5';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: {
+    autoRefreshToken: true,
+    persistSession: true,
+    storage: window.localStorage
+  }
+});
+
+/* ═══════════════════════════════════════════════════════════════════
+   STATE — cache local, synchronisé avec Supabase
+   ═══════════════════════════════════════════════════════════════════ */
+const STATE = {
+  isLoggedIn: false,
+  currentPage: 'dashboard',
+  editProductIndex: -1,
+  editProductId: null,
+  user: null,
+  messages: [],
+  products: [],
+  settings: {},
+  productChars: {},
+  productPhotos: {},
+  visitsCount: 0
+};
+
+let currentFilter = 'all';
+let currentMessageIndex = 0;
+
+/* ═══════════════════════════════════════════════════════════════════
+   SUPABASE HELPERS
+   ═══════════════════════════════════════════════════════════════════ */
+async function loadProducts() {
+  try {
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .order('sort_order');
+    if (error) throw error;
+    STATE.products = data || [];
+    // Load chars for each product
+    for (const p of STATE.products) {
+      const { data: chars } = await supabase
+        .from('product_chars')
+        .select('*')
+        .eq('product_id', p.id)
+        .order('sort_order');
+      STATE.productChars[p.id] = chars || [];
+      const { data: photos } = await supabase
+        .from('product_photos')
+        .select('*')
+        .eq('product_id', p.id)
+        .order('sort_order');
+      STATE.productPhotos[p.id] = photos || [];
+    }
+    renderProducts();
+    updateSidebarBadge();
+  } catch (err) {
+    console.error('Failed to load products:', err);
+  }
+}
+
+async function loadMessages() {
+  try {
+    const { data, error } = await supabase
+      .from('messages')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (error) throw error;
+    STATE.messages = data || [];
+    renderMessages();
+    updateSidebarBadge();
+    updateDashboardBadge();
+  } catch (err) {
+    console.error('Failed to load messages:', err);
+  }
+}
+
+async function loadSettings() {
+  try {
+    const { data, error } = await supabase
+      .from('settings')
+      .select('*');
+    if (error) throw error;
+    STATE.settings = {};
+    (data || []).forEach(s => { STATE.settings[s.key] = s.value; });
+    renderSettings();
+  } catch (err) {
+    console.error('Failed to load settings:', err);
+  }
+}
+
+async function loadVisitsCount() {
+  try {
+    const { count, error } = await supabase
+      .from('visits')
+      .select('*', { count: 'exact', head: true });
+    if (error) throw error;
+    STATE.visitsCount = count || 0;
+    renderDashboard();
+  } catch (err) {
+    console.error('Failed to load visits:', err);
+  }
+}
+
+async function loadAllData() {
+  await Promise.all([loadProducts(), loadMessages(), loadSettings(), loadVisitsCount()]);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   AUTH — Supabase Auth
+   ═══════════════════════════════════════════════════════════════════ */
+async function handleLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPass').value.trim();
+  if (!email || !pass) {
+    showToast('Veuillez remplir tous les champs', 'error');
+    return;
+  }
+  const btn = document.querySelector('.login-form .btn-primary');
+  btn.classList.add('loading');
+  btn.innerHTML = '<span class="btn-loading-spinner"></span><span class="btn-text">Connexion...</span>';
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: pass
+    });
+    if (error) throw error;
+    STATE.isLoggedIn = true;
+    STATE.user = data.user;
+    document.getElementById('pageLogin').classList.remove('active');
+    document.getElementById('appLayout').style.display = 'flex';
+    loadAllData();
+    navigateTo('dashboard');
+    showToast('Connexion réussie ✓', 'success');
+  } catch (err) {
+    showToast(err.message || 'Erreur de connexion', 'error');
+  }
+  btn.classList.remove('loading');
+  btn.innerHTML = 'Se connecter<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+}
+
+async function logout() {
+  await supabase.auth.signOut();
+  STATE.isLoggedIn = false;
+  STATE.user = null;
+  document.getElementById('appLayout').style.display = 'none';
+  document.getElementById('pageLogin').classList.add('active');
+  showToast('Déconnecté', 'info');
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   NAVIGATION
+   ═══════════════════════════════════════════════════════════════════ */
+const PAGE_TITLES = {
+  'dashboard': 'Tableau de bord',
+  'products': 'Produits',
+  'messages': 'Messages',
+  'settings': 'Paramètres',
+  'account': 'Mon compte',
+  'product-edit': 'Nouveau produit'
+};
+
+function navigateTo(page) {
+  STATE.currentPage = page;
+
+  // Hide all page sections
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+
+  // Show target with animation reflow trigger
+  const map = {
+    'dashboard': 'pageDashboard',
+    'products': 'pageProducts',
+    'messages': 'pageMessages',
+    'settings': 'pageSettings',
+    'account': 'pageAccount',
+    'product-edit': 'pageProductEdit'
+  };
+  const el = document.getElementById(map[page]);
+  if (el) {
+    void el.offsetWidth; // Force reflow for CSS animation
+    el.classList.add('active');
+  }
+
+  // Update title
+  document.getElementById('pageTitle').textContent = PAGE_TITLES[page] || page;
+
+  // Update nav active state
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const navMap = { 'dashboard': 'dashboard', 'products': 'products', 'messages': 'messages', 'settings': 'settings', 'account': 'dashboard', 'product-edit': 'products' };
+  const activeNav = navMap[page] || 'dashboard';
+  document.querySelector(`.nav-item[data-page="${activeNav}"]`)?.classList.add('active');
+
+  // Close sidebar on mobile
+  if (window.innerWidth <= 820) {
+    closeSidebar();
+  }
+
+  // Render page content
+  if (page === 'products') renderProducts();
+  if (page === 'messages') renderMessages();
+  if (page === 'product-edit') initProductEdit();
+  if (page === 'dashboard') {
+    updateDashboardBadge();
+    setTimeout(() => animateStatBars(), 450);
+  }
+
+  // Scroll to top (important on mobile)
+  window.scrollTo(0, 0);
+
+  // Update sidebar badge
+  updateSidebarBadge();
+}
+
+function updateSidebarBadge() {
+  const unread = STATE.messages.filter(m => m.status === 'unread').length;
+  const badge = document.getElementById('msgBadge');
+  badge.textContent = unread;
+  badge.style.display = unread > 0 ? 'inline' : 'none';
+}
+
+function updateDashboardBadge() {
+  const unread = STATE.messages.filter(m => m.status === 'unread').length;
+  const badge = document.querySelector('.header-badge');
+  if (badge) {
+    badge.textContent = unread;
+    badge.style.display = unread > 0 ? 'flex' : 'none';
+  }
+}
+
+function animateStatBars() {
+  document.querySelectorAll('.stat-progress-bar').forEach(bar => {
+    bar.classList.remove('animate');
+    void bar.offsetWidth;
+    bar.classList.add('animate');
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SIDEBAR TOGGLE
+   ═══════════════════════════════════════════════════════════════════ */
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  const btn = document.getElementById('hamburgerBtn');
+  const isOpen = sidebar.classList.toggle('open');
+  overlay.classList.toggle('active');
+  if (btn) btn.setAttribute('aria-expanded', isOpen);
+}
+
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('active');
+  const btn = document.getElementById('hamburgerBtn');
+  if (btn) btn.setAttribute('aria-expanded', 'false');
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   TOASTS
+   ═══════════════════════════════════════════════════════════════════ */
+function showToast(message, type = 'success') {
+  const container = document.getElementById('toastContainer');
+  const icons = {
+    success: '<svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+    error: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
+    info: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'
+  };
+  const t = document.createElement('div');
+  t.className = `toast toast-${type}`;
+  t.innerHTML = `<span class="toast-icon">${icons[type] || icons.success}</span>${message}`;
+  container.appendChild(t);
+  setTimeout(() => {
+    t.classList.add('removing');
+    setTimeout(() => t.remove(), 200);
+  }, 3000);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   MODAL
+   ═══════════════════════════════════════════════════════════════════ */
+let modalCallback = null;
+function showConfirm(title, body, onConfirm) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').textContent = body;
+  document.getElementById('modalOverlay').classList.add('active');
+  modalCallback = onConfirm;
+  document.getElementById('modalConfirmBtn').onclick = function() {
+    closeModal();
+    if (modalCallback) modalCallback();
+  };
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('active');
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PRODUCTS — RENDER
+   ═══════════════════════════════════════════════════════════════════ */
+function renderProducts() {
+  const grid = document.getElementById('productsGrid');
+  if (STATE.products.length === 0) {
+    grid.innerHTML = `
+      <div style="grid-column:1/-1;">
+        <div class="empty-state">
+          <div class="empty-icon"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+          <h3>Ajoutez votre premier produit !</h3>
+          <p>Commencez à créer votre catalogue export.</p>
+          <button class="btn btn-primary" onclick="navigateTo('product-edit')">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Ajouter un produit
+          </button>
+        </div>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = STATE.products.map((p, i) => {
+    const photos = STATE.productPhotos[p.id] || [];
+    const chars = STATE.productChars[p.id] || [];
+    return `
+    <div class="product-card" data-id="${p.id}">
+      <div class="drag-handle" title="Glisser pour réordonner">
+        <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="18" x2="16" y2="18"/></svg>
+      </div>
+      <div class="product-cover" style="background:${p.cover_color || '#1c2d38'}20;">
+        <div class="product-cover-img" style="display:flex;align-items:center;justify-content:center;width:100%;">
+          ${photos.length > 0 
+            ? `<img src="${photos[0].url}" alt="${p.name}" style="width:100%;height:100px;object-fit:cover;border-radius:8px 8px 0 0;">`
+            : `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>`
+          }
+        </div>
+        <span class="cover-count">${photos.length} photo${photos.length > 1 ? 's' : ''}</span>
+      </div>
+      <div class="product-info">
+        <h3>${p.name}</h3>
+        <div class="product-subtitle">${p.subtitle || ''}</div>
+      </div>
+      <div class="product-footer">
+        <div>
+          ${p.cert ? `<span class="product-badge cert">${p.cert}</span>` : ''}
+        </div>
+        <div class="product-actions">
+          <div class="toggle ${p.visible ? 'active' : ''}" onclick="toggleProductVisibility(${i})">
+            <span class="toggle-knob"></span>
+          </div>
+          <button class="btn-icon-sm" onclick="editProduct(${i})" title="Modifier">
+            <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+          <button class="btn-icon-sm" onclick="confirmDeleteProduct(${i})" title="Supprimer">
+            <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function toggleProductVisibility(index) {
+  const p = STATE.products[index];
+  p.visible = !p.visible;
+  try {
+    await supabase.from('products').update({ visible: p.visible }).eq('id', p.id);
+    renderProducts();
+    const status = p.visible ? 'visible sur le site ✓' : 'masqué du site';
+    showToast(`${p.name} : ${status}`, p.visible ? 'success' : 'info');
+    const toggleEls = document.querySelectorAll('.product-card .toggle');
+    if (toggleEls[index]) {
+      toggleEls[index].classList.add('pulse');
+      setTimeout(() => toggleEls[index].classList.remove('pulse'), 400);
+    }
+    updateSync();
+  } catch (err) {
+    showToast('Erreur de mise à jour', 'error');
+  }
+}
+
+function confirmDeleteProduct(index) {
+  const p = STATE.products[index];
+  showConfirm('Supprimer ce produit ?', `"${p.name}" sera définitivement supprimé. Cette action est irréversible.`, async () => {
+    try {
+      // Delete chars and photos first
+      await supabase.from('product_chars').delete().eq('product_id', p.id);
+      await supabase.from('product_photos').delete().eq('product_id', p.id);
+      await supabase.from('products').delete().eq('id', p.id);
+      STATE.products.splice(index, 1);
+      delete STATE.productChars[p.id];
+      delete STATE.productPhotos[p.id];
+      renderProducts();
+      showToast(`${p.name} supprimé ✓`, 'info');
+      updateSync();
+    } catch (err) {
+      showToast('Erreur lors de la suppression', 'error');
+    }
+  });
+}
+
+function editProduct(index) {
+  STATE.editProductIndex = index;
+  STATE.editProductId = STATE.products[index].id;
+  navigateTo('product-edit');
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PRODUCT EDIT
+   ═══════════════════════════════════════════════════════════════════ */
+function initProductEdit() {
+  const idx = STATE.editProductIndex;
+  const isEdit = idx >= 0 && idx < STATE.products.length;
+
+  document.getElementById('editPageTitle').textContent = isEdit ? `Modifier : ${STATE.products[idx].name}` : 'Nouveau produit';
+
+  if (isEdit) {
+    const p = STATE.products[idx];
+    const chars = STATE.productChars[p.id] || [];
+    const photos = STATE.productPhotos[p.id] || [];
+    document.getElementById('editName').value = p.name;
+    document.getElementById('editSubtitle').value = p.subtitle || '';
+    document.getElementById('editCert').value = p.cert || '';
+
+    // Char list
+    const list = document.getElementById('charList');
+    list.innerHTML = '';
+    chars.forEach(c => {
+      addCharInput(c.label, c.value);
+    });
+
+    // Photos
+    document.getElementById('photoCounter').textContent = `${photos.length}/8 photos`;
+    const thumbs = document.getElementById('photoThumbs');
+    thumbs.innerHTML = '';
+    photos.forEach((photo, i) => {
+      const thumb = document.createElement('div');
+      thumb.className = 'photo-thumb';
+      thumb.innerHTML = `
+        <div class="thumb-img" style="background:var(--surface-3);display:flex;align-items:center;justify-content:center;">
+          <img src="${photo.url}" alt="Photo ${i+1}" style="width:100%;height:100%;object-fit:cover;border-radius:6px;">
+        </div>
+        <button class="thumb-remove" onclick="removePhoto(this)">✕</button>
+        ${i === 0 ? '<span class="thumb-star">★</span>' : ''}
+      `;
+      thumbs.appendChild(thumb);
+    });
+  } else {
+    document.getElementById('editName').value = '';
+    document.getElementById('editSubtitle').value = '';
+    document.getElementById('editCert').value = '';
+    document.getElementById('photoThumbs').innerHTML = '';
+    document.getElementById('photoCounter').textContent = '0/8 photos';
+    document.getElementById('charList').innerHTML = '';
+    addCharInput('', '');
+  }
+
+  updateLivePreview();
+}
+
+function addCharInput(label, value) {
+  const list = document.getElementById('charList');
+  const max = 4;
+  const existing = list.querySelectorAll('.char-pair').length;
+  if (existing >= max) return;
+
+  const div = document.createElement('div');
+  div.className = 'char-pair';
+  div.innerHTML = `
+    <input type="text" placeholder="Label (ex: Variété)" value="${label}" class="char-label-input">
+    <input type="text" placeholder="Valeur (ex: Kent)" value="${value}" class="char-value-input">
+    <button class="char-remove" onclick="removeChar(this)">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  `;
+  list.appendChild(div);
+  updateAddCharBtn();
+
+  // Live preview updates
+  div.querySelectorAll('input').forEach(inp => inp.addEventListener('input', updateLivePreview));
+}
+
+function addCharacteristic() {
+  addCharInput('', '');
+  updateAddCharBtn();
+}
+
+function removeChar(btn) {
+  btn.closest('.char-pair').remove();
+  updateAddCharBtn();
+  updateLivePreview();
+}
+
+function updateAddCharBtn() {
+  const count = document.querySelectorAll('.char-pair').length;
+  const btn = document.getElementById('addCharBtn');
+  btn.disabled = count >= 4;
+  btn.style.opacity = count >= 4 ? '0.4' : '1';
+}
+
+/* ─── File Upload (simulated) ──────────────────────────────────── */
+function handleFileUpload(e) {
+  const files = e.target.files;
+  if (!files.length) return;
+  const current = document.getElementById('photoThumbs').children.length;
+  const max = 8;
+  const toAdd = Math.min(files.length, max - current);
+  for (let i = 0; i < toAdd; i++) {
+    const thumb = document.createElement('div');
+    thumb.className = 'photo-thumb';
+    thumb.innerHTML = `
+      <div class="thumb-img" style="background:var(--surface-3);display:flex;align-items:center;justify-content:center;color:var(--muted);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      </div>
+      <button class="thumb-remove" onclick="removePhoto(this)">✕</button>
+      ${current + i === 0 ? '<span class="thumb-star">★</span>' : ''}
+    `;
+    document.getElementById('photoThumbs').appendChild(thumb);
+  }
+  e.target.value = '';
+  const total = document.getElementById('photoThumbs').children.length;
+  document.getElementById('photoCounter').textContent = `${total}/${max} photos`;
+  showToast(`${toAdd} photo${toAdd > 1 ? 's' : ''} ajoutée${toAdd > 1 ? 's' : ''}`, 'success');
+  updateLivePreview();
+}
+
+function removePhoto(el) {
+  el.closest('.photo-thumb').remove();
+  const total = document.getElementById('photoThumbs').children.length;
+  document.getElementById('photoCounter').textContent = `${total}/8 photos`;
+  updateLivePreview();
+}
+
+/* ─── Drop Zone ─────────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  const dz = document.getElementById('dropZone');
+  if (!dz) return;
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+  dz.addEventListener('drop', e => {
+    e.preventDefault();
+    dz.classList.remove('drag-over');
+    if (e.dataTransfer.files.length) handleFileUpload({ target: { files: e.dataTransfer.files } });
+  });
+
+  // Live preview on input
+  ['editName','editSubtitle','editCert'].forEach(id => {
+    document.getElementById(id)?.addEventListener('input', updateLivePreview);
+  });
+});
+
+/* ─── Live Preview ─────────────────────────────────────────────── */
+function updateLivePreview() {
+  const name = document.getElementById('editName')?.value || 'Nom du produit';
+  const subtitle = document.getElementById('editSubtitle')?.value || 'Sous-titre du produit';
+  const cert = document.getElementById('editCert')?.value || '';
+  const chars = document.querySelectorAll('.char-pair');
+  const photoCount = document.getElementById('photoThumbs')?.children.length || 0;
+
+  // Build 2x2 info grid
+  let infoGrid = '';
+  let charIndex = 0;
+  chars.forEach(pair => {
+    if (charIndex >= 4) return;
+    const label = pair.querySelector('.char-label-input')?.value || '';
+    const value = pair.querySelector('.char-value-input')?.value || '';
+    if (label || value) {
+      infoGrid += `<div class="preview-info-item">
+        <span class="preview-info-label">${escHtml(label || '…')}</span>
+        <span class="preview-info-value">${escHtml(value || '…')}</span>
+      </div>`;
+      charIndex++;
+    }
+  });
+
+  // Fill remaining slots to maintain 2x2 grid structure
+  while (charIndex < 4) {
+    infoGrid += `<div class="preview-info-item">
+      <span class="preview-info-label">—</span>
+      <span class="preview-info-value">—</span>
+    </div>`;
+    charIndex++;
+  }
+
+  const preview = document.getElementById('livePreview');
+  preview.innerHTML = `
+    <div class="preview-card">
+      <div class="preview-card-image">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+          <rect x="10" y="16" width="28" height="26" rx="3" fill="var(--surface-3)" stroke="var(--border-light)" stroke-width="1.5"/>
+          <path d="M10 22h28" stroke="var(--border-light)" stroke-width="1.5"/>
+          <path d="M16 16V12a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4" stroke="var(--border-light)" stroke-width="1.5" fill="none"/>
+        </svg>
+        <div class="preview-gallery-overlay">
+          <span class="preview-gallery-btn">Galerie ${photoCount}</span>
+        </div>
+      </div>
+      <div class="preview-card-body">
+        <h3>${escHtml(name)}</h3>
+        <div class="preview-subtitle">${escHtml(subtitle)}</div>
+        <div class="preview-info-grid">
+          ${infoGrid}
+        </div>
+      </div>
+      ${cert ? `<div class="preview-card-footer">
+        <span class="preview-cert-badge">✓ ${escHtml(cert)}</span>
+      </div>` : ''}
+    </div>
+  `;
+}
+
+function escHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+/* ─── Save Product ──────────────────────────────────────────────── */
+async function saveProduct() {
+  const name = document.getElementById('editName').value.trim();
+  if (!name) {
+    showToast('Veuillez entrer un nom de produit', 'error');
+    return;
+  }
+
+  const subtitle = document.getElementById('editSubtitle').value.trim();
+  const cert = document.getElementById('editCert').value.trim();
+  const chars = [];
+  document.querySelectorAll('.char-pair').forEach(pair => {
+    const label = pair.querySelector('.char-label-input')?.value?.trim() || '';
+    const value = pair.querySelector('.char-value-input')?.value?.trim() || '';
+    if (label || value) chars.push({ label, value });
+  });
+
+  try {
+    const idx = STATE.editProductIndex;
+    const isEdit = idx >= 0 && idx < STATE.products.length;
+
+    if (isEdit) {
+      // Update existing product
+      const p = STATE.products[idx];
+      const { error: prodErr } = await supabase
+        .from('products')
+        .update({ name, subtitle, cert, updated_at: new Date().toISOString() })
+        .eq('id', p.id);
+      if (prodErr) throw prodErr;
+
+      // Delete and re-insert chars
+      await supabase.from('product_chars').delete().eq('product_id', p.id);
+      const newChars = chars.map((c, ci) => ({
+        product_id: p.id,
+        label: c.label,
+        value: c.value,
+        sort_order: ci
+      }));
+      if (newChars.length) {
+        const { error: charsErr } = await supabase.from('product_chars').insert(newChars);
+        if (charsErr) throw charsErr;
+      }
+
+      // Refresh local state
+      STATE.productChars[p.id] = newChars;
+      p.name = name;
+      p.subtitle = subtitle;
+      p.cert = cert;
+      showToast(`${name} mis à jour — visible sur le site ✓`, 'success');
+    } else {
+      // Create new product
+      // 1. Get max sort_order
+      const { data: maxOrder } = await supabase
+        .from('products')
+        .select('sort_order')
+        .order('sort_order', { ascending: false })
+        .limit(1);
+      const nextOrder = (maxOrder?.[0]?.sort_order ?? 0) + 1;
+
+      const { data: newProd, error: prodErr } = await supabase
+        .from('products')
+        .insert({
+          name,
+          subtitle,
+          cert,
+          visible: true,
+          sort_order: nextOrder,
+          cover_color: '#1c2d38'
+        })
+        .select()
+        .single();
+      if (prodErr) throw prodErr;
+
+      // Insert chars
+      if (chars.length) {
+        const newChars = chars.map((c, ci) => ({
+          product_id: newProd.id,
+          label: c.label,
+          value: c.value,
+          sort_order: ci
+        }));
+        const { error: charsErr } = await supabase.from('product_chars').insert(newChars);
+        if (charsErr) throw charsErr;
+        STATE.productChars[newProd.id] = newChars;
+      } else {
+        STATE.productChars[newProd.id] = [];
+      }
+      STATE.productPhotos[newProd.id] = [];
+      STATE.products.push(newProd);
+      showToast(`${name} ajouté au catalogue ✓`, 'success');
+    }
+
+    updateSync();
+    STATE.editProductIndex = -1;
+    STATE.editProductId = null;
+    navigateTo('products');
+  } catch (err) {
+    showToast('Erreur lors de l\'enregistrement: ' + (err.message || err), 'error');
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   MESSAGES
+   ═══════════════════════════════════════════════════════════════════ */
+function renderMessages(filter) {
+  filter = filter || currentFilter;
+  currentFilter = filter;
+
+  const view = document.getElementById('messagesListView');
+  const detail = document.getElementById('messageDetailView');
+
+  // Only show list if we're not in detail view
+  let filtered = STATE.messages;
+  if (filter === 'unread') filtered = STATE.messages.filter(m => m.status === 'unread');
+  if (filter === 'done') filtered = STATE.messages.filter(m => m.status === 'read');
+
+  // Update filter tabs
+  document.querySelectorAll('.filter-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.filter === filter);
+  });
+
+  if (filtered.length === 0) {
+    view.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+        <h3>Aucun message pour l'instant</h3>
+        <p>Les messages provenant du site apparaîtront ici.</p>
+      </div>`;
+    return;
+  }
+
+  view.innerHTML = `
+    <div class="card">
+      <div class="card-body" style="padding:4px 20px;">
+        ${filtered.map((m, i) => {
+          const realIdx = STATE.messages.indexOf(m);
+          const timeAgo = getTimeAgo(m.created_at);
+          return `
+            <div class="message-item" onclick="openMessage(${realIdx})">
+              <span class="message-dot ${m.status === 'read' ? 'read' : ''}"></span>
+              <div class="message-content">
+                <div class="message-sender">${m.name}</div>
+                <div class="message-meta">${m.email} · ${timeAgo}</div>
+                <div class="message-preview">${(m.body || m.message || '').substring(0, 100)}${(m.body || m.message || '').length > 100 ? '...' : ''}</div>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>`;
+}
+
+async function openMessage(index) {
+  currentMessageIndex = index;
+  const m = STATE.messages[index];
+  if (m.status === 'unread') {
+    m.status = 'read';
+    await supabase.from('messages').update({ status: 'read' }).eq('id', m.id);
+    updateSidebarBadge();
+    updateDashboardBadge();
+  }
+
+  const view = document.getElementById('messagesListView');
+  const detail = document.getElementById('messageDetailView');
+  view.style.display = 'none';
+  detail.style.display = 'block';
+
+  const timeAgo = getTimeAgo(m.created_at);
+  const msgBody = m.body || m.message || '';
+  detail.innerHTML = `
+    <button class="btn btn-ghost" onclick="closeMessageDetail()" style="margin-bottom:16px;">
+      <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Retour aux messages
+    </button>
+
+    <div class="message-detail">
+      <div class="msg-header">
+        <div class="msg-sender-info">
+          <h3>${m.name}</h3>
+          <a href="mailto:${m.email}" class="msg-email">${m.email}</a>
+          <div class="msg-date">${timeAgo} · ${new Date(m.created_at).toLocaleDateString('fr-FR', { year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' })}</div>
+        </div>
+      </div>
+      <div class="msg-body">${msgBody}</div>
+      <div class="msg-actions">
+        <a href="mailto:${m.email}?subject=Demande de devis - SOSAF-CI" class="btn btn-primary">
+          Répondre par email
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+        <button class="btn btn-outline" onclick="markAsTreated(${index})">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Marquer comme traité
+        </button>
+        <button class="btn btn-danger" onclick="confirmDeleteMessage(${index})">
+          <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          Supprimer
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function closeMessageDetail() {
+  document.getElementById('messagesListView').style.display = 'block';
+  document.getElementById('messageDetailView').style.display = 'none';
+  renderMessages();
+}
+
+async function markAsTreated(index) {
+  const m = STATE.messages[index];
+  m.status = 'read';
+  await supabase.from('messages').update({ status: 'read' }).eq('id', m.id);
+  showToast('Message marqué comme traité ✓', 'success');
+  closeMessageDetail();
+}
+
+function confirmDeleteMessage(index) {
+  const m = STATE.messages[index];
+  showConfirm('Supprimer ce message ?', 'Cette action est irréversible.', async () => {
+    await supabase.from('messages').delete().eq('id', m.id);
+    STATE.messages.splice(index, 1);
+    updateSidebarBadge();
+    updateDashboardBadge();
+    closeMessageDetail();
+    renderMessages();
+    showToast('Message supprimé ✓', 'info');
+  });
+}
+
+function filterMessages(filter) {
+  renderMessages(filter);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   DASHBOARD — mise à jour des stats en direct
+   ═══════════════════════════════════════════════════════════════════ */
+function renderDashboard() {
+  const activeProducts = STATE.products.filter(p => p.visible).length;
+  const unreadMessages = STATE.messages.filter(m => m.status === 'unread').length;
+  const statValues = document.querySelectorAll('#pageDashboard .stat-value');
+  if (statValues.length >= 3) {
+    statValues[0].textContent = activeProducts;
+    statValues[1].textContent = unreadMessages;
+    statValues[2].textContent = STATE.visitsCount || '0';
+  }
+
+  // Update recent messages in dashboard
+  const recentContainer = document.querySelector('#pageDashboard .card-body');
+  if (recentContainer && STATE.messages.length > 0) {
+    const recent = STATE.messages.slice(0, 3);
+    recentContainer.innerHTML = recent.map(m => `
+      <div class="message-item" onclick="navigateTo('messages')">
+        <span class="message-dot ${m.status === 'read' ? 'read' : ''}"></span>
+        <div class="message-content">
+          <div class="message-sender">${m.name}</div>
+          <div class="message-meta">${m.email} · ${getTimeAgo(m.created_at)}</div>
+          <div class="message-preview">${(m.body || m.message || '').substring(0, 100)}${(m.body || m.message || '').length > 100 ? '...' : ''}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SETTINGS — sauvegarde dans Supabase
+   ═══════════════════════════════════════════════════════════════════ */
+function renderSettings() {
+  // Load saved values from STATE.settings into the form
+  const inputs = document.querySelectorAll('#pageSettings input');
+  inputs.forEach(inp => {
+    const key = inp.placeholder || inp.previousElementSibling?.textContent;
+    if (STATE.settings[key]) inp.value = STATE.settings[key];
+  });
+}
+
+async function saveSettings() {
+  const formData = {};
+  document.querySelectorAll('#pageSettings input').forEach(inp => {
+    const label = inp.previousElementSibling?.textContent || inp.placeholder;
+    if (label) formData[label] = inp.value;
+  });
+
+  try {
+    // Upsert each setting
+    for (const [key, value] of Object.entries(formData)) {
+      const { error } = await supabase
+        .from('settings')
+        .upsert({ key, value }, { onConflict: 'key' });
+      if (error) throw error;
+      STATE.settings[key] = value;
+    }
+    showToast('Paramètres enregistrés ✓', 'success');
+    updateSync();
+  } catch (err) {
+    showToast('Erreur lors de la sauvegarde', 'error');
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   COMPTE — Supabase Auth
+   ═══════════════════════════════════════════════════════════════════ */
+function renderAccount() {
+  const user = supabase.auth.user();
+  if (user) {
+    const emailInput = document.querySelector('#pageAccount input[type="email"]');
+    if (emailInput) emailInput.value = user.email || '';
+  }
+}
+
+async function updateEmail() {
+  const email = document.querySelector('#pageAccount input[type="email"]')?.value?.trim();
+  if (!email) return showToast('Veuillez entrer un email', 'error');
+  try {
+    const { error } = await supabase.auth.updateUser({ email });
+    if (error) throw error;
+    showToast('Email de confirmation envoyé ✓', 'success');
+  } catch (err) {
+    showToast(err.message || 'Erreur', 'error');
+  }
+}
+
+async function changePassword() {
+  const oldPw = document.querySelectorAll('#pageAccount input[type="password"]')[0]?.value;
+  const newPw = document.querySelectorAll('#pageAccount input[type="password"]')[1]?.value;
+  const confirmPw = document.querySelectorAll('#pageAccount input[type="password"]')[2]?.value;
+  if (!oldPw || !newPw || !confirmPw) return showToast('Veuillez remplir tous les champs', 'error');
+  if (newPw !== confirmPw) return showToast('Les mots de passe ne correspondent pas', 'error');
+  if (newPw.length < 6) return showToast('Minimum 6 caractères', 'error');
+  try {
+    // Re-authenticate first
+    const user = supabase.auth.user();
+    if (user?.email) {
+      await supabase.auth.signInWithPassword({ email: user.email, password: oldPw });
+    }
+    const { error } = await supabase.auth.updateUser({ password: newPw });
+    if (error) throw error;
+    showToast('Mot de passe mis à jour ✓', 'success');
+    document.querySelectorAll('#pageAccount input[type="password"]').forEach(i => i.value = '');
+  } catch (err) {
+    showToast(err.message || 'Erreur', 'error');
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   UTILITIES
+   ═══════════════════════════════════════════════════════════════════ */
+function getTimeAgo(dateStr) {
+  const now = new Date();
+  const d = new Date(dateStr);
+  const diff = Math.floor((now - d) / 1000);
+  if (diff < 60) return 'à l\'instant';
+  if (diff < 3600) return `il y a ${Math.floor(diff / 60)}min`;
+  if (diff < 86400) return `il y a ${Math.floor(diff / 3600)}h`;
+  if (diff < 172800) return 'hier';
+  return `il y a ${Math.floor(diff / 86400)}j`;
+}
+
+function updateSync() {
+  const dot = document.getElementById('syncDot');
+  const text = document.getElementById('syncText');
+  dot.classList.add('syncing');
+  text.textContent = 'Synchronisation…';
+  setTimeout(() => {
+    dot.classList.remove('syncing');
+    text.textContent = 'Dernière sync : à l\'instant ✓';
+  }, 1200);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', async () => {
+  // Check for existing session
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) {
+    STATE.isLoggedIn = true;
+    STATE.user = session.user;
+    document.getElementById('pageLogin').classList.remove('active');
+    document.getElementById('appLayout').style.display = 'flex';
+    loadAllData();
+    navigateTo('dashboard');
+  }
+
+  // Enter key support for login
+  document.getElementById('loginPass').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') handleLogin();
+  });
+  document.getElementById('loginEmail').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') handleLogin();
+  });
+  // Escape key: close sidebar, modal, or message detail
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      const sidebar = document.getElementById('sidebar');
+      if (sidebar.classList.contains('open')) { closeSidebar(); return; }
+      const modal = document.getElementById('modalOverlay');
+      if (modal.classList.contains('active')) { closeModal(); return; }
+      const detail = document.getElementById('messageDetailView');
+      if (detail.style.display !== 'none') { closeMessageDetail(); return; }
+    }
+  });
+
+  // Fix account page buttons to use real Supabase functions
+  const updateBtn = document.querySelector('#pageAccount .btn-primary');
+  if (updateBtn) updateBtn.onclick = changePassword;
+  const settingsSaveBtn = document.querySelector('#pageSettings .btn-primary');
+  if (settingsSaveBtn) settingsSaveBtn.onclick = saveSettings;
+});
+</script>
+
+</body>
+</html>

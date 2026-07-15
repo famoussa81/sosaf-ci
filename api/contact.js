@@ -1,4 +1,5 @@
 const { Resend } = require('resend');
+const { supabase } = require('../lib/supabase');
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -100,13 +101,20 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ success: false, errors });
     }
 
-    // Escape HTML pour le template email
+    // 🔥 Sauvegarde dans Supabase (en parallèle avec l'email)
+    const supabasePromise = supabase.from('messages').insert({
+      name: cleanName,
+      email: cleanEmail,
+      body: cleanMessage,
+      status: 'unread'
+    });
+
+    // Envoi email via Resend
     const safeName = escapeHtml(cleanName);
     const safeEmail = escapeHtml(cleanEmail);
     const safeMessage = escapeHtml(cleanMessage);
 
-    // Envoi email via Resend
-    const { data, error } = await resend.emails.send({
+    const emailPromise = resend.emails.send({
       from: process.env.CONTACT_EMAIL_FROM || 'SOSAF-CI <onboarding@resend.dev>',
       to: [process.env.CONTACT_EMAIL_TO || 'm.sanogo@sosafsarl.com'],
       replyTo: cleanEmail,
@@ -137,12 +145,33 @@ module.exports = async function handler(req, res) {
       `,
     });
 
+    // Attendre les deux opérations
+    const [emailResult, supabaseResult] = await Promise.allSettled([emailPromise, supabasePromise]);
+
+    // Vérifier le résultat de l'email
+    if (emailResult.status === 'rejected') {
+      console.error('[CONTACT] Resend error:', emailResult.reason);
+      // On a quand même sauvegardé dans Supabase — utile pour le dashboard
+      return res.status(500).json({
+        success: false,
+        errors: ["Erreur lors de l'envoi. Veuillez réessayer."],
+      });
+    }
+
+    const { data, error } = emailResult.value;
     if (error) {
       console.error('[CONTACT] Resend error:', error);
       return res.status(500).json({
         success: false,
-        errors: ['Erreur lors de l\'envoi. Veuillez réessayer.'],
+        errors: ["Erreur lors de l'envoi. Veuillez réessayer."],
       });
+    }
+
+    // Log du résultat Supabase (pas bloquant)
+    if (supabaseResult.status === 'fulfilled') {
+      console.log(`[CONTACT] ✓ Message sauvegardé dans Supabase — ${cleanName}`);
+    } else {
+      console.warn('[CONTACT] Supabase save failed:', supabaseResult.reason);
     }
 
     console.log(`[CONTACT] ✓ Email envoyé — ${cleanName} <${cleanEmail}> — ID: ${data?.id}`);

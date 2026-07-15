@@ -1920,6 +1920,7 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   }
 }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
 <!-- Progress bar — indique la progression dans la page -->
@@ -2636,39 +2637,20 @@ document.querySelectorAll('.faq-question').forEach(btn => {
 // ─── Lightbox Gallery ──────────────────────────────────
 const galleryData = {};
 
-// ─── Google Sheet CMS ──────────────────────────────────
-const SHEET_ID = '1T9VDfbyFXO5j1CC-gTD4iuHfHhZbvF88dIYcYDR4Y3c';
-const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
+// ─── Supabase CMS ────────────────────────────────────
+const SUPABASE_URL = 'https://lwjtftrjcmnzfsdkhuhf.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx3anRmdHJqY21uemZzZGtodWhmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1NjczNDMsImV4cCI6MjA2MzE0MzM0M30.jcHNq-LFVjQ7eQlDCzrCYA_FvttR4S5';
+const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ─── LIMITES DE SÉCURITÉ ───────────────────────────────
 const CMS_LIMITS = {
-  maxProducts: 10,       // Maximum 10 produits affichés
-  maxPhotos: 8,          // Maximum 8 photos par produit
-  maxNameLength: 30,     // Nom du produit
-  maxSubtitleLength: 80, // Sous-titre
-  maxFieldValue: 50,     // Valeur d'un champ info
-  maxFields: 4,          // 4 champs info par produit (grille 2x2)
-  requiredColumns: ['id', 'nom', 'photo_couverture'] // Colonnes obligatoires
+  maxProducts: 10,
+  maxPhotos: 8,
+  maxNameLength: 30,
+  maxSubtitleLength: 80,
+  maxFieldValue: 50,
+  maxFields: 4
 };
-
-function parseCSV(text){
-  const rows = [];
-  let current = '';
-  let inQuotes = false;
-  let row = [];
-  for(let i = 0; i < text.length; i++){
-    const c = text[i];
-    if(c === '"'){ inQuotes = !inQuotes; continue; }
-    if(c === ',' && !inQuotes){ row.push(current.trim()); current = ''; continue; }
-    if((c === '\n' || c === '\r') && !inQuotes){
-      if(current || row.length){ row.push(current.trim()); rows.push(row); row = []; current = ''; }
-      continue;
-    }
-    current += c;
-  }
-  if(current || row.length){ row.push(current.trim()); rows.push(row); }
-  return rows;
-}
 
 function truncate(str, max){
   if(!str) return '';
@@ -2680,40 +2662,65 @@ function sanitize(str){
   return str.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-function loadProducts(){
-  fetch(SHEET_URL)
-    .then(r => r.text())
-    .then(csv => {
-      const rows = parseCSV(csv);
-      if(rows.length < 2) return;
-      const headers = rows[0];
+async function loadProducts(){
+  try {
+    const { data: products, error } = await _supabase
+      .from('products')
+      .select('*')
+      .eq('visible', true)
+      .order('created_at', { ascending: true });
 
-      // Vérifier que les colonnes obligatoires existent
-      const missing = CMS_LIMITS.requiredColumns.filter(col => !headers.includes(col));
-      if(missing.length > 0){
-        console.warn('Sheet: colonnes manquantes:', missing);
-        return;
+    if (error) throw error;
+    if (!products || products.length === 0) return;
+
+    // Enrich each product with photos and chars
+    const enriched = await Promise.all(products.map(async (p) => {
+      const { data: photos } = await _supabase
+        .from('product_photos')
+        .select('url')
+        .eq('product_id', p.id)
+        .order('sort_order', { ascending: true });
+
+      const { data: chars } = await _supabase
+        .from('product_chars')
+        .select('label, value')
+        .eq('product_id', p.id)
+        .order('sort_order', { ascending: true });
+
+      const mapped = {
+        id: p.id,
+        nom: p.name || '',
+        sous_titre: p.subtitle || '',
+        certification: p.cert || '',
+        photo_couverture: (photos && photos[0]) ? photos[0].url : '',
+        photo_2: (photos && photos[1]) ? photos[1].url : '',
+        photo_3: (photos && photos[2]) ? photos[2].url : '',
+        photo_4: (photos && photos[3]) ? photos[3].url : '',
+        photo_5: (photos && photos[4]) ? photos[4].url : '',
+        photo_6: (photos && photos[5]) ? photos[5].url : '',
+        photo_7: (photos && photos[6]) ? photos[6].url : '',
+        photo_8: (photos && photos[7]) ? photos[7].url : '',
+      };
+
+      if (chars) {
+        chars.forEach((c, i) => {
+          mapped['champ' + (i + 1) + '_label'] = c.label;
+          mapped['champ' + (i + 1) + '_valeur'] = c.value;
+        });
       }
 
-      let products = rows.slice(1).map(row => {
-        const obj = {};
-        headers.forEach((h, i) => { obj[h] = row[i] || ''; });
-        return obj;
-      });
+      return mapped;
+    }));
 
-      // Filtrer les lignes vides (pas d'id ou pas de nom)
-      products = products.filter(p => p.id && p.nom && p.photo_couverture);
+    const valid = enriched.filter(p => p.photo_couverture);
+    if (valid.length > CMS_LIMITS.maxProducts) {
+      valid.slice(0, CMS_LIMITS.maxProducts);
+    }
 
-      // Limiter le nombre de produits
-      if(products.length > CMS_LIMITS.maxProducts){
-        products = products.slice(0, CMS_LIMITS.maxProducts);
-      }
-
-      renderProducts(products);
-    })
-    .catch(err => {
-      console.warn('Sheet fetch failed:', err);
-    });
+    renderProducts(valid);
+  } catch (err) {
+    console.warn('Supabase load failed:', err);
+  }
 }
 
 function renderProducts(products){

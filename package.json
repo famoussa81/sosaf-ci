@@ -4,6 +4,7 @@
   "description": "SOSAF-CI — Site vitrine export fruits tropicaux",
   "private": true,
   "dependencies": {
+    "@supabase/supabase-js": "^2.110.6",
     "resend": "4.1.2"
   },
   "engines": {
