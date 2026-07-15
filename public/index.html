@@ -2525,10 +2525,11 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
 // ─── Form handler + Toast ────────────────────────────
 (function(){
   const form = document.getElementById('contact-form');
-  const toast = document.getElementById('toast');
-  if(!form || !toast) return;
+  if(!form) return;
 
   function showToast(){
+    const toast = document.getElementById('toast');
+    if(!toast) return;
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 5000);
   }
