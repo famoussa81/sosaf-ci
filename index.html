@@ -2798,6 +2798,12 @@ function renderProducts(products){
 // Load products on page ready
 loadProducts();
 
+// ─── Track visit (une fois par session) ────────────────────
+if (!sessionStorage.getItem('visited')) {
+  sessionStorage.setItem('visited', '1');
+  _supabase.from('visits').insert({ page: '/', ip: '' }).then(() => {});
+}
+
 let currentGallery = null;
 let currentIndex = 0;
 

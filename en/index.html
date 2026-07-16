@@ -2832,6 +2832,12 @@ function renderProducts(products) {
 
 // Load products on page ready
 loadProducts();
+
+// ─── Track visit (once per session) ────────────────────
+if (!sessionStorage.getItem('visited')) {
+  sessionStorage.setItem('visited', '1');
+  _supabase.from('visits').insert({ page: '/en/', ip: '' }).then(() => {});
+}
 </script>
 
 <div class="toast" id="toast" role="alert">

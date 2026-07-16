@@ -2257,6 +2257,35 @@ async function loadVisitsCount() {
 
 async function loadAllData() {
   await Promise.all([loadProducts(), loadMessages(), loadSettings(), loadVisitsCount()]);
+  renderDashboard();
+  setupRealtime();
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   REALTIME — Notifications en temps réel
+   ═══════════════════════════════════════════════════════════════════ */
+function setupRealtime() {
+  // Écouter les nouveaux messages
+  sb.channel('messages-changes')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) => {
+      const msg = payload.new;
+      STATE.messages.unshift(msg);
+      showToast(`📩 Nouveau message de ${msg.name}`, 'info');
+      updateSidebarBadge();
+      updateDashboardBadge();
+      renderDashboard();
+      // Play notification sound (optional)
+      try { new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdH2JkYyFfHR2fYOJi4eEfHx/goWGhYOAf4CBg4SGhoWDgYGBg4WGh4aFg4KCg4WGh4aFhIODhIWGh4aFhIODhIWGhoaFhIODhIWGhoaF').play(); } catch(e) {}
+    })
+    .subscribe();
+
+  // Écouter les nouvelles visites
+  sb.channel('visits-changes')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'visits' }, () => {
+      STATE.visitsCount++;
+      renderDashboard();
+    })
+    .subscribe();
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -2385,6 +2414,7 @@ function navigateTo(page) {
   if (page === 'messages') renderMessages();
   if (page === 'product-edit') initProductEdit();
   if (page === 'dashboard') {
+    renderDashboard();
     updateDashboardBadge();
     setTimeout(() => animateStatBars(), 450);
   }
