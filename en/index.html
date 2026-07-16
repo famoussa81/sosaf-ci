@@ -1851,6 +1851,7 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
   }
 }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
 
@@ -1986,158 +1987,8 @@ section[id] .container{scroll-margin-top:var(--nav-height)}
       </p>
     </div>
 
-    <div class="products-grid">
-      <!-- MANGO -->
-      <article class="product-card reveal" data-od-id="product-mango" data-gallery="mango" onclick="openGallery('mango')">
-        <div class="product-card-image">
-          <img src="../mangue-01.jpeg" alt="Kent mangoes SOSAF-CI — export grade with protective nets" loading="lazy">
-          <div class="gallery-overlay"><button class="gallery-overlay-btn" onclick="event.stopPropagation();openGallery('mango')" aria-label="View more photos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Gallery <span class="photo-count">5</span></button></div>
-        </div>
-        <div class="product-card-body">
-          <h3>Mango</h3>
-          <p class="body-sm">Origin Ivory Coast · Kent and Amélie varieties</p>
-          <div class="product-meta">
-            <div class="product-meta-item">
-              <strong>Varieties</strong>
-              <span>Kent, Amélie</span>
-            </div>
-            <div class="product-meta-item">
-              <strong>Season</strong>
-              <span>March – July</span>
-            </div>
-            <div class="product-meta-item">
-              <strong>Size</strong>
-              <span>6–12 (depending on variety)</span>
-            </div>
-            <div class="product-meta-item">
-              <strong>Packaging</strong>
-              <span>Air: 6 kg carton<br>Sea: 4 kg carton</span>
-            </div>
-          </div>
-          <span class="cert-badge">✓ GlobalG.A.P.</span>
-        </div>
-      </article>
-
-      <!-- COCONUT -->
-      <article class="product-card reveal reveal-delay-1" data-od-id="product-coconut" data-gallery="coconut" onclick="openGallery('coconut')">
-        <div class="product-card-image">
-          <img src="../mrim4nu6-WhatsApp-Image-2026-07-13-at-00.14.44-_3_.jpeg" alt="SOSAF-CI logistics warehouse — coconut pallets ready for shipping" loading="lazy">
-          <div class="gallery-overlay"><button class="gallery-overlay-btn" onclick="event.stopPropagation();openGallery('coconut')" aria-label="View more photos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Gallery <span class="photo-count">4</span></button></div>
-        </div>
-        <div class="product-card-body">
-          <h3>Coconut</h3>
-          <p class="body-sm">Origin Ivory Coast · Grand Africa West variety</p>
-          <div class="product-meta">
-            <div class="product-meta-item">
-              <strong>Variety</strong>
-              <span>Grand Africa West</span>
-            </div>
-            <div class="product-meta-item">
-              <strong>Origin</strong>
-              <span>Ivory Coast</span>
-            </div>
-            <div class="product-meta-item">
-              <strong>Type</strong>
-              <span>Fresh, Dried</span>
-            </div>
-            <div class="product-meta-item">
-              <strong>Packaging</strong>
-              <span>21 kg bag</span>
-            </div>
-          </div>
-          <span class="cert-badge">✓ GlobalG.A.P.</span>
-        </div>
-      </article>
-
-      <!-- AVOCADO -->
-      <article class="product-card reveal reveal-delay-2" data-od-id="product-avocado" data-gallery="avocado" onclick="openGallery('avocado')">
-        <div class="product-card-image">
-          <img src="../mrim90p1-WhatsApp-Image-2026-07-13-at-00.14.44-_6_.jpeg" alt="Calibrated avocados in carton — SOSAF-CI export packaging" loading="lazy">
-          <div class="gallery-overlay"><button class="gallery-overlay-btn" onclick="event.stopPropagation();openGallery('avocado')" aria-label="View more photos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Gallery <span class="photo-count">2</span></button></div>
-        </div>
-        <div class="product-card-body">
-          <h3>Avocado</h3>
-          <p class="body-sm">Origin Ivory Coast · Hass and Fuerte varieties</p>
-          <div class="product-meta">
-            <div class="product-meta-item">
-              <strong>Varieties</strong>
-              <span>Hass, Fuerte</span>
-            </div>
-            <div class="product-meta-item">
-              <strong>Size</strong>
-              <span>16–22</span>
-            </div>
-            <div class="product-meta-item">
-              <strong>Packaging</strong>
-              <span>Air: 6 kg carton<br>Sea: 4 kg carton</span>
-            </div>
-            <div class="product-meta-item">
-              <strong>Season</strong>
-              <span>Year-round</span>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- BANANA -->
-      <article class="product-card reveal reveal-delay-3" data-od-id="product-banana" data-gallery="banana" onclick="openGallery('banana')">
-        <div class="product-card-image">
-          <img src="../mrimelu4-WhatsApp-Image-2026-07-13-at-00.14.44-_5_.jpeg" alt="Cavendish bananas — export cartons at SOSAF-CI packing station" loading="lazy">
-          <div class="gallery-overlay"><button class="gallery-overlay-btn" onclick="event.stopPropagation();openGallery('banana')" aria-label="View more photos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Gallery <span class="photo-count">2</span></button></div>
-        </div>
-        <div class="product-card-body">
-          <h3>Banana</h3>
-          <p class="body-sm">Origin Ivory Coast · Cavendish variety</p>
-          <div class="product-meta">
-            <div class="product-meta-item">
-              <strong>Variety</strong>
-              <span>Cavendish</span>
-            </div>
-            <div class="product-meta-item">
-              <strong>Origin</strong>
-              <span>Ivory Coast</span>
-            </div>
-            <div class="product-meta-item">
-              <strong>Quantity</strong>
-              <span>Subject to availability</span>
-            </div>
-            <div class="product-meta-item">
-              <strong>Packaging</strong>
-              <span>18.5 kg kraft carton</span>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- PINEAPPLE -->
-      <article class="product-card reveal" data-od-id="product-pineapple" data-gallery="pineapple" onclick="openGallery('pineapple')">
-        <div class="product-card-image">
-          <img src="../mrim0tak-WhatsApp-Image-2026-07-13-at-00.14.43.jpeg" alt="Pineapples packed in export cartons — SOSAF-CI Ivory Coast" loading="lazy">
-          <div class="gallery-overlay"><button class="gallery-overlay-btn" onclick="event.stopPropagation();openGallery('pineapple')" aria-label="View more photos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Gallery <span class="photo-count">4</span></button></div>
-        </div>
-        <div class="product-card-body">
-          <h3>Pineapple</h3>
-          <p class="body-sm">Origin Ivory Coast · MD2, Sugar Loaf, Smooth Cayenne varieties</p>
-          <div class="product-meta">
-            <div class="product-meta-item">
-              <strong>Varieties</strong>
-              <span>MD2, Sugar Loaf, Smooth Cayenne</span>
-            </div>
-            <div class="product-meta-item">
-              <strong>Size</strong>
-              <span>6–12</span>
-            </div>
-            <div class="product-meta-item">
-              <strong>Season</strong>
-              <span>Year-round</span>
-            </div>
-            <div class="product-meta-item">
-              <strong>Packaging</strong>
-              <span>12 kg carton</span>
-            </div>
-          </div>
-        </div>
-      </article>
+    <div class="products-grid" id="products-container">
+      <!-- Products loaded dynamically from Supabase -->
     </div>
   </div>
 </section>
@@ -2698,78 +2549,81 @@ document.querySelectorAll('.faq-question').forEach(btn => {
 });
 
 
-// ─── Lightbox Gallery ──────────────────────────────────
-const galleryData = {
-  mango: {
-    title: 'Mango',
-    photos: [
-      '../mangue-01.jpeg',
-      '../mangue-02.jpeg',
-      '../mangue-03.jpeg',
-      '../mangue-04.jpeg',
-      '../mangue-05.jpeg'
-    ],
-    captions: [
-      'Fresh mangoes — SOSAF-CI harvest',
-      'Kent mangoes — premium export quality',
-      'Packaged mangoes — ready for shipment',
-      'Mangoes in crate — export grade',
-      'Fresh mangoes — Côte d\'Ivoire production'
-    ]
-  },
-  coconut: {
-    title: 'Coconut',
-    photos: [
-      '../coco-02.jpeg',
-      '../coco-01.jpeg',
-      '../mrim4nu6-WhatsApp-Image-2026-07-13-at-00.14.44-_3_.jpeg',
-      '../mrim4nsj-WhatsApp-Image-2026-07-13-at-00.14.44-_1_.jpeg'
-    ],
-    captions: [
-      'Coconut — SOSAF-CI export quality',
-      'Fresh coconuts — SOSAF-CI harvest',
-      'Logistics warehouse — pallets on pallet jack, blue and pink bag packaging',
-      'Loaded shipping container — coconut bag pallets for export'
-    ]
-  },
-  avocado: {
-    title: 'Avocado',
-    photos: [
-      '../mrim90n5-WhatsApp-Image-2026-07-13-at-00.14.44-_4_.jpeg',
-      '../mrim90p1-WhatsApp-Image-2026-07-13-at-00.14.44-_6_.jpeg'
-    ],
-    captions: [
-      'Fresh avocado collection — harvest bags ready for sorting',
-      'Calibrated avocados in carton — premium export packaging'
-    ]
-  },
-  banana: {
-    title: 'Banana',
-    photos: [
-      '../mrimelu4-WhatsApp-Image-2026-07-13-at-00.14.44-_5_.jpeg',
-      '../mrimelw6-WhatsApp-Image-2026-07-13-at-00.14.44.jpeg'
-    ],
-    captions: [
-      'Green bananas in carton — export packaging with protective film',
-      'Packing station — Cavendish banana cartons ready for shipment'
-    ]
-  },
-  pineapple: {
-    title: 'Pineapple',
-    photos: [
-      '../ananas-01.jpeg',
-      '../mrim0t97-WhatsApp-Image-2026-07-13-at-00.14.43-_1_.jpeg',
-      '../mrim0t9k-WhatsApp-Image-2026-07-13-at-00.14.43-_2_.jpeg',
-      '../mrim0tak-WhatsApp-Image-2026-07-13-at-00.14.43.jpeg'
-    ],
-    captions: [
-      'Fresh pineapple — SOSAF-CI export quality',
-      'Smooth Cayenne pineapple — SOSAF-CI export carton',
-      'Fresh pineapple — export grade close-up',
-      'Pineapples packed in carton — arranged for shipment'
-    ]
-  }
+// ─── Supabase CMS + Auto-Translation ──────────────────────
+const SUPABASE_URL = 'https://lwjtftrjcmnzfsdkhuhf.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx3anRmdHJqY21uemZzZGtodWhmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQxMjA5OTMsImV4cCI6MjA5OTY5Njk5M30.BpXjmooq86Mdgp3GC6OvpO0v9-E0yZJ3sFOsvU-1Gj8';
+const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ─── FR → EN Dictionary (auto-translation fallback) ────────
+const DICT = {
+  // ═══ Fruits ═══
+  'Mangue': 'Mango', 'Noix de Coco': 'Coconut', 'Avocat': 'Avocado',
+  'Banane': 'Banana', 'Ananas': 'Pineapple', 'Papaye': 'Papaya',
+  'Fruit de la passion': 'Passion Fruit', 'Goyave': 'Guava',
+  'Litchi': 'Lychee', 'Grenade': 'Pomegranate', 'Citron': 'Lemon',
+  'Citron vert': 'Lime', 'Orange': 'Orange', 'Mandarine': 'Mandarin',
+  'Pomelo': 'Grapefruit', 'Corossol': 'Soursop', 'Tamarin': 'Tamarind',
+  'Datte': 'Date', 'Figue': 'Fig', 'Noix de cajou': 'Cashew Nut',
+  'Karité': 'Shea', 'Cacao': 'Cocoa', 'Café': 'Coffee',
+  'Igname': 'Yam', 'Manioc': 'Cassava', 'Plantain': 'Plantain',
+  'Patate douce': 'Sweet Potato', 'Gingembre': 'Ginger', 'Curcuma': 'Turmeric',
+  'Piment': 'Chili Pepper', 'Gombo': 'Okra', 'Aubergine': 'Eggplant',
+  'Tomate': 'Tomato', 'Oignon': 'Onion', 'Ail': 'Garlic',
+  'Arachide': 'Peanut', 'Soja': 'Soybean', 'Sésame': 'Sesame',
+  'Noix de cola': 'Kola Nut', 'Hibiscus': 'Hibiscus', 'Moringa': 'Moringa',
+
+  // ═══ Labels (champs caractéristiques) ═══
+  'Variétés': 'Varieties', 'Variété': 'Variety', 'Saison': 'Season',
+  'Calibre': 'Size', 'Conditionnement': 'Packaging', 'Origine': 'Origin',
+  'Type': 'Type', 'Quantité': 'Quantity', 'Poids': 'Weight',
+  'Couleur': 'Color', 'Certification': 'Certification',
+  'Disponibilité': 'Availability', 'Format': 'Format',
+  'Qualité': 'Quality', 'Grade': 'Grade', 'Récolte': 'Harvest',
+  'Transport': 'Transport', 'Stockage': 'Storage', 'Durée de vie': 'Shelf Life',
+  'Température': 'Temperature', 'Humidité': 'Humidity',
+
+  // ═══ Valeurs courantes ═══
+  'Côte d\'Ivoire': 'Ivory Coast', 'Toute l\'année': 'All year',
+  'Selon disponibilité': 'Subject to availability',
+  'Fraîche, Sèche': 'Fresh, Dried', 'Fraîche': 'Fresh', 'Sèche': 'Dried',
+  'Mars – Juillet': 'March – July', 'Mars - Juillet': 'March – July',
+  'Janvier – Juillet': 'January – July', 'Janvier - Juillet': 'January – July',
+  'Mars – Septembre': 'March – September', 'Mars - Septembre': 'March – September',
+  'Octobre – Mars': 'October – March', 'Octobre - Mars': 'October – March',
+  'Novembre – Avril': 'November – April',
+  'Carton': 'Carton', 'Sac': 'Bag', 'Caisse': 'Crate', 'Palette': 'Pallet',
+  'Maritime': 'Sea', 'Aérien': 'Air', 'Avion': 'Air',
+  'selon variété': 'depending on variety',
+
+  // ═══ Sous-titres partiels ═══
+  'Origine Côte d\'Ivoire': 'Origin Ivory Coast',
+  'Origine': 'Origin',
+  'Pain de Sucre': 'Sugar Loaf', 'Cayenne Lisse': 'Smooth Cayenne',
 };
+
+function translate(text) {
+  if (!text) return '';
+  // Exact match first
+  if (DICT[text]) return DICT[text];
+  // Try to translate parts
+  let result = text;
+  // Sort keys by length (longest first) to avoid partial replacements
+  const keys = Object.keys(DICT).sort((a, b) => b.length - a.length);
+  for (const key of keys) {
+    if (result.includes(key)) {
+      result = result.replace(new RegExp(key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), DICT[key]);
+    }
+  }
+  return result;
+}
+
+// ─── CMS Limits ────────────────────────────────────────────
+const CMS_LIMITS = { maxProducts: 10, maxPhotos: 8, maxNameLength: 30, maxSubtitleLength: 80, maxFieldValue: 50, maxFields: 4 };
+function truncate(str, max) { if (!str) return ''; return str.length > max ? str.substring(0, max - 1) + '\u2026' : str; }
+function sanitize(str) { if (!str) return ''; return str.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+
+// ─── Lightbox Gallery ──────────────────────────────────
+const galleryData = {};
 
 let currentGallery = null;
 let currentIndex = 0;
@@ -2874,6 +2728,110 @@ document.addEventListener('touchend', (e) => {
     }
   }
 }, { passive: true });
+
+// ─── Load Products from Supabase (EN with auto-translation) ────
+async function loadProducts() {
+  try {
+    const { data: products, error } = await _supabase
+      .from('products')
+      .select('*')
+      .eq('visible', true)
+      .order('sort_order');
+    if (error) throw error;
+    if (!products || products.length === 0) return;
+
+    const enriched = await Promise.all(products.map(async (p) => {
+      const { data: photos } = await _supabase
+        .from('product_photos')
+        .select('url')
+        .eq('product_id', p.id)
+        .order('sort_order');
+      const { data: chars } = await _supabase
+        .from('product_chars')
+        .select('label, value, label_en, value_en')
+        .eq('product_id', p.id)
+        .order('sort_order');
+      return { ...p, photos: photos || [], chars: chars || [] };
+    }));
+
+    renderProducts(enriched);
+  } catch (err) {
+    console.warn('Supabase load failed:', err);
+  }
+}
+
+function renderProducts(products) {
+  const container = document.getElementById('products-container');
+  if (!container) return;
+  container.innerHTML = '';
+  const delays = ['', 'reveal-delay-1', 'reveal-delay-2', 'reveal-delay-3'];
+
+  products.slice(0, CMS_LIMITS.maxProducts).forEach((p, i) => {
+    if (!p.photos || p.photos.length === 0) return;
+
+    // Translation: use _en fields if available, otherwise auto-translate
+    const name = sanitize(truncate(p.name_en || translate(p.name), CMS_LIMITS.maxNameLength));
+    const subtitle = sanitize(truncate(p.subtitle_en || translate(p.subtitle), CMS_LIMITS.maxSubtitleLength));
+    const id = p.id.replace(/[^a-z0-9_-]/gi, '');
+    const photos = p.photos.map(ph => ph.url).slice(0, CMS_LIMITS.maxPhotos);
+
+    // Build gallery data for lightbox
+    galleryData[id] = {
+      title: name,
+      photos: photos,
+      captions: photos.map((_, idx) => idx === 0 ? name + ' \u2014 SOSAF-CI' : name + ' \u2014 photo ' + (idx + 1))
+    };
+
+    // Build meta fields (translated)
+    let metaHTML = '';
+    let fieldCount = 0;
+    for (let n = 0; n < p.chars.length && fieldCount < CMS_LIMITS.maxFields; n++) {
+      const c = p.chars[n];
+      const label = c.label_en || translate(c.label);
+      const value = c.value_en || translate(c.value);
+      if (label && value) {
+        metaHTML += '<div class="product-meta-item"><strong>' + sanitize(truncate(label, 20)) + '</strong><span>' + sanitize(truncate(value, CMS_LIMITS.maxFieldValue)) + '</span></div>';
+        fieldCount++;
+      }
+    }
+
+    // Certification badge
+    const certHTML = p.cert ? '<span class="cert-badge">\u2713 ' + sanitize(p.cert) + '</span>' : '';
+
+    // Gallery button SVG
+    const galSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>';
+
+    const card = document.createElement('article');
+    card.className = 'product-card reveal ' + delays[i % 4];
+    card.setAttribute('data-gallery', id);
+    card.onclick = function() { openGallery(id); };
+    card.innerHTML = '<div class="product-card-image">' +
+      '<img src="' + sanitize(photos[0]) + '" alt="' + name + ' \u2014 SOSAF-CI export" loading="lazy">' +
+      '<div class="gallery-overlay"><button class="gallery-overlay-btn" onclick="event.stopPropagation();openGallery(\'' + id + '\')" aria-label="View gallery">' + galSVG + ' Gallery <span class="photo-count">' + photos.length + '</span></button></div>' +
+      '</div>' +
+      '<div class="product-card-body">' +
+      '<h3>' + name + '</h3>' +
+      '<p class="body-sm">' + subtitle + '</p>' +
+      '<div class="product-meta">' + metaHTML + '</div>' +
+      certHTML +
+      '</div>';
+    container.appendChild(card);
+  });
+
+  // Re-observe for scroll reveal
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+  container.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+}
+
+// Load products on page ready
+loadProducts();
 </script>
 
 <div class="toast" id="toast" role="alert">

@@ -1916,6 +1916,29 @@ ul { list-style: none; }
               <label>Certification <span style="color:var(--muted);font-weight:400;">(optionnelle)</span></label>
               <input type="text" id="editCert" placeholder="Ex: GlobalG.A.P." value="">
             </div>
+
+            <hr style="border:none;border-top:1px solid var(--border);margin:20px 0;">
+
+            <div style="margin-bottom:12px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                <span style="font-size:18px;">🇬🇧</span>
+                <label style="font-size:14px;font-weight:600;color:var(--fg);">Version anglaise</label>
+              </div>
+              <p style="font-size:12px;color:var(--muted);margin:0;">Traduction automatique si vide. Remplissez pour personnaliser.</p>
+            </div>
+
+            <div class="form-group">
+              <label>Product name (EN)</label>
+              <input type="text" id="editNameEn" placeholder="Auto: traduit depuis le français" value="">
+            </div>
+            <div class="form-group">
+              <label>Subtitle (EN)</label>
+              <input type="text" id="editSubtitleEn" placeholder="Auto: traduit depuis le français" value="">
+            </div>
+
+            <div id="charListEn" style="margin-top:8px;">
+              <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:8px;">Characteristics (EN) — leave empty for auto-translation</label>
+            </div>
           </div>
 
           <!-- PREVIEW -->
@@ -2578,12 +2601,26 @@ function initProductEdit() {
     document.getElementById('editName').value = p.name;
     document.getElementById('editSubtitle').value = p.subtitle || '';
     document.getElementById('editCert').value = p.cert || '';
+    document.getElementById('editNameEn').value = p.name_en || '';
+    document.getElementById('editSubtitleEn').value = p.subtitle_en || '';
 
     // Char list
     const list = document.getElementById('charList');
     list.innerHTML = '';
     chars.forEach(c => {
       addCharInput(c.label, c.value);
+    });
+
+    // Char list EN
+    const listEn = document.getElementById('charListEn');
+    listEn.innerHTML = '<label style="font-size:12px;color:var(--muted);display:block;margin-bottom:8px;">Characteristics (EN) — leave empty for auto-translation</label>';
+    chars.forEach(c => {
+      const div = document.createElement('div');
+      div.className = 'char-pair';
+      div.style.marginBottom = '8px';
+      div.innerHTML = `<input type="text" placeholder="Label EN" value="${c.label_en || ''}" class="char-label-en-input" style="flex:1;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--fg);font-size:14px;outline:none;">
+        <input type="text" placeholder="Value EN" value="${c.value_en || ''}" class="char-value-en-input" style="flex:1;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--fg);font-size:14px;outline:none;">`;
+      listEn.appendChild(div);
     });
 
     // Photos
@@ -2606,9 +2643,12 @@ function initProductEdit() {
     document.getElementById('editName').value = '';
     document.getElementById('editSubtitle').value = '';
     document.getElementById('editCert').value = '';
+    document.getElementById('editNameEn').value = '';
+    document.getElementById('editSubtitleEn').value = '';
     document.getElementById('photoThumbs').innerHTML = '';
     document.getElementById('photoCounter').textContent = '0/8 photos';
     document.getElementById('charList').innerHTML = '';
+    document.getElementById('charListEn').innerHTML = '<label style="font-size:12px;color:var(--muted);display:block;margin-bottom:8px;">Characteristics (EN) — leave empty for auto-translation</label>';
     addCharInput('', '');
   }
 
@@ -2799,11 +2839,19 @@ async function saveProduct() {
 
   const subtitle = document.getElementById('editSubtitle').value.trim();
   const cert = document.getElementById('editCert').value.trim();
+  const name_en = document.getElementById('editNameEn').value.trim();
+  const subtitle_en = document.getElementById('editSubtitleEn').value.trim();
   const chars = [];
-  document.querySelectorAll('.char-pair').forEach(pair => {
+  const charsEn = [];
+  document.querySelectorAll('#charList .char-pair').forEach((pair, i) => {
     const label = pair.querySelector('.char-label-input')?.value?.trim() || '';
     const value = pair.querySelector('.char-value-input')?.value?.trim() || '';
     if (label || value) chars.push({ label, value });
+  });
+  document.querySelectorAll('#charListEn .char-pair').forEach((pair, i) => {
+    const label_en = pair.querySelector('.char-label-en-input')?.value?.trim() || '';
+    const value_en = pair.querySelector('.char-value-en-input')?.value?.trim() || '';
+    charsEn.push({ label_en, value_en });
   });
 
   try {
@@ -2815,7 +2863,7 @@ async function saveProduct() {
       const p = STATE.products[idx];
       const { error: prodErr } = await sb
         .from('products')
-        .update({ name, subtitle, cert, updated_at: new Date().toISOString() })
+        .update({ name, subtitle, cert, name_en, subtitle_en, updated_at: new Date().toISOString() })
         .eq('id', p.id);
       if (prodErr) throw prodErr;
 
@@ -2825,6 +2873,8 @@ async function saveProduct() {
         product_id: p.id,
         label: c.label,
         value: c.value,
+        label_en: charsEn[ci]?.label_en || '',
+        value_en: charsEn[ci]?.value_en || '',
         sort_order: ci
       }));
       if (newChars.length) {
@@ -2854,6 +2904,8 @@ async function saveProduct() {
           name,
           subtitle,
           cert,
+          name_en,
+          subtitle_en,
           visible: true,
           sort_order: nextOrder,
           cover_color: '#1c2d38'
@@ -2868,6 +2920,8 @@ async function saveProduct() {
           product_id: newProd.id,
           label: c.label,
           value: c.value,
+          label_en: charsEn[ci]?.label_en || '',
+          value_en: charsEn[ci]?.value_en || '',
           sort_order: ci
         }));
         const { error: charsErr } = await sb.from('product_chars').insert(newChars);
