@@ -210,3 +210,26 @@ function trackVisit() {
 }
 
 window.trackVisit = trackVisit;
+
+// Landing on a URL with a #hash (a footer link from a product page, a shared link) fails
+// silently on this site: the browser looks for the target while #root is still empty, gives
+// up, and leaves the visitor on the hero. Call after mount to perform the scroll React
+// deferred, then again once lazy images have settled the layout. Returns a cleanup function
+// so it can be used directly as a useEffect body.
+function scrollToHash() {
+  const hash = window.location.hash;
+  if (!hash || hash.length < 2) return function () {};
+  const go = function () {
+    const el = document.getElementById(decodeURIComponent(hash.slice(1)));
+    if (!el) return;
+    // 'instant', not 'auto': 'auto' defers to the global `scroll-behavior: smooth`, which
+    // animates the jump over several frames — wrong on arrival (the visitor watches the whole
+    // page fly past) and it silently never completes in a tab that isn't producing frames.
+    el.scrollIntoView({ behavior: 'instant', block: 'start' });
+  };
+  const raf = requestAnimationFrame(go);
+  const timer = setTimeout(go, 400);
+  return function () { cancelAnimationFrame(raf); clearTimeout(timer); };
+}
+
+window.scrollToHash = scrollToHash;

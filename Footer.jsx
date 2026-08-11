@@ -8,13 +8,18 @@ function FooterLink({ label, href = '#', small }) {
   );
 }
 
-function Footer({ t, base = '' }) {
+// `base` prefixes the legal pages, which sit next to the homepage; `home` prefixes the
+// homepage anchors. They differ on product pages, which live one directory down: the legal
+// docs need '../' while the anchors need '../index.html'. On the homepage `home` stays ''
+// so the links are bare fragments — a full navigation back to index.html would reload the
+// page and land on the hero, since the anchor target is only rendered after React runs.
+function Footer({ t, base = '', home = '' }) {
   const anchors = ['accueil', 'presentation', 'produits', 'certifications', 'process', 'faq', 'contact'];
   return (
     <footer style={{ background: 'var(--surface-dark)', color: 'var(--text-on-dark-muted)', padding: '40px clamp(16px,5vw,24px)', textAlign: 'center', borderTop: '1px solid var(--border-on-dark)' }}>
       <img src={(window.SITE_BASE || '') + 'assets/logo.svg'} alt="SOSAF-CI" style={{ height: 40, opacity: 0.7, marginBottom: 16, transition: 'opacity var(--motion-base) var(--ease-standard)' }} onMouseEnter={e => { e.currentTarget.style.opacity = 1; }} onMouseLeave={e => { e.currentTarget.style.opacity = 0.7; }} />
       <nav style={{ display: 'flex', justifyContent: 'center', gap: 20, flexWrap: 'wrap', marginBottom: 8 }}>
-        {t.nav.map((item, i) => <FooterLink key={item} label={item} href={base + 'index.html#' + anchors[i]} />)}
+        {t.nav.map((item, i) => <FooterLink key={item} label={item} href={home + '#' + anchors[i]} />)}
       </nav>
       <nav style={{ display: 'flex', justifyContent: 'center', gap: 18, flexWrap: 'wrap', marginBottom: 16, paddingTop: 12, borderTop: '1px solid var(--border-on-dark)', maxWidth: 620, marginLeft: 'auto', marginRight: 'auto' }}>
         {(t.legal || []).map(([label, href]) => <FooterLink key={href} small label={label} href={base + href} />)}

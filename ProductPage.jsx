@@ -24,6 +24,7 @@ function ProductPage({ productId }) {
   }, [lang]);
 
   React.useEffect(() => { window.trackVisit && window.trackVisit(); }, []);
+  React.useEffect(() => window.scrollToHash && window.scrollToHash(), []);
 
   // No Product JSON-LD here: Google requires at least one of offers/review/aggregateRating
   // for Product rich results, and pricing is quote-only (B2B, no public price) — faking a
@@ -79,7 +80,7 @@ function ProductPage({ productId }) {
       </div>
 
       <window.ContactSection t={t} />
-      <window.Footer t={t} />
+      <window.Footer t={t} base="../" home={home} />
       <window.WhatsAppFloat />
     </div>
   );

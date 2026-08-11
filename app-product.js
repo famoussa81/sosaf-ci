@@ -402,6 +402,34 @@ function trackVisit() {
 }
 window.trackVisit = trackVisit;
 
+// Landing on a URL with a #hash (a footer link from a product page, a shared link) fails
+// silently on this site: the browser looks for the target while #root is still empty, gives
+// up, and leaves the visitor on the hero. Call after mount to perform the scroll React
+// deferred, then again once lazy images have settled the layout. Returns a cleanup function
+// so it can be used directly as a useEffect body.
+function scrollToHash() {
+  const hash = window.location.hash;
+  if (!hash || hash.length < 2) return function () {};
+  const go = function () {
+    const el = document.getElementById(decodeURIComponent(hash.slice(1)));
+    if (!el) return;
+    // 'instant', not 'auto': 'auto' defers to the global `scroll-behavior: smooth`, which
+    // animates the jump over several frames — wrong on arrival (the visitor watches the whole
+    // page fly past) and it silently never completes in a tab that isn't producing frames.
+    el.scrollIntoView({
+      behavior: 'instant',
+      block: 'start'
+    });
+  };
+  const raf = requestAnimationFrame(go);
+  const timer = setTimeout(go, 400);
+  return function () {
+    cancelAnimationFrame(raf);
+    clearTimeout(timer);
+  };
+}
+window.scrollToHash = scrollToHash;
+
 // ── Reveal.jsx ──
 function Reveal({
   children,
@@ -513,6 +541,7 @@ function ProductPage({
   React.useEffect(() => {
     window.trackVisit && window.trackVisit();
   }, []);
+  React.useEffect(() => window.scrollToHash && window.scrollToHash(), []);
 
   // No Product JSON-LD here: Google requires at least one of offers/review/aggregateRating
   // for Product rich results, and pricing is quote-only (B2B, no public price) — faking a
@@ -679,7 +708,9 @@ function ProductPage({
   }, t.navCta))), /*#__PURE__*/React.createElement(window.ContactSection, {
     t: t
   }), /*#__PURE__*/React.createElement(window.Footer, {
-    t: t
+    t: t,
+    base: "../",
+    home: home
   }), /*#__PURE__*/React.createElement(window.WhatsAppFloat, null));
 }
 window.ProductPage = ProductPage;
@@ -956,9 +987,16 @@ function FooterLink({
     }
   }, label);
 }
+
+// `base` prefixes the legal pages, which sit next to the homepage; `home` prefixes the
+// homepage anchors. They differ on product pages, which live one directory down: the legal
+// docs need '../' while the anchors need '../index.html'. On the homepage `home` stays ''
+// so the links are bare fragments — a full navigation back to index.html would reload the
+// page and land on the hero, since the anchor target is only rendered after React runs.
 function Footer({
   t,
-  base = ''
+  base = '',
+  home = ''
 }) {
   const anchors = ['accueil', 'presentation', 'produits', 'certifications', 'process', 'faq', 'contact'];
   return /*#__PURE__*/React.createElement("footer", {
@@ -995,7 +1033,7 @@ function Footer({
   }, t.nav.map((item, i) => /*#__PURE__*/React.createElement(FooterLink, {
     key: item,
     label: item,
-    href: base + 'index.html#' + anchors[i]
+    href: home + '#' + anchors[i]
   }))), /*#__PURE__*/React.createElement("nav", {
     style: {
       display: 'flex',

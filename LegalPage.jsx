@@ -65,7 +65,7 @@ function LegalPage({ docKey }) {
         </article>
       </div>
 
-      <window.Footer t={t} />
+      <window.Footer t={t} home={home} />
       <window.WhatsAppFloat />
     </div>
   );

@@ -18,6 +18,7 @@ function App() {
   }, [lang]);
 
   React.useEffect(() => { window.trackVisit && window.trackVisit(); }, []);
+  React.useEffect(() => window.scrollToHash && window.scrollToHash(), []);
 
   const anchors = ['accueil', 'presentation', 'produits', 'certifications', 'process', 'faq'];
   const links = t.nav.slice(0, -1).map((label, i) => ({ label, href: '#' + anchors[i] }));
