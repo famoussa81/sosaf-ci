@@ -494,37 +494,10 @@ function ProductPage({
     window.trackVisit && window.trackVisit();
   }, []);
 
-  // Injects Product JSON-LD once the real (possibly live) data is known — keeps the
-  // structured data in sync with what's actually rendered instead of hand-maintaining it per page.
-  React.useEffect(() => {
-    if (!product) return;
-    const id = 'product-jsonld';
-    let el = document.getElementById(id);
-    if (!el) {
-      el = document.createElement('script');
-      el.id = id;
-      el.type = 'application/ld+json';
-      document.head.appendChild(el);
-    }
-    el.textContent = JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'Product',
-      name: product.name,
-      description: product.subtitle,
-      image: product.gallery.map(g => productPhotoSrc(assets, g)),
-      brand: {
-        '@type': 'Brand',
-        name: 'SOSAF-CI'
-      },
-      ...(product.certification ? {
-        additionalProperty: {
-          '@type': 'PropertyValue',
-          name: 'Certification',
-          value: product.certification
-        }
-      } : {})
-    });
-  }, [product]);
+  // No Product JSON-LD here: Google requires at least one of offers/review/aggregateRating
+  // for Product rich results, and pricing is quote-only (B2B, no public price) — faking a
+  // price just to pass validation would be lying to search engines and users. The static
+  // BreadcrumbList in each page's <head> already covers what's actually true and useful.
 
   // Both /produits/<slug>.html (1 level under root) and /en/products/<slug>.html (1 level
   // under /en/) sit exactly one directory below their own language's homepage, so the
