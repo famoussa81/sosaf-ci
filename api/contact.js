@@ -1,7 +1,15 @@
 const { Resend } = require('resend');
 const { supabase } = require('../lib/supabase');
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// `new Resend(undefined)` lève au chargement du module : sans la clé, la lambda plantait
+// au démarrage et renvoyait une erreur plateforme opaque. Instancié à la demande pour
+// pouvoir répondre proprement.
+let _resend = null;
+function getResend() {
+  if (!process.env.RESEND_API_KEY) return null;
+  if (!_resend) _resend = new Resend(process.env.RESEND_API_KEY);
+  return _resend;
+}
 
 // ─── Helpers ────────────────────────────────────────
 function validateEmail(email) {
@@ -23,12 +31,21 @@ function escapeHtml(str) {
 }
 
 // ─── Rate limiting simple (in-memory pour serverless) ─
+// LIMITE CONNUE : le compteur vit dans l'instance lambda. Vercel peut en démarrer
+// plusieurs en parallèle, donc le plafond réel est RATE_MAX × nombre d'instances.
+// C'est une protection d'appoint ; le honeypot et la validation restent les vraies
+// défenses. Un plafond strict demanderait un compteur partagé (table Supabase avec
+// colonne ip + migration), volontairement non fait ici.
 const rateMap = new Map();
 const RATE_WINDOW = 15 * 60 * 1000; // 15 min
 const RATE_MAX = 5;
 
 function isRateLimited(ip) {
   const now = Date.now();
+  // Entries were never evicted: on a warm lambda the map grew unbounded, one key per IP.
+  for (const [key, e] of rateMap) {
+    if (now - e.start > RATE_WINDOW) rateMap.delete(key);
+  }
   const entry = rateMap.get(ip);
   if (!entry || now - entry.start > RATE_WINDOW) {
     rateMap.set(ip, { start: now, count: 1 });
@@ -48,8 +65,13 @@ module.exports = async function handler(req, res) {
     process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : ''
   ].filter(Boolean);
   const origin = req.headers.origin || '';
-  if (allowedOrigins.some(o => origin.startsWith(o)) || origin.includes('vercel.app')) {
+  // Exact match, plus preview deployments. `includes('vercel.app')` would have matched
+  // https://vercel.app.attacker.com, letting any third-party site drive this endpoint.
+  const isAllowed = allowedOrigins.indexOf(origin) !== -1
+    || /^https:\/\/[a-z0-9-]+\.vercel\.app$/.test(origin);
+  if (isAllowed) {
     res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
   }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -102,21 +124,36 @@ module.exports = async function handler(req, res) {
     }
 
     // 🔥 Sauvegarde dans Supabase (en parallèle avec l'email)
-    const supabasePromise = supabase.from('messages').insert({
-      name: cleanName,
-      email: cleanEmail,
-      body: cleanMessage,
-      status: 'unread'
-    });
+    // supabase vaut null si les variables d'environnement manquent : on envoie quand
+    // même l'email plutôt que de faire échouer toute la requête.
+    const supabasePromise = supabase
+      ? supabase.from('messages').insert({
+          name: cleanName,
+          email: cleanEmail,
+          body: cleanMessage,
+          status: 'unread'
+        })
+      : Promise.resolve({ skipped: true });
 
     // Envoi email via Resend
     const safeName = escapeHtml(cleanName);
     const safeEmail = escapeHtml(cleanEmail);
     const safeMessage = escapeHtml(cleanMessage);
 
+    const resend = getResend();
+    if (!resend) {
+      console.error('[CONTACT] RESEND_API_KEY manquante — impossible d\'envoyer');
+      return res.status(500).json({
+        success: false,
+        errors: ["Erreur lors de l'envoi. Veuillez réessayer."],
+      });
+    }
+
     const emailPromise = resend.emails.send({
       from: process.env.CONTACT_EMAIL_FROM || 'SOSAF-CI <onboarding@resend.dev>',
-      to: [process.env.CONTACT_EMAIL_TO || 'm.sanogo@sosafsarl.com'],
+      // Repli aligné sur l'adresse publiée sur le site : si CONTACT_EMAIL_TO manque,
+      // les messages arrivent quand même dans la boîte que les visiteurs voient.
+      to: [process.env.CONTACT_EMAIL_TO || 'sosaf.ci.export@gmail.com'],
       replyTo: cleanEmail,
       subject: `[SOSAF-CI] Nouveau message de ${safeName}`,
       html: `

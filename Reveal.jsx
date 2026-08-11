@@ -29,6 +29,9 @@ function CountUp({ value }) {
     if (!el) return;
     const num = parseInt(String(value).replace(/[^0-9]/g, ''), 10);
     const suffix = String(value).replace(/[0-9]/g, '');
+    // Le cleanup ne coupait que l'observer : la boucle rAF continuait apres demontage et
+    // appelait setShown sur un composant mort.
+    let raf = 0;
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (!e.isIntersecting) return;
@@ -38,13 +41,13 @@ function CountUp({ value }) {
           const p = Math.min((now - start) / 1300, 1);
           const eased = 1 - Math.pow(1 - p, 3);
           setShown(Math.round(eased * num) + suffix);
-          if (p < 1) requestAnimationFrame(tick);
+          if (p < 1) raf = requestAnimationFrame(tick);
         };
-        requestAnimationFrame(tick);
+        raf = requestAnimationFrame(tick);
       });
     }, { threshold: 0.5 });
     io.observe(el);
-    return () => io.disconnect();
+    return () => { io.disconnect(); if (raf) cancelAnimationFrame(raf); };
   }, [value]);
   return <span ref={ref}>{shown}</span>;
 }

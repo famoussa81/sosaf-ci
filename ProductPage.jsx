@@ -38,8 +38,12 @@ function ProductPage({ productId }) {
   const anchors = ['accueil', 'presentation', 'produits', 'certifications', 'process', 'faq'];
   const links = t.nav.slice(0, -1).map((label, i) => ({ label, href: home + '#' + anchors[i] }));
   const otherLang = lang === 'fr' ? 'EN' : 'FR';
+  // Un productId inconnu faisait planter `.en` sur undefined ici, avant meme d'atteindre
+  // la garde ci-dessous qui devenait donc morte.
   const otherSlugs = window.PRODUCT_SLUGS[productId];
-  const otherHref = lang === 'fr' ? '../en/products/' + otherSlugs.en + '.html' : '../../produits/' + otherSlugs.fr + '.html';
+  const otherHref = !otherSlugs ? home
+    : lang === 'fr' ? '../en/products/' + otherSlugs.en + '.html'
+    : '../../produits/' + otherSlugs.fr + '.html';
 
   if (!product) return null;
 
@@ -68,8 +72,10 @@ function ProductPage({ productId }) {
             <span style={{ display: 'inline-flex', alignItems: 'center', marginBottom: 24, padding: '8px 16px', borderRadius: 'var(--radius-pill)', background: 'var(--surface-card)', border: '1px solid var(--border-on-light)', fontSize: 13, fontWeight: 600, color: 'var(--palm)' }}>{product.certification}</span>
           )}
           <dl style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px 16px', margin: '0 0 32px' }}>
-            {product.fields.map(f => (
-              <div key={f.label}>
+            {/* key indexee : deux caracteristiques de meme libelle saisies en admin
+                donnaient des cles React dupliquees. */}
+            {product.fields.map((f, fi) => (
+              <div key={f.label + '-' + fi}>
                 <dt style={{ fontFamily: 'var(--font-mono)', fontSize: 11, textTransform: 'uppercase', letterSpacing: 'var(--tracking-wide)', color: 'var(--palm)', fontWeight: 600, margin: '0 0 4px' }}>{f.label}</dt>
                 <dd style={{ margin: 0, fontSize: 16, color: 'var(--text-on-light)' }}>{f.value}</dd>
               </div>

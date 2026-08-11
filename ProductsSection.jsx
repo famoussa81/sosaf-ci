@@ -21,17 +21,18 @@ function ProductsSection({ t, products, onOpenGallery }) {
         {window.productUrl && (
           <p style={{ textAlign: 'center', marginTop: 40, fontSize: 14, color: 'var(--text-on-dark-muted)' }}>
             {t.prodPagesLabel}{' '}
-            {products.map((p, i) => {
-              const sid = p.slugId || p.id;
-              const href = window.productUrl(sid, window.SITE_LANG || 'fr');
-              if (!href) return null;
-              return (
+            {/* Filtrer avant de mapper : l'index de boucle mettait un " · " en tete de
+                liste des qu'un produit sans page dediee (saisi en admin hors des 5 slugs
+                canoniques) occupait la premiere position. */}
+            {products
+              .map(p => ({ p, href: window.productUrl(p.slugId || p.id, window.SITE_LANG || 'fr') }))
+              .filter(x => x.href)
+              .map(({ p, href }, i) => (
                 <React.Fragment key={p.id}>
                   {i > 0 && ' · '}
                   <a href={href} style={{ color: 'var(--mango)', textDecoration: 'none' }}>{p.name}</a>
                 </React.Fragment>
-              );
-            })}
+              ))}
           </p>
         )}
       </div>

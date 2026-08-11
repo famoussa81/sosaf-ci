@@ -19,7 +19,7 @@ function Hero({ t }) {
         </div>
         <Reveal from="zoom" delay={200} className="hero-logo">
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <img src={(window.SITE_BASE || '') + 'assets/logo-hero.webp'} alt="SOSAF-CI — Fruits de Côte d'Ivoire" width="1120" height="1120" decoding="async" style={{ width: '100%', maxWidth: 560, height: 'auto', display: 'block' }} />
+          <img src={(window.SITE_BASE || '') + 'assets/logo-hero.webp'} alt={t.heroLogoAlt} width="1120" height="1120" decoding="async" style={{ width: '100%', maxWidth: 560, height: 'auto', display: 'block' }} />
         </div>
         </Reveal>
       </div>

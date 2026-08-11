@@ -8,3 +8,16 @@ GUIDE-PRODUITS.md
 PROMPT-OPENDESIGN.md
 .env
 .env.example
+
+# Database scripts. Never needed at build or runtime, and `outputDirectory: "."`
+# would otherwise publish the full schema and the text of every RLS policy.
+*.sql
+
+# Housekeeping — nothing here should be reachable over HTTP.
+.vercelignore
+*.log
+.claude
+
+# NOTE: *.jsx and scripts/ are deliberately NOT excluded — `npm run build` reads them
+# to produce app-*.js. They are served as static files, which is harmless (no secrets;
+# the Supabase anon key they contain is public by design and gated by RLS).

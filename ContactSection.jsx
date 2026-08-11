@@ -81,7 +81,7 @@ function ContactSection({ t }) {
                 <Button variant="primary" size="lg" disabled={sending} style={{ width: '100%', justifyContent: 'center' }}>{sending ? t.formSending : t.submit}</Button>
               </form>
             )}
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-on-light-muted)', marginTop: 20, paddingTop: 16, borderTop: '1px solid var(--border-on-light)' }}>RCCM : CI-ABJ-03-2024-B21-00015</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-on-light-muted)', marginTop: 20, paddingTop: 16, borderTop: '1px solid var(--border-on-light)' }}>{t.rccmLabel} CI-ABJ-03-2024-B21-00015</p>
           </div>
         </Reveal>
       </div>

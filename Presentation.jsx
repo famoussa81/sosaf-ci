@@ -20,7 +20,7 @@ function Presentation({ t }) {
         </div>
         <Reveal from="right" delay={120}>
         <div className="photo-treated crop-4-5" style={{ borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-md)' }}>
-          <img src={(window.SITE_BASE || '') + 'assets/photography/mangue-04.webp'} alt="Récolte de mangues, Côte d'Ivoire" loading="lazy" decoding="async" />
+          <img src={(window.SITE_BASE || '') + 'assets/photography/mangue-04.webp'} alt={t.presImageAlt} loading="lazy" decoding="async" />
         </div>
         </Reveal>
       </div>

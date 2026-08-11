@@ -34,6 +34,9 @@ const COPY = {
     formTitle: 'Nous écrire', nameLabel: 'Votre nom', emailLabel: 'Email', messageLabel: 'Message', submit: 'Envoyer le message →',
     whatsapp: 'Discuter sur WhatsApp', whatsappSub: 'Réponse immédiate sur WhatsApp',
     lightboxClose: 'Fermer', lightboxPrev: 'Précédent', lightboxNext: 'Suivant',
+    heroLogoAlt: "SOSAF-CI — Fruits de Côte d'Ivoire",
+    presImageAlt: "Récolte de mangues, Côte d'Ivoire",
+    rccmLabel: 'RCCM :',
     navCta: 'Devis →',
     nav: ['Accueil', 'Présentation', 'Produits', 'Certifications', 'Process', 'FAQ', 'Contact'],
     legal: [['Mentions légales', 'mentions-legales.html'], ['Conditions générales de vente', 'cgv.html'], ['Politique de confidentialité', 'confidentialite.html']],
@@ -77,6 +80,9 @@ const COPY = {
     formTitle: 'Write to us', nameLabel: 'Your name', emailLabel: 'Email', messageLabel: 'Message', submit: 'Send message →',
     whatsapp: 'Chat on WhatsApp', whatsappSub: 'Immediate reply on WhatsApp',
     lightboxClose: 'Close', lightboxPrev: 'Previous', lightboxNext: 'Next',
+    heroLogoAlt: 'SOSAF-CI — Fruit from Ivory Coast',
+    presImageAlt: 'Mango harvest, Ivory Coast',
+    rccmLabel: 'RCCM:',
     navCta: 'Get a quote →',
     nav: ['Home', 'About', 'Products', 'Certifications', 'Process', 'FAQ', 'Contact'],
     legal: [['Legal notice', 'legal-notice.html'], ['Terms and conditions of sale', 'terms.html'], ['Privacy policy', 'privacy.html']],
@@ -88,6 +94,8 @@ const COPY = {
 };
 
 const B = (window.SITE_BASE || '') + 'assets/photography/';
+// Repli quand une fiche saisie en admin n'a aucune photo.
+const PLACEHOLDER_IMAGE = (window.SITE_BASE || '') + 'assets/logo-hero.webp';
 
 const PRODUCTS_FR = [
   { id: 'mango', image: B + 'mangue-01.webp', gallery: ['mangue-01.webp','mangue-02.webp','mangue-03.webp','mangue-04.webp','mangue-05.webp'], name: 'Mangue', subtitle: "Origine Côte d'Ivoire · Variétés Kent et Amélie", fields: [{label:'Variétés',value:'Kent, Amélie'},{label:'Saison',value:'Mars – Juillet'},{label:'Calibre',value:'6–12'},{label:'Conditionnement',value:'Carton 4–6 kg'}], certification: 'GlobalG.A.P.' },
@@ -131,8 +139,12 @@ const CANONICAL_NAMES = {
   banana: ['banane', 'banana'],
   pineapple: ['ananas', 'pineapple'],
 };
+// Marques diacritiques combinantes laissees par la normalisation NFD. Construit via
+// RegExp pour garder la plage lisible en ASCII plutot que des caracteres combinants
+// invisibles dans la source.
+const COMBINING_MARKS = new RegExp('[\u0300-\u036f]', 'g');
 function normalizeName(s) {
-  return (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+  return (s || '').toLowerCase().normalize('NFD').replace(COMBINING_MARKS, '').trim();
 }
 function matchCanonicalId(name) {
   const n = normalizeName(name);
@@ -181,7 +193,9 @@ async function fetchLiveProducts(lang) {
       return {
         id: p.id,
         slugId: matchCanonicalId(p.name) || matchCanonicalId(p.name_en),
-        image: cover ? cover.url : '',
+        // Un produit saisi en admin sans photo donnait image: '' — le navigateur resout
+        // src="" vers l'URL de la page et telecharge le HTML comme image.
+        image: cover ? cover.url : PLACEHOLDER_IMAGE,
         gallery: myPhotos.length ? myPhotos.map(ph => ph.url) : (cover ? [cover.url] : []),
         name: (lang === 'en' && p.name_en) ? p.name_en : p.name,
         subtitle: (lang === 'en' && p.subtitle_en) ? p.subtitle_en : p.subtitle,
@@ -203,10 +217,14 @@ window.fetchLiveProducts = fetchLiveProducts;
 // Records one visit per browser session; feeds the admin dashboard's live visitor counter.
 function trackVisit() {
   if (sessionStorage.getItem('visited')) return;
-  sessionStorage.setItem('visited', '1');
   const sb = getSb();
+  // Ne marquer la session qu'une fois le client disponible : marquer avant perdait
+  // définitivement la visite quand supabase-js n'était pas encore chargé.
   if (!sb) return;
-  sb.from('visits').insert({ page: window.location.pathname || '/', ip: '' }).then(() => {});
+  sessionStorage.setItem('visited', '1');
+  sb.from('visits').insert({ page: window.location.pathname || '/', ip: '' }).then(function (res) {
+    if (res && res.error) console.warn('[visits] insert failed', res.error);
+  });
 }
 
 window.trackVisit = trackVisit;

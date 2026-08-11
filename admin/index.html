@@ -2413,6 +2413,9 @@ function navigateTo(page) {
   if (page === 'products') renderProducts();
   if (page === 'messages') renderMessages();
   if (page === 'product-edit') initProductEdit();
+  // renderAccount() n'était appelée nulle part : la page Mon compte s'ouvrait avec le
+  // champ email vide.
+  if (page === 'account') renderAccount();
   if (page === 'dashboard') {
     renderDashboard();
     updateDashboardBadge();
@@ -3174,8 +3177,10 @@ async function saveSettings() {
 /* ═══════════════════════════════════════════════════════════════════
    COMPTE — Supabase Auth
    ═══════════════════════════════════════════════════════════════════ */
-function renderAccount() {
-  const user = sb.auth.user();
+async function renderAccount() {
+  // sb.auth.user() est l'API supabase-js v1, supprimée en v2 (chargé plus haut) :
+  // l'appel levait un TypeError et cette page restait vide.
+  const { data: { user } = {} } = await sb.auth.getUser();
   if (user) {
     const emailInput = document.querySelector('#pageAccount input[type="email"]');
     if (emailInput) emailInput.value = user.email || '';
@@ -3202,11 +3207,13 @@ async function changePassword() {
   if (newPw !== confirmPw) return showToast('Les mots de passe ne correspondent pas', 'error');
   if (newPw.length < 6) return showToast('Minimum 6 caractères', 'error');
   try {
-    // Re-authenticate first
-    const user = sb.auth.user();
-    if (user?.email) {
-      await sb.auth.signInWithPassword({ email: user.email, password: oldPw });
-    }
+    // Re-authenticate first. En v2 signInWithPassword ne lève pas sur mauvais mot de
+    // passe, il renvoie { error } — le résultat n'était pas lu, donc un ancien mot de
+    // passe faux laissait quand même passer le changement.
+    const { data: { user } = {} } = await sb.auth.getUser();
+    if (!user?.email) throw new Error('Session expirée, reconnectez-vous.');
+    const { error: reauthErr } = await sb.auth.signInWithPassword({ email: user.email, password: oldPw });
+    if (reauthErr) throw new Error('Ancien mot de passe incorrect.');
     const { error } = await sb.auth.updateUser({ password: newPw });
     if (error) throw error;
     showToast('Mot de passe mis à jour ✓', 'success');

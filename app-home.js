@@ -46,6 +46,9 @@ const COPY = {
     lightboxClose: 'Fermer',
     lightboxPrev: 'Précédent',
     lightboxNext: 'Suivant',
+    heroLogoAlt: "SOSAF-CI — Fruits de Côte d'Ivoire",
+    presImageAlt: "Récolte de mangues, Côte d'Ivoire",
+    rccmLabel: 'RCCM :',
     navCta: 'Devis →',
     nav: ['Accueil', 'Présentation', 'Produits', 'Certifications', 'Process', 'FAQ', 'Contact'],
     legal: [['Mentions légales', 'mentions-legales.html'], ['Conditions générales de vente', 'cgv.html'], ['Politique de confidentialité', 'confidentialite.html']],
@@ -101,6 +104,9 @@ const COPY = {
     lightboxClose: 'Close',
     lightboxPrev: 'Previous',
     lightboxNext: 'Next',
+    heroLogoAlt: 'SOSAF-CI — Fruit from Ivory Coast',
+    presImageAlt: 'Mango harvest, Ivory Coast',
+    rccmLabel: 'RCCM:',
     navCta: 'Get a quote →',
     nav: ['Home', 'About', 'Products', 'Certifications', 'Process', 'FAQ', 'Contact'],
     legal: [['Legal notice', 'legal-notice.html'], ['Terms and conditions of sale', 'terms.html'], ['Privacy policy', 'privacy.html']],
@@ -112,6 +118,8 @@ const COPY = {
   }
 };
 const B = (window.SITE_BASE || '') + 'assets/photography/';
+// Repli quand une fiche saisie en admin n'a aucune photo.
+const PLACEHOLDER_IMAGE = (window.SITE_BASE || '') + 'assets/logo-hero.webp';
 const PRODUCTS_FR = [{
   id: 'mango',
   image: B + 'mangue-01.webp',
@@ -313,8 +321,12 @@ const CANONICAL_NAMES = {
   banana: ['banane', 'banana'],
   pineapple: ['ananas', 'pineapple']
 };
+// Marques diacritiques combinantes laissees par la normalisation NFD. Construit via
+// RegExp pour garder la plage lisible en ASCII plutot que des caracteres combinants
+// invisibles dans la source.
+const COMBINING_MARKS = new RegExp('[\u0300-\u036f]', 'g');
 function normalizeName(s) {
-  return (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+  return (s || '').toLowerCase().normalize('NFD').replace(COMBINING_MARKS, '').trim();
 }
 function matchCanonicalId(name) {
   const n = normalizeName(name);
@@ -371,7 +383,9 @@ async function fetchLiveProducts(lang) {
       return {
         id: p.id,
         slugId: matchCanonicalId(p.name) || matchCanonicalId(p.name_en),
-        image: cover ? cover.url : '',
+        // Un produit saisi en admin sans photo donnait image: '' — le navigateur resout
+        // src="" vers l'URL de la page et telecharge le HTML comme image.
+        image: cover ? cover.url : PLACEHOLDER_IMAGE,
         gallery: myPhotos.length ? myPhotos.map(ph => ph.url) : cover ? [cover.url] : [],
         name: lang === 'en' && p.name_en ? p.name_en : p.name,
         subtitle: lang === 'en' && p.subtitle_en ? p.subtitle_en : p.subtitle,
@@ -392,13 +406,17 @@ window.fetchLiveProducts = fetchLiveProducts;
 // Records one visit per browser session; feeds the admin dashboard's live visitor counter.
 function trackVisit() {
   if (sessionStorage.getItem('visited')) return;
-  sessionStorage.setItem('visited', '1');
   const sb = getSb();
+  // Ne marquer la session qu'une fois le client disponible : marquer avant perdait
+  // définitivement la visite quand supabase-js n'était pas encore chargé.
   if (!sb) return;
+  sessionStorage.setItem('visited', '1');
   sb.from('visits').insert({
     page: window.location.pathname || '/',
     ip: ''
-  }).then(() => {});
+  }).then(function (res) {
+    if (res && res.error) console.warn('[visits] insert failed', res.error);
+  });
 }
 window.trackVisit = trackVisit;
 
@@ -483,6 +501,9 @@ function CountUp({
     if (!el) return;
     const num = parseInt(String(value).replace(/[^0-9]/g, ''), 10);
     const suffix = String(value).replace(/[0-9]/g, '');
+    // Le cleanup ne coupait que l'observer : la boucle rAF continuait apres demontage et
+    // appelait setShown sur un composant mort.
+    let raf = 0;
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (!e.isIntersecting) return;
@@ -492,15 +513,18 @@ function CountUp({
           const p = Math.min((now - start) / 1300, 1);
           const eased = 1 - Math.pow(1 - p, 3);
           setShown(Math.round(eased * num) + suffix);
-          if (p < 1) requestAnimationFrame(tick);
+          if (p < 1) raf = requestAnimationFrame(tick);
         };
-        requestAnimationFrame(tick);
+        raf = requestAnimationFrame(tick);
       });
     }, {
       threshold: 0.5
     });
     io.observe(el);
-    return () => io.disconnect();
+    return () => {
+      io.disconnect();
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, [value]);
   return /*#__PURE__*/React.createElement("span", {
     ref: ref
@@ -605,7 +629,7 @@ function Hero({
     }
   }, /*#__PURE__*/React.createElement("img", {
     src: (window.SITE_BASE || '') + 'assets/logo-hero.webp',
-    alt: "SOSAF-CI \u2014 Fruits de C\xF4te d'Ivoire",
+    alt: t.heroLogoAlt,
     width: "1120",
     height: "1120",
     decoding: "async",
@@ -709,7 +733,7 @@ function Presentation({
     }
   }, /*#__PURE__*/React.createElement("img", {
     src: (window.SITE_BASE || '') + 'assets/photography/mangue-04.webp',
-    alt: "R\xE9colte de mangues, C\xF4te d'Ivoire",
+    alt: t.presImageAlt,
     loading: "lazy",
     decoding: "async"
   })))));
@@ -793,20 +817,21 @@ function ProductsSection({
       fontSize: 14,
       color: 'var(--text-on-dark-muted)'
     }
-  }, t.prodPagesLabel, ' ', products.map((p, i) => {
-    const sid = p.slugId || p.id;
-    const href = window.productUrl(sid, window.SITE_LANG || 'fr');
-    if (!href) return null;
-    return /*#__PURE__*/React.createElement(React.Fragment, {
-      key: p.id
-    }, i > 0 && ' · ', /*#__PURE__*/React.createElement("a", {
-      href: href,
-      style: {
-        color: 'var(--mango)',
-        textDecoration: 'none'
-      }
-    }, p.name));
-  }))));
+  }, t.prodPagesLabel, ' ', products.map(p => ({
+    p,
+    href: window.productUrl(p.slugId || p.id, window.SITE_LANG || 'fr')
+  })).filter(x => x.href).map(({
+    p,
+    href
+  }, i) => /*#__PURE__*/React.createElement(React.Fragment, {
+    key: p.id
+  }, i > 0 && ' · ', /*#__PURE__*/React.createElement("a", {
+    href: href,
+    style: {
+      color: 'var(--mango)',
+      textDecoration: 'none'
+    }
+  }, p.name))))));
 }
 window.ProductsSection = ProductsSection;
 
@@ -1339,7 +1364,7 @@ function ContactSection({
       paddingTop: 16,
       borderTop: '1px solid var(--border-on-light)'
     }
-  }, "RCCM : CI-ABJ-03-2024-B21-00015")))));
+  }, t.rccmLabel, " CI-ABJ-03-2024-B21-00015")))));
 }
 window.ContactSection = ContactSection;
 
@@ -1469,6 +1494,7 @@ function Lightbox({
     const id = setTimeout(() => setFade(false), 40);
     return () => clearTimeout(id);
   }, [index, product]);
+  const closeRef = React.useRef(null);
   React.useEffect(() => {
     if (!product) return;
     const onKey = e => {
@@ -1479,19 +1505,35 @@ function Lightbox({
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [product, onClose, onPrev, onNext]);
-  // Preload the neighbouring gallery images so next/prev feels instant.
+
+  // Move focus into the dialog on open and hand it back to whatever opened it on close,
+  // otherwise keyboard users stay parked behind the overlay.
   React.useEffect(() => {
     if (!product) return;
+    const opener = document.activeElement;
+    if (closeRef.current) closeRef.current.focus();
+    return () => {
+      if (opener && opener.focus) opener.focus();
+    };
+  }, [product]);
+  // Preload the neighbouring gallery images so next/prev feels instant.
+  React.useEffect(() => {
+    // An admin-created product can have zero photos; `% 0` is NaN, which used to request
+    // assets/photography/undefined.
+    if (!product || !product.gallery.length) return;
     const n = product.gallery.length;
     [(index + 1) % n, (index - 1 + n) % n].forEach(i => {
       const im = new Image();
       im.src = photoSrc(product.gallery[i]);
     });
   }, [product, index]);
-  if (!product) return null;
+  if (!product || !product.gallery.length) return null;
   const src = photoSrc(product.gallery[index]);
   return /*#__PURE__*/React.createElement("div", {
     onClick: onClose,
+    role: "dialog",
+    "aria-modal": "true",
+    "aria-label": product.name,
     style: {
       position: 'fixed',
       inset: 0,
@@ -1505,6 +1547,7 @@ function Lightbox({
       gap: 16
     }
   }, /*#__PURE__*/React.createElement("button", {
+    ref: closeRef,
     onClick: onClose,
     "aria-label": copy.lightboxClose,
     style: {
@@ -1559,7 +1602,7 @@ function Lightbox({
     }
   }, /*#__PURE__*/React.createElement("img", {
     src: src,
-    alt: product.name,
+    alt: product.name + ' — ' + (index + 1) + '/' + product.gallery.length,
     style: {
       maxWidth: '100%',
       maxHeight: '100%',
