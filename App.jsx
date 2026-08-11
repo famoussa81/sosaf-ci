@@ -37,6 +37,7 @@ function App() {
       <window.Footer t={t} />
       <window.WhatsAppFloat />
       <window.Lightbox
+        t={t}
         product={gallery.product}
         index={gallery.index}
         onClose={() => setGallery({ product: null, index: 0 })}

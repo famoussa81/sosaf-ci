@@ -43,6 +43,9 @@ const COPY = {
     submit: 'Envoyer le message →',
     whatsapp: 'Discuter sur WhatsApp',
     whatsappSub: 'Réponse immédiate sur WhatsApp',
+    lightboxClose: 'Fermer',
+    lightboxPrev: 'Précédent',
+    lightboxNext: 'Suivant',
     navCta: 'Devis →',
     nav: ['Accueil', 'Présentation', 'Produits', 'Certifications', 'Process', 'FAQ', 'Contact'],
     legal: [['Mentions légales', 'mentions-legales.html'], ['Conditions générales de vente', 'cgv.html'], ['Politique de confidentialité', 'confidentialite.html']],
@@ -95,6 +98,9 @@ const COPY = {
     submit: 'Send message →',
     whatsapp: 'Chat on WhatsApp',
     whatsappSub: 'Immediate reply on WhatsApp',
+    lightboxClose: 'Close',
+    lightboxPrev: 'Previous',
+    lightboxNext: 'Next',
     navCta: 'Get a quote →',
     nav: ['Home', 'About', 'Products', 'Certifications', 'Process', 'FAQ', 'Contact'],
     legal: [['Legal notice', 'legal-notice.html'], ['Terms and conditions of sale', 'terms.html'], ['Privacy policy', 'privacy.html']],
@@ -1415,11 +1421,13 @@ function Lightbox({
   index,
   onClose,
   onPrev,
-  onNext
+  onNext,
+  t
 }) {
   const {
     Icon
   } = window.ComptoirTropicalSOSAFCIDesignSystem_8722e7;
+  const copy = t || window.COPY[window.SITE_LANG || 'fr'];
   const [fade, setFade] = React.useState(false);
   React.useEffect(() => {
     setFade(true);
@@ -1463,7 +1471,7 @@ function Lightbox({
     }
   }, /*#__PURE__*/React.createElement("button", {
     onClick: onClose,
-    "aria-label": "Fermer",
+    "aria-label": copy.lightboxClose,
     style: {
       position: 'absolute',
       top: 24,
@@ -1490,7 +1498,7 @@ function Lightbox({
     }
   }, /*#__PURE__*/React.createElement("button", {
     onClick: onPrev,
-    "aria-label": "Pr\xE9c\xE9dent",
+    "aria-label": copy.lightboxPrev,
     style: {
       flex: '0 0 auto',
       width: 48,
@@ -1528,7 +1536,7 @@ function Lightbox({
     }
   })), /*#__PURE__*/React.createElement("button", {
     onClick: onNext,
-    "aria-label": "Suivant",
+    "aria-label": copy.lightboxNext,
     style: {
       flex: '0 0 auto',
       width: 48,
@@ -1672,6 +1680,7 @@ function App() {
   }), /*#__PURE__*/React.createElement(window.Footer, {
     t: t
   }), /*#__PURE__*/React.createElement(window.WhatsAppFloat, null), /*#__PURE__*/React.createElement(window.Lightbox, {
+    t: t,
     product: gallery.product,
     index: gallery.index,
     onClose: () => setGallery({
