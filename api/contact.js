@@ -30,17 +30,15 @@ function escapeHtml(str) {
     .replace(/'/g, '&#039;');
 }
 
-// ─── Rate limiting simple (in-memory pour serverless) ─
-// LIMITE CONNUE : le compteur vit dans l'instance lambda. Vercel peut en démarrer
-// plusieurs en parallèle, donc le plafond réel est RATE_MAX × nombre d'instances.
-// C'est une protection d'appoint ; le honeypot et la validation restent les vraies
-// défenses. Un plafond strict demanderait un compteur partagé (table Supabase avec
-// colonne ip + migration), volontairement non fait ici.
+// ─── Rate limiting ──────────────────────────────────
 const rateMap = new Map();
 const RATE_WINDOW = 15 * 60 * 1000; // 15 min
 const RATE_MAX = 5;
 
-function isRateLimited(ip) {
+// Repli local. Le compteur vit dans une seule instance lambda : Vercel peut en démarrer
+// plusieurs en parallèle, donc le plafond réel est RATE_MAX × nombre d'instances. Sert
+// uniquement quand le compteur partagé n'est pas disponible.
+function isRateLimitedInMemory(ip) {
   const now = Date.now();
   // Entries were never evicted: on a warm lambda the map grew unbounded, one key per IP.
   for (const [key, e] of rateMap) {
@@ -54,6 +52,44 @@ function isRateLimited(ip) {
   entry.count++;
   if (entry.count > RATE_MAX) return true;
   return false;
+}
+
+// Compteur partagé en base : plafond global, quel que soit le nombre d'instances.
+// Nécessite supabase-rate-limit.sql (table contact_rate_limits + fonction
+// check_contact_rate_limit). Tant que la migration n'est pas passée, l'appel échoue et
+// on retombe sur le compteur mémoire — déployer avant de migrer ne casse donc rien.
+async function isRateLimited(ip) {
+  if (!supabase) return isRateLimitedInMemory(ip);
+  try {
+    const { data, error } = await supabase.rpc('check_contact_rate_limit', {
+      client_ip: ip,
+      max_requests: RATE_MAX,
+      window_seconds: RATE_WINDOW / 1000,
+    });
+    if (error) {
+      console.warn('[RATE] compteur partagé indisponible, repli mémoire:', error.message);
+      return isRateLimitedInMemory(ip);
+    }
+    return data === true;
+  } catch (err) {
+    console.warn('[RATE] compteur partagé en erreur, repli mémoire:', err.message);
+    return isRateLimitedInMemory(ip);
+  }
+}
+
+// x-forwarded-for est fourni par le client sur son premier saut : sa valeur de gauche est
+// falsifiable, donc inutilisable comme clé de limite. Sur Vercel, x-real-ip est posé par
+// la plateforme et n'est pas modifiable par l'appelant.
+function clientIp(req) {
+  const real = req.headers['x-real-ip'];
+  if (real) return String(real).trim();
+  const fwd = req.headers['x-forwarded-for'];
+  // À défaut, l'entrée la plus à droite est celle vue par le dernier proxy de confiance.
+  if (fwd) {
+    const parts = String(fwd).split(',');
+    return parts[parts.length - 1].trim();
+  }
+  return 'unknown';
 }
 
 // ─── Handler ────────────────────────────────────────
@@ -85,8 +121,8 @@ module.exports = async function handler(req, res) {
   }
 
   // Rate limiting
-  const ip = req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || 'unknown';
-  if (isRateLimited(ip)) {
+  const ip = clientIp(req);
+  if (await isRateLimited(ip)) {
     return res.status(429).json({
       success: false,
       errors: ['Trop de messages envoyés. Réessayez dans 15 minutes.'],
