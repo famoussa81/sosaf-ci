@@ -17,6 +17,8 @@ function App() {
     return () => { cancelled = true; };
   }, [lang]);
 
+  React.useEffect(() => { window.trackVisit && window.trackVisit(); }, []);
+
   const anchors = ['accueil', 'presentation', 'produits', 'certifications', 'process', 'faq'];
   const links = t.nav.slice(0, -1).map((label, i) => ({ label, href: '#' + anchors[i] }));
   const otherLang = lang === 'fr' ? 'EN' : 'FR';

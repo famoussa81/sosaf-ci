@@ -150,3 +150,14 @@ async function fetchLiveProducts(lang) {
 }
 
 window.fetchLiveProducts = fetchLiveProducts;
+
+// Records one visit per browser session; feeds the admin dashboard's live visitor counter.
+function trackVisit() {
+  if (sessionStorage.getItem('visited')) return;
+  sessionStorage.setItem('visited', '1');
+  const sb = getSb();
+  if (!sb) return;
+  sb.from('visits').insert({ page: window.location.pathname || '/', ip: '' }).then(() => {});
+}
+
+window.trackVisit = trackVisit;

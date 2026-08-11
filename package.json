@@ -9,5 +9,12 @@
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "node scripts/build-app.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.7",
+    "@babel/preset-react": "^7.29.7"
   }
 }
