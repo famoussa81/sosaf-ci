@@ -479,10 +479,16 @@ function Hero({
     }
   }, /*#__PURE__*/React.createElement(Button, {
     variant: "primary",
-    size: "lg"
+    size: "lg",
+    onClick: () => document.getElementById('produits')?.scrollIntoView({
+      behavior: 'smooth'
+    })
   }, t.cta1), /*#__PURE__*/React.createElement(Button, {
     variant: "secondary",
-    size: "lg"
+    size: "lg",
+    onClick: () => document.getElementById('contact')?.scrollIntoView({
+      behavior: 'smooth'
+    })
   }, t.cta2)))), /*#__PURE__*/React.createElement(Reveal, {
     from: "zoom",
     delay: 200,

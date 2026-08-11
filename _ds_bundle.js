@@ -556,6 +556,10 @@ function Nav({
     };
   }, [isMobile, open]);
   const barH = 66;
+  const goToContact = () => {
+    setOpen(false);
+    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+  };
   // backdrop-filter makes the <nav> a containing block for fixed children, which would trap
   // the mobile panel inside the 66px bar. Drop the blur while the panel is on screen,
   // and keep it off until the closing transition has finished.
@@ -615,6 +619,7 @@ function Nav({
   }, /*#__PURE__*/React.createElement(__ds_scope.Button, {
     variant: "primary",
     size: "lg",
+    onClick: goToContact,
     style: {
       width: '100%',
       justifyContent: 'center'
@@ -648,7 +653,8 @@ function Nav({
     link: l
   })), /*#__PURE__*/React.createElement(__ds_scope.Button, {
     variant: "primary",
-    size: "sm"
+    size: "sm",
+    onClick: goToContact
   }, cta), /*#__PURE__*/React.createElement("button", {
     onClick: onLangToggle,
     "aria-label": "Language",

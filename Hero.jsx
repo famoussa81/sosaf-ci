@@ -12,8 +12,8 @@ function Hero({ t }) {
           </h1>
           <p style={{ fontSize: 'var(--text-lg)', lineHeight: 'var(--leading-body)', color: 'var(--text-on-dark-muted)', maxWidth: 520, margin: '0 0 32px' }}>{t.lead}</p>
           <div className="btn-row" style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-            <Button variant="primary" size="lg">{t.cta1}</Button>
-            <Button variant="secondary" size="lg">{t.cta2}</Button>
+            <Button variant="primary" size="lg" onClick={() => document.getElementById('produits')?.scrollIntoView({ behavior: 'smooth' })}>{t.cta1}</Button>
+            <Button variant="secondary" size="lg" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>{t.cta2}</Button>
           </div>
           </Reveal>
         </div>
