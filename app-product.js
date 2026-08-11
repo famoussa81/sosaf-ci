@@ -20,6 +20,7 @@ const COPY = {
     certTitle: 'Certifications et contrôle qualité',
     certBody: "SOSAF-CI travaille avec des coopératives et stations de conditionnement certifiées GlobalG.A.P. pour la mangue et la noix de coco, garantissant traçabilité et conformité aux exigences internationales.",
     certList: ['Contrôle qualité avant chaque expédition', 'Respect des normes export internationaux', 'Traçabilité complète, du champ au conteneur', 'Documents fournis selon la commande'],
+    certBadgeDesc: 'Bonnes pratiques agricoles, qualité et traçabilité.',
     processEyebrow: 'Process',
     processTitle: 'Comment commander',
     steps: [['01', 'Contactez-nous', 'Par email ou WhatsApp, décrivez vos besoins : produits, volumes, destination.'], ['02', 'Devis sous 24h', 'Recevez une proposition détaillée avec prix et planning.'], ['03', 'Validation & préparation', 'Confirmation, paiement, sélection et conditionnement.'], ['04', 'Expédition', 'Maritime ou aérien, avec tous les documents export.']],
@@ -29,6 +30,12 @@ const COPY = {
     contactEyebrow: 'Contact',
     contactTitle: 'Parlons de votre projet',
     contactLead: 'Pour toute demande de cotation, partenariat commercial ou commande à l\u2019export, notre équipe est à votre disposition.',
+    ceoTitle: 'Directeur général',
+    cfoTitle: 'Directeur administratif et financier',
+    addressLabel: 'Adresse',
+    emailPrefix: 'Email :',
+    phoneWhatsappPrefix: 'Tél / WhatsApp :',
+    phonePrefix: 'Tél :',
     formTitle: 'Nous écrire',
     nameLabel: 'Votre nom',
     emailLabel: 'Email',
@@ -65,6 +72,7 @@ const COPY = {
     certTitle: 'Certifications & quality control',
     certBody: 'SOSAF-CI works with GlobalG.A.P.-certified cooperatives and packing stations for mango and coconut, guaranteeing traceability and compliance with international requirements.',
     certList: ['Quality control before every shipment', 'Compliance with international export standards', 'Full traceability, from field to container', 'Documents provided per order'],
+    certBadgeDesc: 'Good agricultural practices, quality and traceability.',
     processEyebrow: 'Process',
     processTitle: 'How to order',
     steps: [['01', 'Contact us', 'By email or WhatsApp, describe your needs: products, volumes, destination.'], ['02', 'Quote within 24h', 'Receive a detailed proposal with pricing and schedule.'], ['03', 'Confirmation & prep', 'Payment, selection and packing.'], ['04', 'Shipping', 'Sea or air freight, with all export documents.']],
@@ -74,6 +82,12 @@ const COPY = {
     contactEyebrow: 'Contact',
     contactTitle: "Let's talk about your project",
     contactLead: 'For any quote request, business partnership or export order, our team is at your disposal.',
+    ceoTitle: 'Managing Director',
+    cfoTitle: 'Administrative and Finance Director',
+    addressLabel: 'Address',
+    emailPrefix: 'Email:',
+    phoneWhatsappPrefix: 'Phone / WhatsApp:',
+    phonePrefix: 'Phone:',
     formTitle: 'Write to us',
     nameLabel: 'Your name',
     emailLabel: 'Email',
@@ -774,7 +788,7 @@ function ContactSection({
     }
   }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
     style: label
-  }, "Directeur g\xE9n\xE9ral"), /*#__PURE__*/React.createElement("p", {
+  }, t.ceoTitle), /*#__PURE__*/React.createElement("p", {
     style: {
       ...line,
       color: 'var(--text-on-light)',
@@ -782,17 +796,17 @@ function ContactSection({
     }
   }, "Bouramala Yaya Sanogo"), /*#__PURE__*/React.createElement("p", {
     style: line
-  }, "Email : ", /*#__PURE__*/React.createElement("a", {
+  }, t.emailPrefix, " ", /*#__PURE__*/React.createElement("a", {
     href: "mailto:sosaf.ci.export@gmail.com",
     style: link
   }, "sosaf.ci.export@gmail.com")), /*#__PURE__*/React.createElement("p", {
     style: line
-  }, "T\xE9l / WhatsApp : ", /*#__PURE__*/React.createElement("a", {
+  }, t.phoneWhatsappPrefix, " ", /*#__PURE__*/React.createElement("a", {
     href: "tel:+22389134555",
     style: link
   }, "+223 89 13 45 55"))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
     style: label
-  }, "Directeur administratif et financier"), /*#__PURE__*/React.createElement("p", {
+  }, t.cfoTitle), /*#__PURE__*/React.createElement("p", {
     style: {
       ...line,
       color: 'var(--text-on-light)',
@@ -800,12 +814,12 @@ function ContactSection({
     }
   }, "Amadou Dioro Cisse"), /*#__PURE__*/React.createElement("p", {
     style: line
-  }, "T\xE9l : ", /*#__PURE__*/React.createElement("a", {
+  }, t.phonePrefix, " ", /*#__PURE__*/React.createElement("a", {
     href: "tel:+22390017373",
     style: link
   }, "+223 90 01 73 73"))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
     style: label
-  }, "Adresse"), /*#__PURE__*/React.createElement("p", {
+  }, t.addressLabel), /*#__PURE__*/React.createElement("p", {
     style: line
   }, "SOSAF-CI"), /*#__PURE__*/React.createElement("p", {
     style: line

@@ -24,7 +24,7 @@ function CertificationsSection({ t }) {
             <Icon name="shield-check" size={34} color="var(--palm)" />
           </div>
           <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 22, margin: '0 0 8px' }}>GlobalG.A.P.</h3>
-          <p style={{ fontSize: 14, color: 'var(--text-on-light-muted)', margin: 0 }}>Bonnes pratiques agricoles, qualité et traçabilité.</p>
+          <p style={{ fontSize: 14, color: 'var(--text-on-light-muted)', margin: 0 }}>{t.certBadgeDesc}</p>
         </div>
         </Reveal>
       </div>

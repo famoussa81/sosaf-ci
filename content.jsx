@@ -12,6 +12,7 @@ const COPY = {
     certEyebrow: 'Qualité', certTitle: 'Certifications et contrôle qualité',
     certBody: "SOSAF-CI travaille avec des coopératives et stations de conditionnement certifiées GlobalG.A.P. pour la mangue et la noix de coco, garantissant traçabilité et conformité aux exigences internationales.",
     certList: ['Contrôle qualité avant chaque expédition', 'Respect des normes export internationaux', 'Traçabilité complète, du champ au conteneur', 'Documents fournis selon la commande'],
+    certBadgeDesc: 'Bonnes pratiques agricoles, qualité et traçabilité.',
     processEyebrow: 'Process', processTitle: 'Comment commander',
     steps: [
       ['01', 'Contactez-nous', 'Par email ou WhatsApp, décrivez vos besoins : produits, volumes, destination.'],
@@ -28,6 +29,8 @@ const COPY = {
     ],
     contactEyebrow: 'Contact', contactTitle: 'Parlons de votre projet',
     contactLead: 'Pour toute demande de cotation, partenariat commercial ou commande à l\u2019export, notre équipe est à votre disposition.',
+    ceoTitle: 'Directeur général', cfoTitle: 'Directeur administratif et financier', addressLabel: 'Adresse',
+    emailPrefix: 'Email :', phoneWhatsappPrefix: 'Tél / WhatsApp :', phonePrefix: 'Tél :',
     formTitle: 'Nous écrire', nameLabel: 'Votre nom', emailLabel: 'Email', messageLabel: 'Message', submit: 'Envoyer le message →',
     whatsapp: 'Discuter sur WhatsApp', whatsappSub: 'Réponse immédiate sur WhatsApp',
     navCta: 'Devis →',
@@ -51,6 +54,7 @@ const COPY = {
     certEyebrow: 'Quality', certTitle: 'Certifications & quality control',
     certBody: 'SOSAF-CI works with GlobalG.A.P.-certified cooperatives and packing stations for mango and coconut, guaranteeing traceability and compliance with international requirements.',
     certList: ['Quality control before every shipment', 'Compliance with international export standards', 'Full traceability, from field to container', 'Documents provided per order'],
+    certBadgeDesc: 'Good agricultural practices, quality and traceability.',
     processEyebrow: 'Process', processTitle: 'How to order',
     steps: [
       ['01', 'Contact us', 'By email or WhatsApp, describe your needs: products, volumes, destination.'],
@@ -67,6 +71,8 @@ const COPY = {
     ],
     contactEyebrow: 'Contact', contactTitle: "Let's talk about your project",
     contactLead: 'For any quote request, business partnership or export order, our team is at your disposal.',
+    ceoTitle: 'Managing Director', cfoTitle: 'Administrative and Finance Director', addressLabel: 'Address',
+    emailPrefix: 'Email:', phoneWhatsappPrefix: 'Phone / WhatsApp:', phonePrefix: 'Phone:',
     formTitle: 'Write to us', nameLabel: 'Your name', emailLabel: 'Email', messageLabel: 'Message', submit: 'Send message →',
     whatsapp: 'Chat on WhatsApp', whatsappSub: 'Immediate reply on WhatsApp',
     navCta: 'Get a quote →',

@@ -38,18 +38,18 @@ function ContactSection({ t }) {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 24, marginBottom: 32 }}>
             <div>
-              <span style={label}>Directeur général</span>
+              <span style={label}>{t.ceoTitle}</span>
               <p style={{ ...line, color: 'var(--text-on-light)', fontWeight: 600 }}>Bouramala Yaya Sanogo</p>
-              <p style={line}>Email : <a href="mailto:sosaf.ci.export@gmail.com" style={link}>sosaf.ci.export@gmail.com</a></p>
-              <p style={line}>Tél / WhatsApp : <a href="tel:+22389134555" style={link}>+223 89 13 45 55</a></p>
+              <p style={line}>{t.emailPrefix} <a href="mailto:sosaf.ci.export@gmail.com" style={link}>sosaf.ci.export@gmail.com</a></p>
+              <p style={line}>{t.phoneWhatsappPrefix} <a href="tel:+22389134555" style={link}>+223 89 13 45 55</a></p>
             </div>
             <div>
-              <span style={label}>Directeur administratif et financier</span>
+              <span style={label}>{t.cfoTitle}</span>
               <p style={{ ...line, color: 'var(--text-on-light)', fontWeight: 600 }}>Amadou Dioro Cisse</p>
-              <p style={line}>Tél : <a href="tel:+22390017373" style={link}>+223 90 01 73 73</a></p>
+              <p style={line}>{t.phonePrefix} <a href="tel:+22390017373" style={link}>+223 90 01 73 73</a></p>
             </div>
             <div>
-              <span style={label}>Adresse</span>
+              <span style={label}>{t.addressLabel}</span>
               <p style={line}>SOSAF-CI</p>
               <p style={line}>Abidjan, Cocody, Angré, 9ème Tranche</p>
               <p style={line}>Lot N446B, Îlot N20</p>
