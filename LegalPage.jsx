@@ -13,7 +13,7 @@ function LegalPage({ docKey }) {
 
   return (
     <div style={{ fontFamily: 'var(--font-body)', background: 'var(--surface-light)', color: 'var(--text-on-light)', minHeight: '100vh' }}>
-      <Nav logo={assets + 'logo.svg'} links={links} cta={t.navCta} lang={otherLang} onLangToggle={() => { window.location.href = lang === 'fr' ? 'en/' + window.LEGAL.en.docs[docKey].slug + '.html' : '../' + window.LEGAL.fr.docs[docKey].slug + '.html'; }} />
+      <Nav logo={assets + 'logo.svg'} links={links} cta={t.navCta} lang={otherLang} homeHref={home} onLangToggle={() => { window.location.href = lang === 'fr' ? 'en/' + window.LEGAL.en.docs[docKey].slug + '.html' : '../' + window.LEGAL.fr.docs[docKey].slug + '.html'; }} />
       <header style={{ background: 'var(--surface-dark)', color: 'var(--text-on-dark)', padding: '72px clamp(16px,5vw,48px) 56px' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, textTransform: 'uppercase', letterSpacing: 'var(--tracking-wider)', color: 'var(--mango)', fontWeight: 600 }}>{doc.eyebrow}</span>

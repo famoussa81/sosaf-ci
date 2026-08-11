@@ -16,6 +16,9 @@ const bundles = {
   'app-legal.js': [
     'content.jsx', 'legal-content.jsx', 'Footer.jsx', 'WhatsAppFloat.jsx', 'LegalPage.jsx',
   ],
+  'app-product.js': [
+    'content.jsx', 'Reveal.jsx', 'ProductPage.jsx', 'ContactSection.jsx', 'Footer.jsx', 'WhatsAppFloat.jsx',
+  ],
 };
 
 for (const [outName, files] of Object.entries(bundles)) {

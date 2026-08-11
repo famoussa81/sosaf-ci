@@ -64,4 +64,84 @@
     <lastmod>2026-08-11</lastmod>
     <priority>0.3</priority>
   </url>
+  <url>
+    <loc>https://sosafci-export.com/produits/mangue.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://sosafci-export.com/produits/mangue.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sosafci-export.com/en/products/mango.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sosafci-export.com/produits/mangue.html"/>
+    <lastmod>2026-08-11</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sosafci-export.com/en/products/mango.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://sosafci-export.com/produits/mangue.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sosafci-export.com/en/products/mango.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sosafci-export.com/produits/mangue.html"/>
+    <lastmod>2026-08-11</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://sosafci-export.com/produits/noix-de-coco.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://sosafci-export.com/produits/noix-de-coco.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sosafci-export.com/en/products/coconut.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sosafci-export.com/produits/noix-de-coco.html"/>
+    <lastmod>2026-08-11</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sosafci-export.com/en/products/coconut.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://sosafci-export.com/produits/noix-de-coco.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sosafci-export.com/en/products/coconut.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sosafci-export.com/produits/noix-de-coco.html"/>
+    <lastmod>2026-08-11</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://sosafci-export.com/produits/avocat.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://sosafci-export.com/produits/avocat.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sosafci-export.com/en/products/avocado.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sosafci-export.com/produits/avocat.html"/>
+    <lastmod>2026-08-11</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sosafci-export.com/en/products/avocado.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://sosafci-export.com/produits/avocat.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sosafci-export.com/en/products/avocado.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sosafci-export.com/produits/avocat.html"/>
+    <lastmod>2026-08-11</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://sosafci-export.com/produits/banane.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://sosafci-export.com/produits/banane.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sosafci-export.com/en/products/banana.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sosafci-export.com/produits/banane.html"/>
+    <lastmod>2026-08-11</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sosafci-export.com/en/products/banana.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://sosafci-export.com/produits/banane.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sosafci-export.com/en/products/banana.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sosafci-export.com/produits/banane.html"/>
+    <lastmod>2026-08-11</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://sosafci-export.com/produits/ananas.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://sosafci-export.com/produits/ananas.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sosafci-export.com/en/products/pineapple.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sosafci-export.com/produits/ananas.html"/>
+    <lastmod>2026-08-11</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sosafci-export.com/en/products/pineapple.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://sosafci-export.com/produits/ananas.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sosafci-export.com/en/products/pineapple.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sosafci-export.com/produits/ananas.html"/>
+    <lastmod>2026-08-11</lastmod>
+    <priority>0.6</priority>
+  </url>
 </urlset>

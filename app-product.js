@@ -461,588 +461,235 @@ function CountUp({
 window.Reveal = Reveal;
 window.CountUp = CountUp;
 
-// ── Hero.jsx ──
-function Hero({
-  t
+// ── ProductPage.jsx ──
+function productPhotoSrc(assets, name) {
+  return /^https?:\/\//.test(name) ? name : assets + 'photography/' + name;
+}
+function ProductPage({
+  productId
 }) {
   const {
-    Button
+    Nav
   } = window.ComptoirTropicalSOSAFCIDesignSystem_8722e7;
-  const {
-    Reveal
-  } = window;
-  return /*#__PURE__*/React.createElement("section", {
+  const lang = window.SITE_LANG || 'fr';
+  const base = window.SITE_BASE || '';
+  const assets = base + 'assets/';
+  const t = window.COPY[lang];
+  const staticProduct = window.PRODUCTS[lang].find(p => p.id === productId);
+  const [product, setProduct] = React.useState(staticProduct);
+  React.useEffect(() => {
+    let cancelled = false;
+    if (window.fetchLiveProducts) {
+      window.fetchLiveProducts(lang).then(live => {
+        if (cancelled || !live) return;
+        const match = live.find(p => p.slugId === productId);
+        if (match) setProduct(match);
+      });
+    }
+    return () => {
+      cancelled = true;
+    };
+  }, [lang]);
+  React.useEffect(() => {
+    window.trackVisit && window.trackVisit();
+  }, []);
+
+  // Injects Product JSON-LD once the real (possibly live) data is known — keeps the
+  // structured data in sync with what's actually rendered instead of hand-maintaining it per page.
+  React.useEffect(() => {
+    if (!product) return;
+    const id = 'product-jsonld';
+    let el = document.getElementById(id);
+    if (!el) {
+      el = document.createElement('script');
+      el.id = id;
+      el.type = 'application/ld+json';
+      document.head.appendChild(el);
+    }
+    el.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Product',
+      name: product.name,
+      description: product.subtitle,
+      image: product.gallery.map(g => productPhotoSrc(assets, g)),
+      brand: {
+        '@type': 'Brand',
+        name: 'SOSAF-CI'
+      },
+      ...(product.certification ? {
+        additionalProperty: {
+          '@type': 'PropertyValue',
+          name: 'Certification',
+          value: product.certification
+        }
+      } : {})
+    });
+  }, [product]);
+
+  // Both /produits/<slug>.html (1 level under root) and /en/products/<slug>.html (1 level
+  // under /en/) sit exactly one directory below their own language's homepage, so the
+  // relative path back up is identical for both: '../index.html'.
+  const home = '../index.html';
+  const anchors = ['accueil', 'presentation', 'produits', 'certifications', 'process', 'faq'];
+  const links = t.nav.slice(0, -1).map((label, i) => ({
+    label,
+    href: home + '#' + anchors[i]
+  }));
+  const otherLang = lang === 'fr' ? 'EN' : 'FR';
+  const otherSlugs = window.PRODUCT_SLUGS[productId];
+  const otherHref = lang === 'fr' ? '../en/products/' + otherSlugs.en + '.html' : '../../produits/' + otherSlugs.fr + '.html';
+  if (!product) return null;
+  return /*#__PURE__*/React.createElement("div", {
     style: {
-      minHeight: '92vh',
-      display: 'flex',
-      alignItems: 'center',
+      fontFamily: 'var(--font-body)'
+    }
+  }, /*#__PURE__*/React.createElement(Nav, {
+    logo: assets + 'logo.svg',
+    links: links,
+    cta: t.navCta,
+    lang: otherLang,
+    homeHref: home,
+    onLangToggle: () => {
+      window.location.href = otherHref;
+    }
+  }), /*#__PURE__*/React.createElement("header", {
+    style: {
       background: 'var(--surface-dark)',
       color: 'var(--text-on-dark)',
-      padding: '0 48px'
+      padding: '64px clamp(16px,5vw,48px) 48px'
     }
   }, /*#__PURE__*/React.createElement("div", {
-    className: "grid-2",
     style: {
-      display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
-      gap: 56,
-      maxWidth: 1200,
-      margin: '0 auto',
-      alignItems: 'center',
-      width: '100%'
+      maxWidth: 1000,
+      margin: '0 auto'
     }
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Reveal, null, /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React.createElement("nav", {
+    "aria-label": "Breadcrumb",
     style: {
-      display: 'inline-block',
+      fontSize: 13,
+      color: 'var(--text-on-dark-muted)',
+      marginBottom: 16
+    }
+  }, /*#__PURE__*/React.createElement("a", {
+    href: home,
+    style: {
+      color: 'inherit',
+      textDecoration: 'none'
+    }
+  }, lang === 'en' ? 'Home' : 'Accueil'), " / ", product.name), /*#__PURE__*/React.createElement("span", {
+    style: {
       fontFamily: 'var(--font-mono)',
       fontSize: 12,
       textTransform: 'uppercase',
       letterSpacing: 'var(--tracking-wider)',
       color: 'var(--mango)',
-      border: '1px solid oklch(from var(--mango) l c h / 0.3)',
-      padding: '6px 14px',
-      borderRadius: 'var(--radius-pill)',
-      marginBottom: 24
+      fontWeight: 600
     }
-  }, t.eyebrow), /*#__PURE__*/React.createElement("h1", {
+  }, t.prodEyebrow), /*#__PURE__*/React.createElement("h1", {
     style: {
       fontFamily: 'var(--font-display)',
-      fontSize: 'var(--text-4xl)',
+      fontSize: 'clamp(32px,6vw,48px)',
       lineHeight: 'var(--leading-tight)',
       fontWeight: 500,
       letterSpacing: 'var(--tracking-tight)',
-      margin: '0 0 24px'
+      margin: '10px 0 10px'
     }
-  }, t.h1a, /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
-    style: {
-      color: 'var(--mango)',
-      fontStyle: 'italic'
-    }
-  }, t.h1b), /*#__PURE__*/React.createElement("br", null), t.h1c), /*#__PURE__*/React.createElement("p", {
+  }, product.name), /*#__PURE__*/React.createElement("p", {
     style: {
       fontSize: 'var(--text-lg)',
-      lineHeight: 'var(--leading-body)',
       color: 'var(--text-on-dark-muted)',
-      maxWidth: 520,
-      margin: '0 0 32px'
+      maxWidth: 640,
+      margin: 0
     }
-  }, t.lead), /*#__PURE__*/React.createElement("div", {
-    className: "btn-row",
+  }, product.subtitle))), /*#__PURE__*/React.createElement("div", {
+    className: "legal-grid",
     style: {
-      display: 'flex',
-      gap: 16,
-      flexWrap: 'wrap'
+      maxWidth: 1000,
+      margin: '0 auto',
+      padding: 'clamp(32px,6vw,56px) clamp(16px,5vw,48px) 80px',
+      display: 'grid',
+      gridTemplateColumns: '1.1fr 0.9fr',
+      gap: 48,
+      background: 'var(--surface-light)',
+      color: 'var(--text-on-light)'
     }
-  }, /*#__PURE__*/React.createElement(Button, {
-    variant: "primary",
-    size: "lg",
-    onClick: () => document.getElementById('produits')?.scrollIntoView({
-      behavior: 'smooth'
-    })
-  }, t.cta1), /*#__PURE__*/React.createElement(Button, {
-    variant: "secondary",
-    size: "lg",
-    onClick: () => document.getElementById('contact')?.scrollIntoView({
-      behavior: 'smooth'
-    })
-  }, t.cta2)))), /*#__PURE__*/React.createElement(Reveal, {
-    from: "zoom",
-    delay: 200,
-    className: "hero-logo"
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center'
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      gap: 12
     }
-  }, /*#__PURE__*/React.createElement("img", {
-    src: (window.SITE_BASE || '') + 'assets/logo-hero.webp',
-    alt: "SOSAF-CI \u2014 Fruits de C\xF4te d'Ivoire",
-    width: "1120",
-    height: "1120",
+  }, product.gallery.map((g, i) => /*#__PURE__*/React.createElement("img", {
+    key: i,
+    src: productPhotoSrc(assets, g),
+    alt: product.name + ' — photo ' + (i + 1),
+    loading: "lazy",
     decoding: "async",
     style: {
       width: '100%',
-      maxWidth: 560,
-      height: 'auto',
-      display: 'block'
-    }
-  })))));
-}
-window.Hero = Hero;
-
-// ── Presentation.jsx ──
-function Presentation({
-  t
-}) {
-  const {
-    Reveal,
-    CountUp
-  } = window;
-  return /*#__PURE__*/React.createElement("section", {
-    style: {
-      background: 'var(--surface-light)',
-      color: 'var(--text-on-light)',
-      padding: '96px 48px'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "grid-2",
-    style: {
-      display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
-      gap: 56,
-      maxWidth: 1200,
-      margin: '0 auto',
-      alignItems: 'center'
-    }
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Reveal, null, /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontFamily: 'var(--font-mono)',
-      fontSize: 12,
-      textTransform: 'uppercase',
-      letterSpacing: 'var(--tracking-wider)',
-      color: 'var(--papaya)',
-      fontWeight: 600
-    }
-  }, t.presEyebrow), /*#__PURE__*/React.createElement("h2", {
-    style: {
-      fontFamily: 'var(--font-display)',
-      fontSize: 'var(--text-3xl)',
-      fontWeight: 500,
-      margin: '10px 0 18px'
-    }
-  }, t.presTitle), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: 'var(--text-lg)',
-      lineHeight: 'var(--leading-body)',
-      color: 'var(--text-on-light-muted)',
-      margin: 0
-    }
-  }, t.presBody)), /*#__PURE__*/React.createElement("div", {
-    className: "stats-row",
-    style: {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(3,1fr)',
-      gap: 16,
-      marginTop: 40
-    }
-  }, t.stats.map(([num, label]) => /*#__PURE__*/React.createElement("div", {
-    key: label,
-    style: {
-      textAlign: 'center',
-      padding: 20,
-      border: '1px solid var(--border-on-light)',
+      aspectRatio: '4 / 5',
+      objectFit: 'cover',
       borderRadius: 'var(--radius-lg)',
-      background: 'var(--surface-card)'
+      border: '1px solid var(--border-on-light)'
     }
-  }, /*#__PURE__*/React.createElement("span", {
+  }))), /*#__PURE__*/React.createElement("div", null, product.certification && /*#__PURE__*/React.createElement("span", {
     style: {
-      display: 'block',
-      fontFamily: 'var(--font-mono)',
-      fontSize: 28,
-      fontWeight: 700,
-      color: 'var(--palm)'
-    }
-  }, /*#__PURE__*/React.createElement(CountUp, {
-    value: num
-  })), /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 12,
-      color: 'var(--text-on-light-muted)'
-    }
-  }, label))))), /*#__PURE__*/React.createElement(Reveal, {
-    from: "right",
-    delay: 120
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "photo-treated crop-4-5",
-    style: {
-      borderRadius: 'var(--radius-lg)',
-      boxShadow: 'var(--shadow-md)'
-    }
-  }, /*#__PURE__*/React.createElement("img", {
-    src: (window.SITE_BASE || '') + 'assets/photography/mangue-04.webp',
-    alt: "R\xE9colte de mangues, C\xF4te d'Ivoire",
-    loading: "lazy",
-    decoding: "async"
-  })))));
-}
-window.Presentation = Presentation;
-
-// ── ProductsSection.jsx ──
-function ProductsSection({
-  t,
-  products,
-  onOpenGallery
-}) {
-  const {
-    ProductCard
-  } = window.ComptoirTropicalSOSAFCIDesignSystem_8722e7;
-  const {
-    Reveal
-  } = window;
-  return /*#__PURE__*/React.createElement("section", {
-    id: "produits",
-    style: {
-      background: 'var(--surface-dark)',
-      color: 'var(--text-on-dark)',
-      padding: '96px 48px'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      maxWidth: 1200,
-      margin: '0 auto'
-    }
-  }, /*#__PURE__*/React.createElement(Reveal, null, /*#__PURE__*/React.createElement("div", {
-    style: {
-      textAlign: 'center',
-      marginBottom: 56
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontFamily: 'var(--font-mono)',
-      fontSize: 12,
-      textTransform: 'uppercase',
-      letterSpacing: 'var(--tracking-wider)',
-      color: 'var(--mango)',
-      fontWeight: 600
-    }
-  }, t.prodEyebrow), /*#__PURE__*/React.createElement("h2", {
-    style: {
-      fontFamily: 'var(--font-display)',
-      fontSize: 'var(--text-3xl)',
-      fontWeight: 500,
-      margin: '10px 0 14px'
-    }
-  }, t.prodTitle), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: 'var(--text-lg)',
-      color: 'var(--text-on-dark-muted)',
-      maxWidth: 600,
-      margin: '0 auto'
-    }
-  }, t.prodLead))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))',
-      gap: 24
-    }
-  }, products.map((p, i) => /*#__PURE__*/React.createElement(Reveal, {
-    key: p.id,
-    delay: i * 90,
-    from: "zoom"
-  }, /*#__PURE__*/React.createElement(ProductCard, {
-    image: p.image,
-    name: p.name,
-    subtitle: p.subtitle,
-    fields: p.fields,
-    certification: p.certification,
-    photoCount: p.gallery.length,
-    onOpenGallery: () => onOpenGallery(p)
-  })))), window.productUrl && /*#__PURE__*/React.createElement("p", {
-    style: {
-      textAlign: 'center',
-      marginTop: 40,
-      fontSize: 14,
-      color: 'var(--text-on-dark-muted)'
-    }
-  }, t.prodPagesLabel, ' ', products.map((p, i) => {
-    const sid = p.slugId || p.id;
-    const href = window.productUrl(sid, window.SITE_LANG || 'fr');
-    if (!href) return null;
-    return /*#__PURE__*/React.createElement(React.Fragment, {
-      key: p.id
-    }, i > 0 && ' · ', /*#__PURE__*/React.createElement("a", {
-      href: href,
-      style: {
-        color: 'var(--mango)',
-        textDecoration: 'none'
-      }
-    }, p.name));
-  }))));
-}
-window.ProductsSection = ProductsSection;
-
-// ── CertificationsSection.jsx ──
-function CertificationsSection({
-  t
-}) {
-  const {
-    Icon
-  } = window.ComptoirTropicalSOSAFCIDesignSystem_8722e7;
-  const {
-    Reveal
-  } = window;
-  return /*#__PURE__*/React.createElement("section", {
-    style: {
-      background: 'var(--surface-light)',
-      color: 'var(--text-on-light)',
-      padding: '96px 48px'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "grid-2",
-    style: {
-      display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
-      gap: 56,
-      maxWidth: 1200,
-      margin: '0 auto',
-      alignItems: 'center'
-    }
-  }, /*#__PURE__*/React.createElement(Reveal, {
-    from: "left"
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontFamily: 'var(--font-mono)',
-      fontSize: 12,
-      textTransform: 'uppercase',
-      letterSpacing: 'var(--tracking-wider)',
-      color: 'var(--papaya)',
-      fontWeight: 600
-    }
-  }, t.certEyebrow), /*#__PURE__*/React.createElement("h2", {
-    style: {
-      fontFamily: 'var(--font-display)',
-      fontSize: 'var(--text-3xl)',
-      fontWeight: 500,
-      margin: '10px 0 18px'
-    }
-  }, t.certTitle), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: 'var(--text-lg)',
-      lineHeight: 'var(--leading-body)',
-      color: 'var(--text-on-light-muted)',
-      margin: '0 0 20px'
-    }
-  }, t.certBody), /*#__PURE__*/React.createElement("ul", {
-    style: {
-      listStyle: 'none',
-      padding: 0,
-      margin: 0,
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 12
-    }
-  }, t.certList.map(item => /*#__PURE__*/React.createElement("li", {
-    key: item,
-    style: {
-      display: 'flex',
-      gap: 10,
-      fontSize: 15
-    }
-  }, /*#__PURE__*/React.createElement(Icon, {
-    name: "check",
-    size: 18,
-    color: "var(--palm)"
-  }), " ", item))))), /*#__PURE__*/React.createElement(Reveal, {
-    from: "zoom",
-    delay: 140
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      marginBottom: 24,
+      padding: '8px 16px',
+      borderRadius: 'var(--radius-pill)',
       background: 'var(--surface-card)',
       border: '1px solid var(--border-on-light)',
-      borderRadius: 'var(--radius-lg)',
-      padding: 40,
-      textAlign: 'center'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      width: 72,
-      height: 72,
-      borderRadius: '50%',
-      background: 'var(--success-bg)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      margin: '0 auto 18px'
-    }
-  }, /*#__PURE__*/React.createElement(Icon, {
-    name: "shield-check",
-    size: 34,
-    color: "var(--palm)"
-  })), /*#__PURE__*/React.createElement("h3", {
-    style: {
-      fontFamily: 'var(--font-display)',
-      fontWeight: 500,
-      fontSize: 22,
-      margin: '0 0 8px'
-    }
-  }, "GlobalG.A.P."), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: 14,
-      color: 'var(--text-on-light-muted)',
-      margin: 0
-    }
-  }, "Bonnes pratiques agricoles, qualit\xE9 et tra\xE7abilit\xE9.")))));
-}
-window.CertificationsSection = CertificationsSection;
-
-// ── ProcessSection.jsx ──
-const PROCESS_ICONS = ['mail', 'file-text', 'check-circle-2', 'ship'];
-function ProcessSection({
-  t
-}) {
-  const {
-    Icon
-  } = window.ComptoirTropicalSOSAFCIDesignSystem_8722e7;
-  const {
-    Reveal
-  } = window;
-  return /*#__PURE__*/React.createElement("section", {
-    style: {
-      background: 'var(--surface-dark)',
-      color: 'var(--text-on-dark)',
-      padding: '96px 48px'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      maxWidth: 1100,
-      margin: '0 auto'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      textAlign: 'center',
-      marginBottom: 56
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontFamily: 'var(--font-mono)',
-      fontSize: 12,
-      textTransform: 'uppercase',
-      letterSpacing: 'var(--tracking-wider)',
-      color: 'var(--mango)',
-      fontWeight: 600
-    }
-  }, t.processEyebrow), /*#__PURE__*/React.createElement("h2", {
-    style: {
-      fontFamily: 'var(--font-display)',
-      fontSize: 'var(--text-3xl)',
-      fontWeight: 500,
-      margin: '10px 0 0'
-    }
-  }, t.processTitle)), /*#__PURE__*/React.createElement("div", {
-    className: "process-row",
-    style: {
-      display: 'flex',
-      gap: 0,
-      alignItems: 'flex-start',
-      justifyContent: 'center',
-      flexWrap: 'wrap'
-    }
-  }, t.steps.map(([num, title, desc], i) => /*#__PURE__*/React.createElement(React.Fragment, {
-    key: num
-  }, /*#__PURE__*/React.createElement(Reveal, {
-    delay: i * 110,
-    from: "up"
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      flex: '1 1 220px',
-      maxWidth: 240,
-      textAlign: 'center',
-      padding: '0 12px'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontFamily: 'var(--font-mono)',
       fontSize: 13,
-      letterSpacing: '0.1em',
-      color: 'var(--mango)',
-      marginBottom: 12
+      fontWeight: 600,
+      color: 'var(--palm)'
     }
-  }, num), /*#__PURE__*/React.createElement("div", {
+  }, product.certification), /*#__PURE__*/React.createElement("dl", {
     style: {
-      width: 60,
-      height: 60,
-      borderRadius: '50%',
-      background: 'oklch(from var(--mango) l c h / 0.1)',
-      border: '1px solid oklch(from var(--mango) l c h / 0.25)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      margin: '0 auto 16px',
-      color: 'var(--mango)'
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      gap: '20px 16px',
+      margin: '0 0 32px'
     }
-  }, /*#__PURE__*/React.createElement(Icon, {
-    name: PROCESS_ICONS[i],
-    size: 26
-  })), /*#__PURE__*/React.createElement("h4", {
-    style: {
-      fontFamily: 'var(--font-display)',
-      fontWeight: 500,
-      fontSize: 18,
-      margin: '0 0 8px'
-    }
-  }, title), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: 14,
-      color: 'var(--text-on-dark-muted)',
-      lineHeight: 1.6,
-      margin: 0
-    }
-  }, desc))), i < t.steps.length - 1 && /*#__PURE__*/React.createElement("div", {
-    className: "process-connector",
-    style: {
-      width: 40,
-      height: 2,
-      background: 'var(--border-on-dark)',
-      marginTop: 42,
-      flexShrink: 0
-    }
-  }))))));
-}
-window.ProcessSection = ProcessSection;
-
-// ── FaqSection.jsx ──
-function FaqSection({
-  t
-}) {
-  const {
-    FaqAccordion
-  } = window.ComptoirTropicalSOSAFCIDesignSystem_8722e7;
-  const {
-    Reveal
-  } = window;
-  return /*#__PURE__*/React.createElement("section", {
-    style: {
-      background: 'var(--surface-dark)',
-      color: 'var(--text-on-dark)',
-      padding: '96px 48px'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      maxWidth: 760,
-      margin: '0 auto'
-    }
-  }, /*#__PURE__*/React.createElement(Reveal, null, /*#__PURE__*/React.createElement("div", {
-    style: {
-      textAlign: 'center',
-      marginBottom: 40
-    }
-  }, /*#__PURE__*/React.createElement("span", {
+  }, product.fields.map(f => /*#__PURE__*/React.createElement("div", {
+    key: f.label
+  }, /*#__PURE__*/React.createElement("dt", {
     style: {
       fontFamily: 'var(--font-mono)',
-      fontSize: 12,
+      fontSize: 11,
       textTransform: 'uppercase',
-      letterSpacing: 'var(--tracking-wider)',
-      color: 'var(--mango)',
-      fontWeight: 600
+      letterSpacing: 'var(--tracking-wide)',
+      color: 'var(--palm)',
+      fontWeight: 600,
+      margin: '0 0 4px'
     }
-  }, t.faqEyebrow), /*#__PURE__*/React.createElement("h2", {
+  }, f.label), /*#__PURE__*/React.createElement("dd", {
     style: {
-      fontFamily: 'var(--font-display)',
-      fontSize: 'var(--text-3xl)',
-      fontWeight: 500,
-      margin: '10px 0 0'
+      margin: 0,
+      fontSize: 16,
+      color: 'var(--text-on-light)'
     }
-  }, t.faqTitle))), /*#__PURE__*/React.createElement(Reveal, {
-    delay: 120
-  }, /*#__PURE__*/React.createElement(FaqAccordion, {
-    items: t.faq.map(([q, a]) => ({
-      q,
-      a
-    }))
-  }))));
+  }, f.value)))), /*#__PURE__*/React.createElement("a", {
+    href: "#contact",
+    style: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      minHeight: 48,
+      padding: '0 28px',
+      borderRadius: 'var(--radius-pill)',
+      background: 'var(--accent-primary)',
+      color: 'var(--cocoa)',
+      fontWeight: 600,
+      textDecoration: 'none'
+    }
+  }, t.navCta))), /*#__PURE__*/React.createElement(window.ContactSection, {
+    t: t
+  }), /*#__PURE__*/React.createElement(window.Footer, {
+    t: t
+  }), /*#__PURE__*/React.createElement(window.WhatsAppFloat, null));
 }
-window.FaqSection = FaqSection;
+window.ProductPage = ProductPage;
 
 // ── ContactSection.jsx ──
 function ContactSection({
@@ -1391,153 +1038,6 @@ function Footer({
 }
 window.Footer = Footer;
 
-// ── Lightbox.jsx ──
-// Static fallback products carry bare filenames; live Supabase products carry full storage URLs.
-function photoSrc(name) {
-  return /^https?:\/\//.test(name) ? name : (window.SITE_BASE || '') + 'assets/photography/' + name;
-}
-function Lightbox({
-  product,
-  index,
-  onClose,
-  onPrev,
-  onNext
-}) {
-  const {
-    Icon
-  } = window.ComptoirTropicalSOSAFCIDesignSystem_8722e7;
-  const [fade, setFade] = React.useState(false);
-  React.useEffect(() => {
-    setFade(true);
-    const id = setTimeout(() => setFade(false), 40);
-    return () => clearTimeout(id);
-  }, [index, product]);
-  React.useEffect(() => {
-    if (!product) return;
-    const onKey = e => {
-      if (e.key === 'Escape') onClose();
-      if (e.key === 'ArrowLeft') onPrev();
-      if (e.key === 'ArrowRight') onNext();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [product, onClose, onPrev, onNext]);
-  // Preload the neighbouring gallery images so next/prev feels instant.
-  React.useEffect(() => {
-    if (!product) return;
-    const n = product.gallery.length;
-    [(index + 1) % n, (index - 1 + n) % n].forEach(i => {
-      const im = new Image();
-      im.src = photoSrc(product.gallery[i]);
-    });
-  }, [product, index]);
-  if (!product) return null;
-  const src = photoSrc(product.gallery[index]);
-  return /*#__PURE__*/React.createElement("div", {
-    onClick: onClose,
-    style: {
-      position: 'fixed',
-      inset: 0,
-      background: 'oklch(from var(--canopy) l c h / 0.94)',
-      backdropFilter: 'blur(14px)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 1000,
-      flexDirection: 'column',
-      gap: 16
-    }
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: onClose,
-    "aria-label": "Fermer",
-    style: {
-      position: 'absolute',
-      top: 24,
-      right: 24,
-      width: 44,
-      height: 44,
-      borderRadius: '50%',
-      background: 'oklch(from var(--ivory) l c h / 0.1)',
-      border: '1px solid var(--border-on-dark)',
-      color: '#fff',
-      cursor: 'pointer'
-    }
-  }, /*#__PURE__*/React.createElement(Icon, {
-    name: "x",
-    size: 20
-  })), /*#__PURE__*/React.createElement("div", {
-    onClick: e => e.stopPropagation(),
-    className: "lightbox-row",
-    style: {
-      position: 'relative',
-      display: 'flex',
-      alignItems: 'center',
-      gap: 16
-    }
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: onPrev,
-    "aria-label": "Pr\xE9c\xE9dent",
-    style: {
-      flex: '0 0 auto',
-      width: 48,
-      height: 48,
-      borderRadius: '50%',
-      border: '1px solid var(--border-on-dark)',
-      background: 'oklch(from var(--canopy) l c h / 0.6)',
-      color: '#fff',
-      cursor: 'pointer'
-    }
-  }, /*#__PURE__*/React.createElement(Icon, {
-    name: "chevron-left",
-    size: 22
-  })), /*#__PURE__*/React.createElement("div", {
-    className: "lightbox-stage",
-    style: {
-      flex: '0 0 auto',
-      width: 'min(70vw, 880px)',
-      height: 'min(68vh, 620px)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }
-  }, /*#__PURE__*/React.createElement("img", {
-    src: src,
-    alt: product.name,
-    style: {
-      maxWidth: '100%',
-      maxHeight: '100%',
-      borderRadius: 'var(--radius-lg)',
-      boxShadow: 'var(--shadow-lg)',
-      objectFit: 'contain',
-      opacity: fade ? 0 : 1,
-      transition: 'opacity 220ms var(--ease-out)'
-    }
-  })), /*#__PURE__*/React.createElement("button", {
-    onClick: onNext,
-    "aria-label": "Suivant",
-    style: {
-      flex: '0 0 auto',
-      width: 48,
-      height: 48,
-      borderRadius: '50%',
-      border: '1px solid var(--border-on-dark)',
-      background: 'oklch(from var(--canopy) l c h / 0.6)',
-      color: '#fff',
-      cursor: 'pointer'
-    }
-  }, /*#__PURE__*/React.createElement(Icon, {
-    name: "chevron-right",
-    size: 22
-  }))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      color: 'var(--text-on-dark-muted)',
-      fontFamily: 'var(--font-mono)',
-      fontSize: 13
-    }
-  }, index + 1, " / ", product.gallery.length, " \u2014 ", product.name));
-}
-window.Lightbox = Lightbox;
-
 // ── WhatsAppFloat.jsx ──
 function WhatsAppFloat({
   phone = '22389134555'
@@ -1578,109 +1078,3 @@ function WhatsAppFloat({
   }));
 }
 window.WhatsAppFloat = WhatsAppFloat;
-
-// ── App.jsx ──
-function App() {
-  const {
-    Nav
-  } = window.ComptoirTropicalSOSAFCIDesignSystem_8722e7;
-  const lang = window.SITE_LANG || 'fr';
-  const base = window.SITE_BASE || '';
-  const assets = base + 'assets/';
-  const [gallery, setGallery] = React.useState({
-    product: null,
-    index: 0
-  });
-  const t = window.COPY[lang];
-  const [products, setProducts] = React.useState(window.PRODUCTS[lang]);
-  React.useEffect(() => {
-    let cancelled = false;
-    if (window.fetchLiveProducts) {
-      window.fetchLiveProducts(lang).then(live => {
-        if (!cancelled && live && live.length) setProducts(live);
-      });
-    }
-    return () => {
-      cancelled = true;
-    };
-  }, [lang]);
-  React.useEffect(() => {
-    window.trackVisit && window.trackVisit();
-  }, []);
-  const anchors = ['accueil', 'presentation', 'produits', 'certifications', 'process', 'faq'];
-  const links = t.nav.slice(0, -1).map((label, i) => ({
-    label,
-    href: '#' + anchors[i]
-  }));
-  const otherLang = lang === 'fr' ? 'EN' : 'FR';
-  const otherHref = lang === 'fr' ? 'en/index.html' : '../index.html';
-  return /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontFamily: 'var(--font-body)'
-    }
-  }, /*#__PURE__*/React.createElement(Nav, {
-    logo: assets + 'logo.svg',
-    links: links,
-    cta: t.navCta,
-    lang: otherLang,
-    onLangToggle: () => {
-      window.location.href = otherHref;
-    }
-  }), /*#__PURE__*/React.createElement("div", {
-    id: "accueil"
-  }, /*#__PURE__*/React.createElement(window.Hero, {
-    t: t
-  })), /*#__PURE__*/React.createElement("div", {
-    id: "presentation"
-  }, /*#__PURE__*/React.createElement(window.Presentation, {
-    t: t
-  })), /*#__PURE__*/React.createElement(window.ProductsSection, {
-    t: t,
-    products: products,
-    onOpenGallery: p => setGallery({
-      product: p,
-      index: 0
-    })
-  }), /*#__PURE__*/React.createElement("div", {
-    id: "certifications"
-  }, /*#__PURE__*/React.createElement(window.CertificationsSection, {
-    t: t
-  })), /*#__PURE__*/React.createElement("div", {
-    id: "process"
-  }, /*#__PURE__*/React.createElement(window.ProcessSection, {
-    t: t
-  })), /*#__PURE__*/React.createElement("div", {
-    id: "faq"
-  }, /*#__PURE__*/React.createElement(window.FaqSection, {
-    t: t
-  })), /*#__PURE__*/React.createElement(window.ContactSection, {
-    t: t
-  }), /*#__PURE__*/React.createElement(window.Footer, {
-    t: t
-  }), /*#__PURE__*/React.createElement(window.WhatsAppFloat, null), /*#__PURE__*/React.createElement(window.Lightbox, {
-    product: gallery.product,
-    index: gallery.index,
-    onClose: () => setGallery({
-      product: null,
-      index: 0
-    }),
-    onPrev: () => setGallery(g => ({
-      ...g,
-      index: (g.index - 1 + g.product.gallery.length) % g.product.gallery.length
-    })),
-    onNext: () => setGallery(g => ({
-      ...g,
-      index: (g.index + 1) % g.product.gallery.length
-    }))
-  }));
-}
-
-// The compiled design-system bundle also contains this file; without the guard it would paint
-// the landing page for a split second on legal pages before their own render replaces it.
-// `__ds_ns` only exists inside the compiled design-system bundle, which also contains this file.
-// Rendering from there too would mount the app twice (visible flicker, replayed reveal animations)
-// and would paint the landing page for a split second on legal pages.
-if (typeof __ds_ns === 'undefined' && (window.SITE_PAGE || 'home') === 'home') {
-  window.__root = window.__root || ReactDOM.createRoot(document.getElementById('root'));
-  window.__root.render(/*#__PURE__*/React.createElement(App, null));
-}

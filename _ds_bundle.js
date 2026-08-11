@@ -521,7 +521,8 @@ function Nav({
   links = [],
   lang = 'FR',
   onLangToggle,
-  cta = 'Devis →'
+  cta = 'Devis →',
+  homeHref = '#accueil'
 }) {
   const [open, setOpen] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(typeof window !== 'undefined' && window.innerWidth <= 900);
@@ -558,7 +559,9 @@ function Nav({
   const barH = 66;
   const goToContact = () => {
     setOpen(false);
-    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+    const el = document.getElementById('contact');
+    if (el) { el.scrollIntoView({ behavior: 'smooth' }); }
+    else if (homeHref && homeHref !== '#accueil') { window.location.href = homeHref + '#contact'; }
   };
   // backdrop-filter makes the <nav> a containing block for fixed children, which would trap
   // the mobile panel inside the 66px bar. Drop the blur while the panel is on screen,
@@ -686,7 +689,7 @@ function Nav({
       fontFamily: 'var(--font-body)'
     }
   }, /*#__PURE__*/React.createElement("a", {
-    href: "#accueil",
+    href: homeHref,
     style: {
       display: 'flex',
       alignItems: 'center',

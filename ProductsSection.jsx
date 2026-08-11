@@ -18,6 +18,22 @@ function ProductsSection({ t, products, onOpenGallery }) {
             </Reveal>
           ))}
         </div>
+        {window.productUrl && (
+          <p style={{ textAlign: 'center', marginTop: 40, fontSize: 14, color: 'var(--text-on-dark-muted)' }}>
+            {t.prodPagesLabel}{' '}
+            {products.map((p, i) => {
+              const sid = p.slugId || p.id;
+              const href = window.productUrl(sid, window.SITE_LANG || 'fr');
+              if (!href) return null;
+              return (
+                <React.Fragment key={p.id}>
+                  {i > 0 && ' · '}
+                  <a href={href} style={{ color: 'var(--mango)', textDecoration: 'none' }}>{p.name}</a>
+                </React.Fragment>
+              );
+            })}
+          </p>
+        )}
       </div>
     </section>
   );

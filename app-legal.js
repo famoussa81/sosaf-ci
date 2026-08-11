@@ -15,6 +15,7 @@ const COPY = {
     prodEyebrow: 'Notre gamme',
     prodTitle: 'Produits exportés',
     prodLead: "Cinq fruits d'exception, cultivés sous le soleil de Côte d'Ivoire, sélectionnés avec soin pour les marchés les plus exigeants.",
+    prodPagesLabel: 'Fiches produits :',
     certEyebrow: 'Qualité',
     certTitle: 'Certifications et contrôle qualité',
     certBody: "SOSAF-CI travaille avec des coopératives et stations de conditionnement certifiées GlobalG.A.P. pour la mangue et la noix de coco, garantissant traçabilité et conformité aux exigences internationales.",
@@ -59,6 +60,7 @@ const COPY = {
     prodEyebrow: 'Our range',
     prodTitle: 'Exported products',
     prodLead: 'Five exceptional fruits, grown under the Ivorian sun, carefully selected for the most demanding markets.',
+    prodPagesLabel: 'Product pages:',
     certEyebrow: 'Quality',
     certTitle: 'Certifications & quality control',
     certBody: 'SOSAF-CI works with GlobalG.A.P.-certified cooperatives and packing stations for mango and coconut, guaranteeing traceability and compliance with international requirements.',
@@ -257,6 +259,59 @@ window.PRODUCTS = {
   en: PRODUCTS_EN
 };
 
+// ─── Per-product detail page routing ───
+// Maps the stable static ids (also used as React keys) to the FR/EN URL slugs,
+// and lets a live Supabase product (UUID id, no slug column) be matched back to
+// one of these 5 canonical products by name, so /produits/mangue.html etc. can
+// find "the mango row" regardless of whether data came from Supabase or fallback.
+const PRODUCT_SLUGS = {
+  mango: {
+    fr: 'mangue',
+    en: 'mango'
+  },
+  coconut: {
+    fr: 'noix-de-coco',
+    en: 'coconut'
+  },
+  avocado: {
+    fr: 'avocat',
+    en: 'avocado'
+  },
+  banana: {
+    fr: 'banane',
+    en: 'banana'
+  },
+  pineapple: {
+    fr: 'ananas',
+    en: 'pineapple'
+  }
+};
+const CANONICAL_NAMES = {
+  mango: ['mangue', 'mango'],
+  coconut: ['noix de coco', 'coconut'],
+  avocado: ['avocat', 'avocado'],
+  banana: ['banane', 'banana'],
+  pineapple: ['ananas', 'pineapple']
+};
+function normalizeName(s) {
+  return (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+}
+function matchCanonicalId(name) {
+  const n = normalizeName(name);
+  for (const id in CANONICAL_NAMES) {
+    if (CANONICAL_NAMES[id].some(x => n.indexOf(x) !== -1)) return id;
+  }
+  return null;
+}
+function productUrl(id, lang) {
+  const slugs = PRODUCT_SLUGS[id];
+  if (!slugs) return null;
+  return lang === 'en' ? 'products/' + slugs.en + '.html' : 'produits/' + slugs.fr + '.html';
+}
+window.PRODUCT_SLUGS = PRODUCT_SLUGS;
+window.matchCanonicalId = matchCanonicalId;
+window.productUrl = productUrl;
+
 // ─── Live products from the admin dashboard (Supabase) ───
 // Same project the admin panel writes to. Anon key is RLS-scoped to read-only.
 window.SUPABASE_URL = 'https://lwjtftrjcmnzfsdkhuhf.supabase.co';
@@ -295,6 +350,7 @@ async function fetchLiveProducts(lang) {
       const myChars = chars.filter(c => c.product_id === p.id);
       return {
         id: p.id,
+        slugId: matchCanonicalId(p.name) || matchCanonicalId(p.name_en),
         image: cover ? cover.url : '',
         gallery: myPhotos.length ? myPhotos.map(ph => ph.url) : cover ? [cover.url] : [],
         name: lang === 'en' && p.name_en ? p.name_en : p.name,
@@ -749,6 +805,7 @@ function LegalPage({
     links: links,
     cta: t.navCta,
     lang: otherLang,
+    homeHref: home,
     onLangToggle: () => {
       window.location.href = lang === 'fr' ? 'en/' + window.LEGAL.en.docs[docKey].slug + '.html' : '../' + window.LEGAL.fr.docs[docKey].slug + '.html';
     }
