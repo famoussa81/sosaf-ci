@@ -1,0 +1,34 @@
+:root{
+--canopy:#123B2A;
+--mango:#F28C1E;
+--papaya:#E4572E;
+--ivory:#F6F1E7;
+--palm:#3E7C4F;
+--cocoa:#3B2B20;
+--canopy-tint-1:oklch(from var(--canopy) calc(l + 0.10) c h);
+--canopy-tint-2:oklch(from var(--canopy) calc(l + 0.18) c h);
+--ivory-shade-1:oklch(from var(--ivory) calc(l - 0.06) c h);
+--ivory-shade-2:oklch(from var(--ivory) calc(l - 0.12) c h);
+--mango-tint:oklch(from var(--mango) calc(l + 0.12) c h);
+--mango-shade:oklch(from var(--mango) calc(l - 0.14) c h);
+--papaya-shade:oklch(from var(--papaya) calc(l - 0.12) c h);
+--surface-dark:var(--canopy);
+--surface-dark-raised:var(--canopy-tint-1);
+--surface-light:var(--ivory);
+--surface-card:#ffffff;
+--text-on-dark:var(--ivory);
+--text-on-dark-muted:oklch(from var(--ivory) l c h / 0.68);
+--text-on-light:var(--cocoa);
+--text-on-light-muted:oklch(from var(--cocoa) l c h / 0.62);
+--border-on-dark:oklch(from var(--ivory) l c h / 0.16);
+--border-on-light:oklch(from var(--cocoa) l c h / 0.14);
+--accent-primary:var(--mango);
+--accent-primary-hover:var(--mango-shade);
+--accent-secondary:var(--papaya);
+--accent-secondary-hover:var(--papaya-shade);
+--success:var(--palm);
+--success-bg:oklch(from var(--palm) l c h / 0.12);
+--focus-ring:oklch(from var(--mango) l c h / 0.45);
+--overlay-photo:oklch(from var(--cocoa) 0.32 0.06 h / 0.25);
+--shadow-color:oklch(from var(--cocoa) 0.2 0.03 h / 0.18);
+}
