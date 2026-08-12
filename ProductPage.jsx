@@ -45,6 +45,10 @@ function ProductPage({ productId }) {
     : lang === 'fr' ? '../en/products/' + otherSlugs.en + '.html'
     : '../../produits/' + otherSlugs.fr + '.html';
 
+  // Le texte long est indexe par identifiant canonique, pas par la ligne Supabase : un
+  // produit ajoute en admin hors des 5 fiches existantes n'a simplement pas de texte.
+  const copy = (window.PRODUCT_COPY[productId] || {})[lang] || [];
+
   if (!product) return null;
 
   return (
@@ -84,6 +88,17 @@ function ProductPage({ productId }) {
           <a href="#contact" style={{ display: 'inline-flex', alignItems: 'center', minHeight: 48, padding: '0 28px', borderRadius: 'var(--radius-pill)', background: 'var(--accent-primary)', color: 'var(--cocoa)', fontWeight: 600, textDecoration: 'none' }}>{t.navCta}</a>
         </div>
       </div>
+
+      {copy.length > 0 && (
+        <div style={{ background: 'var(--surface-light)', color: 'var(--text-on-light)', padding: '0 clamp(16px,5vw,48px) clamp(48px,7vw,88px)' }}>
+          <div style={{ maxWidth: 720, margin: '0 auto' }}>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(22px,4vw,30px)', fontWeight: 500, letterSpacing: 'var(--tracking-tight)', margin: '0 0 20px' }}>{t.productCopyTitle}</h2>
+            {copy.map((para, pi) => (
+              <p key={pi} style={{ fontSize: 16, lineHeight: 'var(--leading-body)', color: 'var(--text-on-light-muted)', margin: '0 0 16px' }}>{para}</p>
+            ))}
+          </div>
+        </div>
+      )}
 
       <window.ContactSection t={t} />
       <window.Footer t={t} base="../" home={home} />

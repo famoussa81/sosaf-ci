@@ -34,6 +34,7 @@ const COPY = {
     formTitle: 'Nous écrire', nameLabel: 'Votre nom', emailLabel: 'Email', messageLabel: 'Message', submit: 'Envoyer le message →',
     whatsapp: 'Discuter sur WhatsApp', whatsappSub: 'Réponse immédiate sur WhatsApp',
     lightboxClose: 'Fermer', lightboxPrev: 'Précédent', lightboxNext: 'Suivant',
+    productCopyTitle: 'Le produit en détail',
     heroLogoAlt: "SOSAF-CI — Fruits de Côte d'Ivoire",
     presImageAlt: "Récolte de mangues, Côte d'Ivoire",
     rccmLabel: 'RCCM :',
@@ -80,6 +81,7 @@ const COPY = {
     formTitle: 'Write to us', nameLabel: 'Your name', emailLabel: 'Email', messageLabel: 'Message', submit: 'Send message →',
     whatsapp: 'Chat on WhatsApp', whatsappSub: 'Immediate reply on WhatsApp',
     lightboxClose: 'Close', lightboxPrev: 'Previous', lightboxNext: 'Next',
+    productCopyTitle: 'The product in detail',
     heroLogoAlt: 'SOSAF-CI — Fruit from Ivory Coast',
     presImageAlt: 'Mango harvest, Ivory Coast',
     rccmLabel: 'RCCM:',
@@ -97,20 +99,23 @@ const B = (window.SITE_BASE || '') + 'assets/photography/';
 // Repli quand une fiche saisie en admin n'a aucune photo.
 const PLACEHOLDER_IMAGE = (window.SITE_BASE || '') + 'assets/logo-hero.webp';
 
+// Repli utilisé seulement si Supabase est injoignable. Les valeurs ci-dessous sont
+// alignées sur les lignes products/product_chars réelles : toute divergence se verrait
+// comme un changement de fiche au rechargement.
 const PRODUCTS_FR = [
-  { id: 'mango', image: B + 'mangue-01.webp', gallery: ['mangue-01.webp','mangue-02.webp','mangue-03.webp','mangue-04.webp','mangue-05.webp'], name: 'Mangue', subtitle: "Origine Côte d'Ivoire · Variétés Kent et Amélie", fields: [{label:'Variétés',value:'Kent, Amélie'},{label:'Saison',value:'Mars – Juillet'},{label:'Calibre',value:'6–12'},{label:'Conditionnement',value:'Carton 4–6 kg'}], certification: 'GlobalG.A.P.' },
-  { id: 'coconut', image: B + 'coco-02.webp', gallery: ['coco-02.webp','coco-01.webp','coco-03-sacs.webp','coco-04-conteneur.webp'], name: 'Noix de Coco', subtitle: "Origine Côte d'Ivoire · Variété Grand Africa Ouest", fields: [{label:'Variété',value:'Grand Africa Ouest'},{label:'Type',value:'Fraîche, Sèche'},{label:'Conditionnement',value:'Sac de 21 kg'}], certification: 'GlobalG.A.P.' },
-  { id: 'avocado', image: B + 'avocat-04-carton.webp', gallery: ['avocat-04-carton.webp','avocat-03-carton.webp'], name: 'Avocat', subtitle: "Origine Côte d'Ivoire · Variétés Hass et Fuerte", fields: [{label:'Variétés',value:'Hass, Fuerte'},{label:'Calibre',value:'16–22'},{label:'Saison',value:"Toute l'année"}] },
-  { id: 'banana', image: B + 'banane-02.webp', gallery: ['banane-02.webp','banane-03-cartons.webp'], name: 'Banane', subtitle: "Origine Côte d'Ivoire · Variété Cavendish", fields: [{label:'Variété',value:'Cavendish'},{label:'Conditionnement',value:'Carton kraft 18.5 kg'}] },
-  { id: 'pineapple', image: B + 'ananas-01.webp', gallery: ['ananas-01.webp','ananas-02.webp','ananas-03.webp','ananas-04.webp'], name: 'Ananas', subtitle: "Origine Côte d'Ivoire · Variétés MD2, Cayenne Lisse", fields: [{label:'Variétés',value:'MD2, Cayenne Lisse'},{label:'Calibre',value:'6–12'},{label:'Conditionnement',value:'Carton 12 kg'}] },
+  { id: 'mango', image: B + 'mangue-01.webp', gallery: ['mangue-01.webp','mangue-02.webp','mangue-03.webp','mangue-04.webp','mangue-05.webp'], name: 'Mangue', subtitle: "Origine Côte d'Ivoire · Variétés Kent et Amélie", fields: [{label:'Variétés',value:'Kent, Amélie'},{label:'Saison',value:'Mars – Juillet'},{label:'Calibre',value:'6–12 (selon variété)'},{label:'Conditionnement',value:'Avion : carton 6 kg / Maritime : carton 4 kg'}], certification: 'GlobalG.A.P.' },
+  { id: 'coconut', image: B + 'coco-02.webp', gallery: ['coco-02.webp','coco-01.webp','coco-03-sacs.webp','coco-04-conteneur.webp'], name: 'Noix de Coco', subtitle: "Origine Côte d'Ivoire · Variété Grand Africa Ouest", fields: [{label:'Variété',value:'Grand Africa Ouest'},{label:'Origine',value:"Côte d'Ivoire"},{label:'Type',value:'Fraîche, Sèche'},{label:'Conditionnement',value:'Sac de 21 kg'}], certification: 'GlobalG.A.P.' },
+  { id: 'avocado', image: B + 'avocat-04-carton.webp', gallery: ['avocat-04-carton.webp','avocat-03-carton.webp'], name: 'Avocat', subtitle: "Origine Côte d'Ivoire · Variétés Hass et Fuerte", fields: [{label:'Variétés',value:'Hass, Fuerte'},{label:'Calibre',value:'16–22'},{label:'Conditionnement',value:'Avion : carton 6 kg / Maritime : carton 4 kg'},{label:'Saison',value:"Toute l'année"}] },
+  { id: 'banana', image: B + 'banane-02.webp', gallery: ['banane-02.webp','banane-03-cartons.webp'], name: 'Banane', subtitle: "Origine Côte d'Ivoire · Variété Cavendish", fields: [{label:'Variété',value:'Cavendish'},{label:'Origine',value:"Côte d'Ivoire"},{label:'Quantité',value:'Selon disponibilité'},{label:'Conditionnement',value:'Carton kraft 18.5 kg'}] },
+  { id: 'pineapple', image: B + 'ananas-01.webp', gallery: ['ananas-01.webp','ananas-02.webp','ananas-03.webp','ananas-04.webp'], name: 'Ananas', subtitle: "Origine Côte d'Ivoire · Variétés MD2, Pain de Sucre, Cayenne Lisse", fields: [{label:'Variétés',value:'MD2, Pain de Sucre, Cayenne Lisse'},{label:'Calibre',value:'6–12'},{label:'Saison',value:"Toute l'année"},{label:'Conditionnement',value:'Carton de 12 kg'}] },
 ];
 
 const EN_OVERRIDES = {
-  mango: { name: 'Mango', subtitle: "Origin Ivory Coast · Kent and Amélie varieties", fields: [{label:'Varieties',value:'Kent, Amélie'},{label:'Season',value:'March – July'},{label:'Size',value:'6–12'},{label:'Packing',value:'4–6 kg carton'}] },
-  coconut: { name: 'Coconut', subtitle: 'Origin Ivory Coast · West Africa Tall variety', fields: [{label:'Variety',value:'West Africa Tall'},{label:'Type',value:'Fresh, Dried'},{label:'Packing',value:'21 kg bag'}] },
-  avocado: { name: 'Avocado', subtitle: 'Origin Ivory Coast · Hass and Fuerte varieties', fields: [{label:'Varieties',value:'Hass, Fuerte'},{label:'Size',value:'16–22'},{label:'Season',value:'Year-round'}] },
-  banana: { name: 'Banana', subtitle: 'Origin Ivory Coast · Cavendish variety', fields: [{label:'Variety',value:'Cavendish'},{label:'Packing',value:'18.5 kg kraft carton'}] },
-  pineapple: { name: 'Pineapple', subtitle: 'Origin Ivory Coast · MD2, Smooth Cayenne varieties', fields: [{label:'Varieties',value:'MD2, Smooth Cayenne'},{label:'Size',value:'6–12'},{label:'Packing',value:'12 kg carton'}] },
+  mango: { name: 'Mango', subtitle: 'Origin Ivory Coast · Kent and Amélie varieties', fields: [{label:'Varieties',value:'Kent, Amélie'},{label:'Season',value:'March – July'},{label:'Size',value:'6–12 (depending on variety)'},{label:'Packaging',value:'Air: 6 kg carton / Sea: 4 kg carton'}] },
+  coconut: { name: 'Coconut', subtitle: 'Origin Ivory Coast · Grand Africa West variety', fields: [{label:'Variety',value:'Grand Africa West'},{label:'Origin',value:'Ivory Coast'},{label:'Type',value:'Fresh, Dried'},{label:'Packaging',value:'21 kg bag'}] },
+  avocado: { name: 'Avocado', subtitle: 'Origin Ivory Coast · Hass and Fuerte varieties', fields: [{label:'Varieties',value:'Hass, Fuerte'},{label:'Size',value:'16–22'},{label:'Packaging',value:'Air: 6 kg carton / Sea: 4 kg carton'},{label:'Season',value:'All year'}] },
+  banana: { name: 'Banana', subtitle: 'Origin Ivory Coast · Cavendish variety', fields: [{label:'Variety',value:'Cavendish'},{label:'Origin',value:'Ivory Coast'},{label:'Quantity',value:'Subject to availability'},{label:'Packaging',value:'18.5 kg kraft carton'}] },
+  pineapple: { name: 'Pineapple', subtitle: 'Origin Ivory Coast · MD2, Sugar Loaf, Smooth Cayenne varieties', fields: [{label:'Varieties',value:'MD2, Sugar Loaf, Smooth Cayenne'},{label:'Size',value:'6–12'},{label:'Season',value:'All year'},{label:'Packaging',value:'12 kg carton'}] },
 };
 
 const PRODUCTS_EN = PRODUCTS_FR.map(p => ({ ...p, ...EN_OVERRIDES[p.id] }));
@@ -158,6 +163,88 @@ function productUrl(id, lang) {
   if (!slugs) return null;
   return lang === 'en' ? 'products/' + slugs.en + '.html' : 'produits/' + slugs.fr + '.html';
 }
+// ─── Texte long des fiches produit ───
+// Rédigé uniquement à partir de ce que le site affirme déjà : variétés, saison,
+// calibres et conditionnement viennent des lignes products/product_chars ; les délais
+// et modes d'acheminement, les volumes de commande et le délai de devis viennent de la
+// FAQ ; la mention GlobalG.A.P. suit le champ `cert` (donc mangue et noix de coco
+// seulement) et attribue la certification aux partenaires, comme la section
+// Certifications. Aucun marché, incoterm, volume ni pays d'origine supplémentaire n'est
+// avancé ici : ces éléments doivent venir du client avant d'être publiés.
+const PRODUCT_COPY = {
+  mango: {
+    fr: [
+      "La mangue est le produit phare du catalogue SOSAF-CI. Nous nous approvisionnons auprès de producteurs, de coopératives et de stations de conditionnement partenaires en Côte d'Ivoire, autour de deux variétés complémentaires. La Kent offre une chair peu fibreuse et une bonne tenue au transport, ce qui en fait la référence des circuits d'export longue distance. L'Amélie, variété ouest-africaine, se distingue par un parfum plus marqué et une texture plus fondante.",
+      "La campagne s'étend de mars à juillet. Les calibres proposés vont de 6 à 12 fruits par colis selon la variété, ce qui permet d'ajuster chaque lot aux attentes du marché de destination.",
+      "Le conditionnement dépend du mode d'acheminement retenu : carton de 6 kg pour le fret aérien, qui met 2 à 5 jours, carton de 4 kg pour le maritime en conteneur réfrigéré, qui met 10 à 20 jours selon la destination. Nos coopératives et stations de conditionnement partenaires pour la mangue sont certifiées GlobalG.A.P. Chaque expédition fait l'objet d'un contrôle qualité, avec une traçabilité complète du champ au conteneur.",
+      "Nous traitons aussi bien les commandes par conteneur complet que par palette. Décrivez-nous vos volumes, votre calibre et votre destination : vous recevez une proposition détaillée sous 24 heures.",
+    ],
+    en: [
+      "Mango is the flagship product in the SOSAF-CI catalogue. We source from partner growers, cooperatives and packing stations in Ivory Coast, around two complementary varieties. Kent has low-fibre flesh and travels well, which makes it the reference for long-distance export. Amélie, a West African variety, stands out for its stronger aroma and softer texture.",
+      "The season runs from March to July. Sizes range from 6 to 12 fruits per box depending on the variety, so each lot can be matched to the expectations of its destination market.",
+      "Packaging follows the shipping mode: a 6 kg carton for air freight, which takes 2 to 5 days, and a 4 kg carton for sea freight in reefer containers, which takes 10 to 20 days depending on destination. Our partner cooperatives and packing stations for mango are GlobalG.A.P.-certified. Every shipment undergoes a quality check, with full traceability from field to container.",
+      "We handle full-container orders as well as pallet-level orders. Tell us your volumes, sizes and destination, and you will receive a detailed proposal within 24 hours.",
+    ],
+  },
+  coconut: {
+    fr: [
+      "SOSAF-CI exporte la noix de coco de variété Grand Africa Ouest, produite en Côte d'Ivoire. Elle est proposée sous deux formes, fraîche et sèche, selon l'usage visé et la durée de transport acceptable pour votre filière.",
+      "Le conditionnement se fait en sacs de 21 kg. L'acheminement se fait par voie maritime en conteneur, comptez 10 à 20 jours, ou par fret aérien en 2 à 5 jours lorsque le délai prime.",
+      "Nos coopératives et stations de conditionnement partenaires pour la noix de coco sont certifiées GlobalG.A.P. Chaque lot est contrôlé avant expédition et bénéficie d'une traçabilité complète, du champ au conteneur. Les documents d'export sont fournis selon les exigences de la commande.",
+      "Commandes par conteneur complet ou par palette. Indiquez-nous la forme souhaitée, fraîche ou sèche, vos volumes et votre destination : devis détaillé sous 24 heures.",
+    ],
+    en: [
+      "SOSAF-CI exports Grand Africa West coconut, grown in Ivory Coast. It is available in two forms, fresh and dried, depending on the intended use and the transit time your supply chain can accommodate.",
+      "It is packed in 21 kg bags. Shipping is by sea container, allow 10 to 20 days, or by air freight in 2 to 5 days when lead time matters most.",
+      "Our partner cooperatives and packing stations for coconut are GlobalG.A.P.-certified. Every lot is inspected before shipment and carries full traceability from field to container. Export documents are provided according to the requirements of the order.",
+      "Full-container or pallet-level orders. Tell us which form you need, fresh or dried, along with your volumes and destination, and you will receive a detailed quote within 24 hours.",
+    ],
+  },
+  avocado: {
+    fr: [
+      "L'avocat figure au catalogue SOSAF-CI toute l'année, en deux variétés. La Hass, à peau granuleuse qui fonce à maturité, est la variété la plus demandée à l'international. La Fuerte, à peau lisse et à chair plus douce, complète la gamme.",
+      "Les calibres proposés vont de 16 à 22 fruits par colis. La disponibilité sur l'ensemble de l'année permet de sécuriser un approvisionnement régulier plutôt qu'une fenêtre saisonnière courte.",
+      "Le conditionnement suit le mode d'acheminement : carton de 6 kg pour l'aérien, en 2 à 5 jours, carton de 4 kg pour le maritime en conteneur réfrigéré, en 10 à 20 jours. Chaque expédition fait l'objet d'un contrôle qualité et d'une traçabilité complète, du champ au conteneur.",
+      "Commandes par conteneur complet ou par palette. Précisez calibre, volumes et destination : proposition détaillée sous 24 heures.",
+    ],
+    en: [
+      "Avocado is in the SOSAF-CI catalogue all year, in two varieties. Hass, with its pebbled skin that darkens as it ripens, is the most requested variety internationally. Fuerte, with smooth skin and milder flesh, completes the range.",
+      "Sizes range from 16 to 22 fruits per box. Year-round availability makes it possible to secure steady supply rather than a short seasonal window.",
+      "Packaging follows the shipping mode: a 6 kg carton for air freight, in 2 to 5 days, and a 4 kg carton for sea freight in reefer containers, in 10 to 20 days. Every shipment undergoes a quality check and carries full traceability from field to container.",
+      "Full-container or pallet-level orders. Specify size, volumes and destination, and you will receive a detailed proposal within 24 hours.",
+    ],
+  },
+  banana: {
+    fr: [
+      "SOSAF-CI exporte la banane de variété Cavendish, produite en Côte d'Ivoire. C'est la variété de référence du commerce international, retenue pour sa régularité de calibre et sa tenue sur les circuits longs.",
+      "Les volumes sont proposés selon disponibilité : nous confirmons la quantité mobilisable au moment du devis plutôt que d'annoncer un tonnage théorique.",
+      "Le conditionnement se fait en carton kraft de 18,5 kg. L'expédition se fait par voie maritime en conteneur réfrigéré, comptez 10 à 20 jours, ou par fret aérien en 2 à 5 jours. Chaque expédition fait l'objet d'un contrôle qualité avant départ, avec traçabilité complète du champ au conteneur.",
+      "Commandes par conteneur complet ou par palette. Communiquez-nous vos volumes et votre destination : nous revenons vers vous sous 24 heures avec une proposition détaillée.",
+    ],
+    en: [
+      "SOSAF-CI exports Cavendish bananas grown in Ivory Coast. It is the reference variety in international trade, chosen for its consistent sizing and its resilience on long routes.",
+      "Volumes are offered subject to availability: we confirm the quantity we can actually mobilise at quotation stage rather than announcing a theoretical tonnage.",
+      "Bananas are packed in 18.5 kg kraft cartons. Shipping is by sea in reefer containers, allow 10 to 20 days, or by air freight in 2 to 5 days. Every shipment is quality-checked before departure, with full traceability from field to container.",
+      "Full-container or pallet-level orders. Send us your volumes and destination and we will come back within 24 hours with a detailed proposal.",
+    ],
+  },
+  pineapple: {
+    fr: [
+      "L'ananas est disponible toute l'année dans notre catalogue, en trois variétés. Le MD2 est le standard des marchés d'export, apprécié pour sa couleur et sa régularité. Le Pain de Sucre et la Cayenne Lisse offrent des profils différents, pour les acheteurs qui cherchent à se démarquer du MD2.",
+      "Les calibres proposés vont de 6 à 12 fruits par colis. La production s'étale sur l'année, ce qui permet un approvisionnement continu plutôt que par campagne.",
+      "Le conditionnement se fait en cartons de 12 kg. L'acheminement se fait par voie maritime en conteneur réfrigéré, en 10 à 20 jours, ou par fret aérien en 2 à 5 jours selon la destination et l'urgence. Contrôle qualité avant chaque expédition et traçabilité complète, du champ au conteneur.",
+      "Commandes par conteneur complet ou par palette. Indiquez-nous la variété, les calibres, vos volumes et votre destination : devis détaillé sous 24 heures.",
+    ],
+    en: [
+      "Pineapple is available all year in our catalogue, in three varieties. MD2 is the export-market standard, valued for its colour and consistency. Sugar Loaf and Smooth Cayenne offer different profiles, for buyers looking to differentiate from MD2.",
+      "Sizes range from 6 to 12 fruits per box. Production runs across the year, which allows continuous supply rather than campaign-based sourcing.",
+      "Pineapples are packed in 12 kg cartons. Shipping is by sea in reefer containers, in 10 to 20 days, or by air freight in 2 to 5 days depending on destination and urgency. Quality control before every shipment and full traceability, from field to container.",
+      "Full-container or pallet-level orders. Tell us the variety, sizes, volumes and destination, and you will receive a detailed quote within 24 hours.",
+    ],
+  },
+};
+
+window.PRODUCT_COPY = PRODUCT_COPY;
 window.PRODUCT_SLUGS = PRODUCT_SLUGS;
 window.matchCanonicalId = matchCanonicalId;
 window.productUrl = productUrl;
